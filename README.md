@@ -13,7 +13,7 @@ The scores, distances travelled, coins collected, AI details/characteristics, an
 
 The project consists of a main python script using Pygame with an implemented Neuro Evolutionary AI (NEAT-Python) and a secondary Python (Django) web-application. The Main script will post Generational AI details/ results to a MySQL database that the Django web-application will retrieve and display. 
 
- <img alt = "High Level Block Diagram" src="Documentation/BLOCK.png" width = "400" heihgt = "300">
+ <img alt = "High Level Block Diagram" src="Documentation/BLOCK DIAGRAM.png" width = "400" heihgt = "300">
 
 The user can start the main python script via a terminal.  Upon start of the main script, the user will be prompted via a Pygame GUI to select whether they’d like to play the game or view the AI demo. Based on their selection, the game module will be launched and they will be loaded into their selection. If they chose to play the game, a game window will open in which they can control a “fish” and navigate him through the “water”, collecting worms and avoiding “fishermen” and “sharks” while attempting to go the furthest distance possible. If they chose to view the AI demo, they will be loaded into a visual demonstration where they can watch the AI attempt the same game through evolving generations. With each generation of the game, the main python script will create a model and post that generation’s data to the MySQL database.
 
@@ -29,7 +29,7 @@ The Django web-application will be simple. It will consist of three “apps” o
 
 ## Logical Design
 
-<img alt = "High Level Block Diagram" src="Documentation/LOGICAL.png" width="75%" height="75%">
+<img alt = "High Level Block Diagram" src="Documentation/LOGICAL DIAGRAM.png" width="75%" height="75%">
 
 #### Game AI & Demo
 
@@ -41,7 +41,7 @@ The user will connect to the Django webapp via HTTPS and will be responsible for
 
 ## Physical Design
 
-<img alt = "High Level Block Diagram" src="Documentation/PHYSICAL.png" width="75%" height="75%">
+<img alt = "High Level Block Diagram" src="Documentation/PHYSICAL DIAGRAM.png" width="75%" height="75%">
 
 The user will start the main python script from their local machine, where it will be stored locally. The script will run the python game or AI demo and then post generational data using a model (if AI Demo) to an AWS RDS container using port 3306 within AWS EBS. A Django webapp running in an AWS EC2 container within the AWS EBS will retrieve this data via port 3306 and display it to the user within the Django app via port 80.
 
