@@ -61,4 +61,4 @@ Regarding technological decisions, Visual Studio code was chosen as the Intellig
 
 Out of scope features include: configuration of the AI config file through the webapp, playing against the AI when playing the game, and the saving of player highscores. These features are out of scope due to their being unnecessary to the completion of this project and concept.
 
-Please refer to the [Documentation within this repository](Documentation/) for a flowchart depicting the process flow of the main script. Proposed user interface diagrams for both the script and the Django web-application can also be found in that section as well.  
+Some Documentation is too large to be included in this README. Please refer to the [Documentation within this repository](Documentation/) for All documentation. Included are: High level Block Diagram, Logical Diagram, Physical Diagram, UML, Flowchart, DDL scripts, ER Diagram, Wireframe, and Sitemap. 
