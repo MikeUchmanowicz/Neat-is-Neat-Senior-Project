@@ -65,3 +65,6 @@ Out of scope features include: configuration of the AI config file through the w
 ___
 
 Some Documentation is too large to be included in this README. Please refer to the [Documentation within this repository](Documentation/) for All documentation. Included are: High level Block Diagram, Logical Diagram, Physical Diagram, UML, Flowchart, DDL scripts, ER Diagram, Wireframe, and Sitemap. 
+___
+
+[Please go check out my other projects](https://github.com/MikeUchmanowicz/Start)
