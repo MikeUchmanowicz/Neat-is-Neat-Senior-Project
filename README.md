@@ -9,15 +9,56 @@ Within the main application, the user will be able to select whether they’d li
 
 The scores, distances travelled, coins collected, AI details/characteristics, and other information will be recorded and posted to a database. The before-mentioned web application will then fetch and display this data for observation purposes in addition to providing general information on the technology used to achieve this.
 
-### Design
+## Design Introduction
 
 The project consists of a main python script using Pygame with an implemented Neuro Evolutionary AI (NEAT-Python) and a secondary Python (Django) web-application. The Main script will post Generational AI details/ results to a MySQL database that the Django web-application will retrieve and display. 
+
+ <img alt = "High Level Block Diagram" src="Documentation/BLOCK.png" width = "400" heihgt = "300">
 
 The user can start the main python script via a terminal.  Upon start of the main script, the user will be prompted via a Pygame GUI to select whether they’d like to play the game or view the AI demo. Based on their selection, the game module will be launched and they will be loaded into their selection. If they chose to play the game, a game window will open in which they can control a “fish” and navigate him through the “water”, collecting worms and avoiding “fishermen” and “sharks” while attempting to go the furthest distance possible. If they chose to view the AI demo, they will be loaded into a visual demonstration where they can watch the AI attempt the same game through evolving generations. With each generation of the game, the main python script will create a model and post that generation’s data to the MySQL database.
 
 A Django application will support viewing informational pages, logging in, registering, and the viewing of generational ai data that it will pull from a MySQL database. The Django app will be cloud hosted within an Elastic Beanstalk container in AWS, using AWS EC2 to store the app and AWS RDS to store the database information and data.
-
- Please refer to the [Documentation within this repository](Documentation/) for a flowchart depicting the process flow of the main script. Proposed user interface diagrams for both the script and the Django web-application can also be found in that section as well.  
  
- <img alt = "High Level Block Diagram" src="Documentation/BLOCK.png" width = "400" heihgt = "300">
+## Design
 
+The python game script will primarily focus on the AI demo but will also allow the user to try the game themselves if they choose. The python game script will consist of different modules: Game.py, GameModels.py, MyReporter.py, and Service.py. Most of the logic for this game and demo will be in the Game module, which imports NEAT, Pygame, GameModels, and MyReporter. The GameModels module will contain the classes of the player object, obstacles, enemies, objectives, and images. The Game module will have a main “fitness” function which will contain the game logic and an AI “run” function that initiates the AI and applies the AI to the main “fitness” function. This “fitness” function will be looped by the AI “run” function for each generation of ai that is created at the end of the previous iteration of the main “fitness” function. We call this a “fitness” function because it determines each AI networks fitness or “score” within the game. 
+
+Essentially, we will be creating a population of AI from a NEAT config file that will be provided in the project files. This config file will determine the AI network’s attributes, like their connection weights (tendencies for certain actions), mutation weights (likeliness to mutate), and population size for each population attempting the game. Once we create the population from the config file, we can pass that population into the main “fitness” function which will allow them to play the game. They will not be given any information on what to do. They will be passed three different inputs: locations of enemies, locations of obstacles, and locations of objectives. They will be given one output option: to change their height. We must increase or decrease the “fitness” of each AI network based on their desirable or undesirable actions. If the AI does what we want, like collecting a worm, we can award it points. If it collides with an enemy or obstacle, we take away points. The main fitness function will end if all AI networks fail by hitting an obstacle or enemy. Their data will be processed by the AI “run” function, a new generation of AI will be created that is hopefully better than the last generation, and they will attempt the main “fitness” function once again. This will loop until an AI is seen as satisfactory by achieving a set fitness score. The MyReporter module which extends Neat.StdOutReporter, will be called at the end of every loop of the main “fitness” function. It is responsible for the reporting of AI data and printing it to the console. MyReporter will use the Service Module to post the AI generational results to a MySQL database through the use of mysql-connector-python.
+
+The Django web-application will be simple. It will consist of three “apps” or “applets”, one for general information display like accessing any home or informatory pages, another app for registering and logging in users, and another app for retrieving and displaying AI generational data that will be retrieved from a MySQL database A user must login to use the website, and otherwise will only be able to see the home page. The views will only be able to interact with models using the Django ORM which will be implemented in included Service modules. The Django app will be cloud hosted within an Elastic Beanstalk container in AWS, using aws EC2 to store the app and AWS RDS to store the database information and data.
+
+## Logical Design
+
+<img alt = "High Level Block Diagram" src="Documentation/LOGICAL.png" width="75%" height="75%">
+
+#### Game AI & Demo
+
+The user will start the main python script on their local machine. The script will pop up a GUI that will prompt the user to select between playing the game or viewing a demo of the NEAT AI playing the game. Based on the user’s selection, the Game module (using pygame and NEAT) will either process user input or AI input. Once the Game module processes this input, it will apply game logic (using pygame) and render any visual output to the user’s screen. The Game Module will make use of the MyReporter module and the Service module to post a GenDataModel to a MySQL database.
+
+#### Django Webapp
+
+The user will connect to the Django webapp via HTTPS and will be responsible for registering and logging in using  Django’s built in authentication and forms. The user will have access to html templates which will be controlled by different views, These views will use a UserService and a DataService paired with Django’s built in ORM in order to create, read, update, and delete UserModels and GenDataModels within the database. The views will then pass these objects back to the templates in which they can be viewed.
+
+## Physical Design
+
+<img alt = "High Level Block Diagram" src="Documentation/PHYSICAL.png" width="75%" height="75%">
+
+The user will start the main python script from their local machine, where it will be stored locally. The script will run the python game or AI demo and then post generational data using a model (if AI Demo) to an AWS RDS container using port 3306 within AWS EBS. A Django webapp running in an AWS EC2 container within the AWS EBS will retrieve this data via port 3306 and display it to the user within the Django app via port 80.
+
+## Design Choices
+
+#### General Technical approach
+
+The evolution and intelligence of AI has risen sharply over the last few years. I wanted to dip my toe into AI but quickly found it to be complex and time consuming. Lots of AI’s need to be fed information and taught through large datasets over time. I found NEAT AI to be much more interesting in the sense that it could have any problem thrown at it with little to no experience in that problem, and quickly provide a solution to that problem. Working with problems that are based on data usually isn’t too fun and I think that most AI learning concepts would bore a majority of people. I decided to create this project in which the AI attempts a game that can be visually demonstrated to the user simply because it may help the user understand how AI works and learns on its own. The NEAT AI library itself did not return much information on the AI either, and so I also decided to implement a Django app that would visualize the results of this AI attempting the problem through generational information and data.
+
+I originally wanted to have this game and AI running within the webapp as well, but after some research, it became known that pygame Windows (displays) cannot be launched from within a Django application and must be done locally. Hence, creating a local pygame script which ran the game and AI was the best option. This is also most likely the better option because all technologies used in this project are new to me. This whole project is an experiment with python and machine learning, and would prove to be much harder if the game and AI were included in the Django project, which already has a number of moving parts. The game and AI are coded in an object-oriented way so that it would be easier to understand and organize. I thought it would be best to split up the main python script into different modules that make use of each other rather than have it all running on one script. It will definitely look, smell, taste, and feel a little more like Java than python, and that’s okay. 
+
+Django normally consists of one project that contains smaller apps, or applets. I decided to incorporate this design pattern and rather than having one app where most of the code is located, I split it up into three apps, one for general information display like accessing any home or informatory pages, another app for registering and logging in users, and another app for retrieving and displaying AI generational data. This is all in hopes of learning Django in a production-ready way with no skipping or cutting of corners.
+
+#### Technical Design Decisions
+
+Regarding technological decisions, Visual Studio code was chosen as the Intelligent Development Environment for this project due to its simplicity and the Developer’s preference. Python was chosen as the language for this app due to its lightweight form, flexibility, and its increasing popularity among Artificial Intelligence developers. Django was chosen as the full-stack web application framework for python because of its massive amount of functionality and its increasing popularity. Like python, this was also chosen to challenge the developer in learning something new in so little time. The NEAT AI library was chosen as the AI for the main python script due to its NeuroEvolutionary take on AI that can learn much faster than other Artificial Intelligence models. A relational database like MySQL was chosen over other databases because the developer knows MySQL well and it just so happens that Django plays nicely with Mysql as compared to a Non-relational database like mongoDB, which have very little support in Django. This was also tested regardless of research. MongoDB is very icky and complicated in Django.
+
+Out of scope features include: configuration of the AI config file through the webapp, playing against the AI when playing the game, and the saving of player highscores. These features are out of scope due to their being unnecessary to the completion of this project and concept.
+
+Please refer to the [Documentation within this repository](Documentation/) for a flowchart depicting the process flow of the main script. Proposed user interface diagrams for both the script and the Django web-application can also be found in that section as well.  
