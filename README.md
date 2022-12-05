@@ -1,4 +1,4 @@
-# Neat-is-Neat-Senior-Project
+# Neat is Neat Senior Project
 Michal A Uchmanowicz, Grand Canyon University, 2022
 
 *Python, Pygame, Django, NEAT AI*
