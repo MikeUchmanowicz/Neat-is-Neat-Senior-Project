@@ -58,6 +58,26 @@ The user will start the main python script from their local machine, where it wi
 
 ## Design Choices
 
+#### Tehnologies Used
+
+- Visual Studio Code v. 1.72.2
+- Python v. 3.10.4 
+- Django v. 4.1.1 (Python WebApp Framework)
+- Pygame v. 3.1.2 (Python Game Engine / Library)
+- NEAT-Python v. 0.92 (NEAT Artificial Intelligence Library)
+- mysql-connector-python   v. 8.0.30
+- Mysqlclient 2.1.1
+- Chrome Devtools
+- HTML5
+- CSS3
+- Bootstrap v. 5.2.2
+- Docker 4.14.1 (for imaging python)
+- Virtualenv 20.16.5 (for creating Virtual Environments to install packages)
+- Django-extensions 3.2.1 (to create a Django visualized UML)
+- Pyparsing 3.0.9 (for use in combination with Django-extensions to create UML)
+- Pydot 1.4.2 (for use in combination with Django-extensions to create UML)
+
+
 #### General Technical approach
 
 The evolution and intelligence of AI has risen sharply over the last few years. I wanted to dip my toe into AI but quickly found it to be complex and time consuming. Lots of AI’s need to be fed information and taught through large datasets over time. I found NEAT AI to be much more interesting in the sense that it could have any problem thrown at it with little to no experience in that problem, and quickly provide a solution to that problem. Working with problems that are based on data usually isn’t too fun and I think that most AI learning concepts would bore a majority of people. I decided to create this project in which the AI attempts a game that can be visually demonstrated to the user simply because it may help the user understand how AI works and learns on its own. The NEAT AI library itself did not return much information on the AI either, and so I also decided to implement a Django app that would visualize the results of this AI attempting the problem through generational information and data.
