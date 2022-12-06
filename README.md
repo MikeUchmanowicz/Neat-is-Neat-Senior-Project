@@ -64,7 +64,7 @@ Regarding technological decisions, Visual Studio code was chosen as the Intellig
 Out of scope features include: configuration of the AI config file through the webapp, playing against the AI when playing the game, and an additional Game / Game Script to test the AI. These features are out of scope due to their being unnecessary to the completion of this project and concept.
 ___
 
-Some Documentation is too large to be included in this README. Please refer to the [Documentation within this repository](Documentation/) for All documentation. Included are: High level Block Diagram, Logical Diagram, Physical Diagram, UML, Flowchart, DDL scripts, ER Diagram, Wireframe, and Sitemap. 
+Some Documentation is too large to be included in this README. Please refer to the [Documentation within this repository](Documentation/) for All documentation. Included are: High level Block Diagram, Logical Diagram, Physical Diagram, UML, Flowchart, DDL scripts, ER Diagram, GAME Wireframe, Django Wireframes, and Sitemap. 
 ___
 
 [Please check out my other projects](https://github.com/MikeUchmanowicz/Start)
