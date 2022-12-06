@@ -31,9 +31,11 @@ The Django web-application will be simple. It will consist of three “apps” o
 
 ## Visual Design
 
-Here is a wireframe of the Game / Main Scripts elements.
-<img alt = "High Level Block Diagram" src="Documentation/GAME WIREFRAME.png" width="75%" height="75%">
+Here is a wireframe of the Game / Main Scripts elements.  
+<img alt = "Game's Wireframe" src="Documentation/Game Wireframe.png" width="75%" height="75%">
 
+Here is a wireframe of the Django Data page that will be updated with each iteration of the AI attempting the game 
+<img alt = "Game's Wireframe" src="Documentation/Django Wireframes/DemoInfo.png">
 
 
 ## Logical Design
