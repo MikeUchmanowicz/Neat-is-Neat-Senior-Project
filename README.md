@@ -38,7 +38,7 @@ Essentially, we will be creating a population of AI from a NEAT config file that
 </div>  
 
 The Django web-application will be simple. It will consist of three “apps” or “applets”, one for general information display like accessing any home or informatory pages, another app for registering and logging in users, and another app for retrieving and displaying AI generational data that will be retrieved from a MySQL database A user must login to use the website, and otherwise will only be able to see the home page. The views will only be able to interact with models using the Django ORM which will be implemented in included Service modules. The Django app will be cloud hosted within an Elastic Beanstalk container in AWS, using aws EC2 to store the app and AWS RDS to store the database information and data.
-
+<!--
 ## Visual Design
 
 Here is a wireframe of the Game / Main Scripts elements.
@@ -52,7 +52,7 @@ Here is a wireframe of the Django DemoInfo page that will be updated with each i
 </div>  
 
 For the sake of time and space, all other wireframes are included in the [Documentation within this repository](Documentation/). 
-
+-->
 ## Logical Design
 <div align="center">
 <img alt = "Logical Diagram" src="Documentation/LOGICAL DIAGRAM.png">
@@ -96,20 +96,28 @@ The user will start the main python script from their local machine, where it wi
 
 #### General Technical approach
 
-The evolution and intelligence of AI has risen sharply over the last few years. I wanted to dip my toe into AI but quickly found it to be complex and time consuming. Lots of AI’s need to be fed information and taught through large datasets over time. I found NEAT AI to be much more interesting in the sense that it could have any problem thrown at it with little to no experience in that problem, and quickly provide a solution to that problem. Working with problems that are based on data usually isn’t too fun and I think that most AI learning concepts would bore a majority of people. I decided to create this project in which the AI attempts a game that can be visually demonstrated to the user simply because it may help the user understand how AI works and learns on its own. The NEAT AI library itself did not return much information on the AI either, and so I also decided to implement a Django app that would visualize the results of this AI attempting the problem through generational information and data.
+The evolution and intelligence of AI has risen sharply over the last few years. The developer wanted to introduce himself into AI but quickly found it to be complex and time consuming. Lots of AI’s need to be fed information and taught through large datasets over time. NEAT AI was found to be much more interesting in the sense that it could have any problem thrown at it with little to no experience in that problem, and quickly provide a solution to that problem. Working with problems that are based on data usually isn’t too fun and most AI learning concepts would bore a majority of people. This project was created simply because it may help the user understand how AI works and learns on its own. The NEAT AI library itself did not return easily legible information on the AI either, and so it was also decided to implement a Django app that would visualize the results of this AI attempting the problem through generational information and data.
 
-I originally wanted to have this game and AI running within the webapp as well, but after some research, it became known that pygame Windows (displays) cannot be launched from within a Django application and must be done locally. Hence, creating a local pygame script which ran the game and AI was the best option. This is also most likely the better option because all technologies used in this project are new to me. This whole project is an experiment with python and machine learning, and would prove to be much harder if the game and AI were included in the Django project, which already has a number of moving parts. The game and AI are coded in an object-oriented way so that it would be easier to understand and organize. I thought it would be best to split up the main python script into different modules that make use of each other rather than have it all running on one script. It will definitely look, smell, taste, and feel a little more like Java than python, and that’s okay. 
+The developer originally wanted to have this game and AI running within the webapp as well, but after some research, it became known that pygame Windows (displays) cannot be launched from within a Django application and must be done locally. Hence, creating a local pygame script which ran the game and AI was the best option. This is also most likely the better option because all technologies used in this project are new to me. This whole project is an experiment with python and machine learning, and would prove to be much harder if the game and AI were included in the Django project, which already has a number of moving parts. The game and AI are coded in an object-oriented way so that it would be easier to understand and organize. I thought it would be best to split up the main python script into different modules that make use of each other rather than have it all running on one script. It will definitely look, smell, taste, and feel a little more like Java than python, and that’s okay. 
 
-Django normally consists of one project that contains smaller apps, or applets. I decided to incorporate this design pattern and rather than having one app where most of the code is located, I split it up into three apps, one for general information display like accessing any home or informatory pages, another app for registering and logging in users, and another app for retrieving and displaying AI generational data. This is all in hopes of learning Django in a production-ready way with no skipping or cutting of corners.
+Django normally consists of one project that contains smaller apps, or applets. The developer decided to incorporate this design pattern and rather than having one app where most of the code is located, it was split up into three apps, one for general information display like accessing any home or informatory pages, another app for registering and logging in users, and another app for retrieving and displaying AI generational data. This is all in hopes of learning Django in a production-ready way with no skipping or cutting of corners.
+
 
 #### Technical Design Decisions
 
-Regarding technological decisions, Visual Studio code was chosen as the Intelligent Development Environment for this project due to its simplicity and the Developer’s preference. Python was chosen as the language for this app due to its lightweight form, flexibility, and its increasing popularity among Artificial Intelligence developers. Django was chosen as the full-stack web application framework for python because of its massive amount of functionality and its increasing popularity. Like python, this was also chosen to challenge the developer in learning something new in so little time. The NEAT AI library was chosen as the AI for the main python script due to its NeuroEvolutionary take on AI that can learn much faster than other Artificial Intelligence models. A relational database like MySQL was chosen over other databases because the developer knows MySQL well and it just so happens that Django plays nicely with Mysql as compared to a Non-relational database like mongoDB, which have very little support in Django. This was also tested regardless of research. MongoDB is very icky and complicated in Django.
+Regarding technological decisions, Visual Studio code was chosen as the Intelligent Development Environment for this project due to its simplicity and the Developer’s preference. Python was chosen as the language for this app due to its lightweight form, flexibility, and its increasing popularity among Artificial Intelligence developers. Django was chosen as the full-stack web application framework for python because of its massive amount of functionality and its increasing popularity. Like python, this was also chosen to challenge the developer in learning something new in so little time. The NEAT AI library was chosen as the AI for the main python script due to its NeuroEvolutionary take on AI that can learn much faster than other Artificial Intelligence models. A relational database like MySQL was chosen over other databases because the developer knows MySQL well and it just so happens that Django plays nicely with Mysql as compared to a Non-relational database like mongoDB, which have very little support in Django. This was also tested regardless of research. MongoDB is very complicated in Django and research shows that developers prefer using a Relational Database.
 
 Out of scope features include: configuration of the AI config file through the webapp, playing against the AI when playing the game, and an additional Game / Game Script to test the AI. These features are out of scope due to their being unnecessary to the completion of this project and concept.
-___
 
-Some Documentation is too large to be included in this README. Please refer to the [Documentation within this repository](Documentation/) for All documentation. Included are: High level Block Diagram, Logical Diagram, Physical Diagram, UML, Flowchart, DDL scripts, ER Diagram, Game Wireframe, Django Wireframes, and Sitemap. 
+## Additional Documentation
+
+#### ER Diagram
+<img alt = "ER Diagram" src="Documentation/ER DIAGRAM.png">
+
+#### UML
+<img alt = "UML Diagram" src="Documentation/UML.png">
+
+Most Django Wireframes are not included in this documentation. Please refer to the [Documentation within this repository](Documentation/) for All documentation. Included are: High level Block Diagram, Logical Diagram, Physical Diagram, UML, Flowchart, DDL scripts, ER Diagram, Game Wireframe, Django Wireframes, and Sitemap. 
 ___
 
 [Please check out my other projects](https://github.com/MikeUchmanowicz/Start)
