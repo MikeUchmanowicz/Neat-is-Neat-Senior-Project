@@ -121,8 +121,10 @@ Out of scope features include: configuration of the AI config file through the w
 
 #### UML
 <img alt = "UML Diagram" src="Documentation/UML.png">
-___
+
+____
+
 Not all Documentation is included in this documentation. Please refer to the [Documentation within this repository](Documentation/) for All documentation. Included are: High level Block Diagram, Logical Diagram, Physical Diagram, UML, Flowchart, DDL scripts, ER Diagram, Game Wireframe, Django Wireframes, and Sitemap. 
-___
+____ 
 
 [Please check out my other projects](https://github.com/MikeUchmanowicz/Start)
