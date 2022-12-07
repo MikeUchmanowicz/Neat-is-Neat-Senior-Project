@@ -29,7 +29,7 @@ A Django application will support viewing informational pages, logging in, regis
 
 The python game script will primarily focus on the AI demo but will also allow the user to try the game themselves if they choose. The python game script will consist of different modules: Game.py, GameModels.py, MyReporter.py, and Service.py. Most of the logic for this game and demo will be in the Game module, which imports NEAT, Pygame, GameModels, and MyReporter. The GameModels module will contain the classes of the player object, obstacles, enemies, objectives, and images. The Game module will have a main “fitness” function which will contain the game logic and an AI “run” function that initiates the AI and applies the AI to the main “fitness” function. This “fitness” function will be looped by the AI “run” function for each generation of ai that is created at the end of the previous iteration of the main “fitness” function. We call this a “fitness” function because it determines each AI networks fitness or “score” within the game. 
 <div align="center">
-<img alt = "'Fitness' Function FlowChart" src="Documentation/FLOWCHART.png" height = "1050">
+<img alt = "'Fitness' Function FlowChart" src="Documentation/FLOWCHART.png">
 </div>  
 
 Essentially, we will be creating a population of AI from a NEAT config file that will be provided in the project files. This config file will determine the AI network’s attributes, like their connection weights (tendencies for certain actions), mutation weights (likeliness to mutate), and population size for each population attempting the game. Once we create the population from the config file, we can pass that population into the main “fitness” function which will allow them to play the game. They will not be given any information on what to do. They will be passed three different inputs: locations of enemies, locations of obstacles, and locations of objectives. They will be given one output option: to change their height. We must increase or decrease the “fitness” of each AI network based on their desirable or undesirable actions. If the AI does what we want, like collecting a worm, we can award it points. If it collides with an enemy or obstacle, we take away points. The main fitness function will end if all AI networks fail by hitting an obstacle or enemy. Their data will be processed by the AI “run” function, a new generation of AI will be created that is hopefully better than the last generation, and they will attempt the main “fitness” function once again. This will loop until an AI is seen as satisfactory by achieving a set fitness score. The MyReporter module which extends Neat.StdOutReporter, will be called at the end of every loop of the main “fitness” function. It is responsible for the reporting of AI data and printing it to the console. MyReporter will use the Service Module to post the AI generational results to a MySQL database through the use of mysql-connector-python.
@@ -55,7 +55,7 @@ For the sake of time and space, all other wireframes are included in the [Docume
 
 ## Logical Design
 <div align="center">
-<img alt = "Logical Diagram" src="Documentation/LOGICAL DIAGRAM.png" width="75%" height="75%">
+<img alt = "Logical Diagram" src="Documentation/LOGICAL DIAGRAM.png">
 </div>  
 
 #### Game AI & Demo
@@ -68,7 +68,7 @@ The user will connect to the Django webapp via HTTPS and will be responsible for
 
 ## Physical Design
 <div align="center">
-<img alt = "Physical Diagram" src="Documentation/PHYSICAL DIAGRAM.png" width="75%" height="75%">
+<img alt = "Physical Diagram" src="Documentation/PHYSICAL DIAGRAM.png">
 </div>  
 The user will start the main python script from their local machine, where it will be stored locally. The script will run the python game or AI demo and then post generational data using a model (if AI Demo) to an AWS RDS container using port 3306 within AWS EBS. A Django webapp running in an AWS EC2 container within the AWS EBS will retrieve this data via port 3306 and display it to the user within the Django app via port 80.
 
