@@ -3,7 +3,12 @@ Michal A Uchmanowicz, Grand Canyon University, 2022
 
 *Python, Pygame, Django, NEAT AI*
 
+___
+Not all Documentation is included in this documentation. Please refer to the [Documentation within this repository](Documentation/) for All documentation. Included are: High level Block Diagram, Logical Diagram, Physical Diagram, UML, Flowchart, DDL scripts, ER Diagram, Game Wireframe, Django Wireframes, and Sitemap. 
+___
+
 ## ABSTRACT
+
 
 The “NEAT is Neat” project will consist of a main application containing a game and an Artificial Intelligence bot paired with a secondary web application to fetch/display data from the main application. The project is intended to further one’s understanding of how an Artificial Intelligence bot evolves to play games proficiently through the creation of an AI that plays games proficiently.
 
@@ -116,8 +121,8 @@ Out of scope features include: configuration of the AI config file through the w
 
 #### UML
 <img alt = "UML Diagram" src="Documentation/UML.png">
-
-Most Django Wireframes are not included in this documentation. Please refer to the [Documentation within this repository](Documentation/) for All documentation. Included are: High level Block Diagram, Logical Diagram, Physical Diagram, UML, Flowchart, DDL scripts, ER Diagram, Game Wireframe, Django Wireframes, and Sitemap. 
+___
+Not all Documentation is included in this documentation. Please refer to the [Documentation within this repository](Documentation/) for All documentation. Included are: High level Block Diagram, Logical Diagram, Physical Diagram, UML, Flowchart, DDL scripts, ER Diagram, Game Wireframe, Django Wireframes, and Sitemap. 
 ___
 
 [Please check out my other projects](https://github.com/MikeUchmanowicz/Start)
