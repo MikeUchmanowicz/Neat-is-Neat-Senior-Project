@@ -37,6 +37,7 @@ Here is a wireframe of the Game / Main Scripts elements.
 Here is a wireframe of the Django Data page that will be updated with each iteration of the AI attempting the game 
 <img alt = "Game's Wireframe" src="Documentation/Django Wireframes/DemoInfo.png">
 
+For the sake of time and space, all other wireframes are included in the [Documentation within this repository](Documentation/). 
 
 ## Logical Design
 
