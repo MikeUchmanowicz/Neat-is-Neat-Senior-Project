@@ -43,7 +43,7 @@ The Django web-application will be simple. It will consist of three “apps” o
 
 Here is a wireframe of the Game / Main Scripts elements.
 <div align="center">
-<img alt = "Game's Wireframe" src="Documentation/Game Wireframe.png" width="75%" height="75%">
+<img alt = "Game's Wireframe" src="Documentation/Game Wireframe.png">
 </div>  
 
 Here is a wireframe of the Django DemoInfo page that will be updated with each iteration of the AI attempting the game 
