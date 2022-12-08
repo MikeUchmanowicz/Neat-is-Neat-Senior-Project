@@ -119,7 +119,12 @@ Out of scope features include: configuration of the AI config file through the w
 #### ER Diagram
 <img alt = "ER Diagram" src="Documentation/ER DIAGRAM.png">
 
-#### UML
+#### Game UML
+
+<img alt = "UML Diagram" src="Documentation/GAMEUML.png">
+
+#### Django UML
+
 <img alt = "UML Diagram" src="Documentation/UML.png">
 
 ____
