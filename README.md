@@ -127,4 +127,4 @@ ____
 Not all Documentation is included in this documentation. Please refer to the [Documentation within this repository](Documentation/) for All documentation. Included are: High level Block Diagram, Logical Diagram, Physical Diagram, UML, Flowchart, DDL scripts, ER Diagram, Game Wireframe, Django Wireframes, and Sitemap. 
 ____ 
 
-[Please check out my other projects](https://github.com/MikeUchmanowicz/Start)
+[Please check out my other projects](https://github.com/MikeUchmanowicz/Start-Here)
