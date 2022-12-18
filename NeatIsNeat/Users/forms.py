@@ -10,17 +10,17 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         fields = ('first_name', 'last_name', 'email', 'username', 'password1', 'password2')
         
-    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'First Name', 'style':'width:50%'}),
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'First Name', 'style':'width:25%'}),
         required='true', min_length='3', max_length='20')
-    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Last Name', 'style':'width:50%'}),
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Last Name', 'style':'width:25%'}),
         required='true', min_length='3', max_length='20')
-    email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Email', 'style':'width:50%'}),
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Email', 'style':'width:25%'}),
         required='true', min_length='3', max_length='20')
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Username', 'style':'width:50%'}),
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Username', 'style':'width:25%'}),
         required='true', min_length='3', max_length='20')
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder':'Password', 'style':'width:50%'}), 
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder':'Password', 'style':'width:25%'}), 
         label = 'Password', required='true', min_length='8', max_length='20')
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder':'Confirm Password', 'style':'width:50%'}), 
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder':'Confirm Password', 'style':'width:25%'}), 
         label = 'Confirm Password', required='true', min_length='8', max_length='20', help_text=("Enter the same password again"))
 
     #SAVE USER USING USER MANAGER
@@ -79,9 +79,9 @@ class UserLoginForm(AuthenticationForm):
         fields = ('username', 'password')
         
     username = UsernameField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder':'Username', 'style':'width:50%'}), required='true')
+        attrs={'class': 'form-control', 'placeholder':'Username', 'style':'width:25%'}), required='true')
     password = forms.CharField(widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder':'Password', 'style':'width:50%'}), required='true')
+        attrs={'class': 'form-control', 'placeholder':'Password', 'style':'width:25%'}), required='true')
     
     error_messages = {
         "invalid_login": (

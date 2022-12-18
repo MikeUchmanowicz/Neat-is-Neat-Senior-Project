@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from . forms import *
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout, authenticate
+from . forms import *
+from . exceptions import db_operational_handler
 
 #LOGIN VIEW
+@db_operational_handler
 def logInUser(request):
     form = UserLoginForm()
     
@@ -21,7 +23,7 @@ def logInUser(request):
         
             #IF USER (FORM) DOES NOT EXIST
             if user is None:
-                messages.warning(request, ("Username / Password Combination invalid"))
+                messages.error(request, ("Username / Password Combination invalid"))
                 context = {'form':form}
                 return render(request, "users/login.html", context)
         
@@ -29,7 +31,7 @@ def logInUser(request):
             auth_login(request, user)
             messages.success(request, (f' Welcome {username.upper()}!'))
             return redirect("/")
-        
+
         #FORM NOT VALID    
         context = {'form':form}
         return render(request, "users/login.html", context)
@@ -43,7 +45,7 @@ def logOutUser(request):
     
     #LOGOUT USER
     logout(request)
-    messages.success(request, ("User Logged Out"))
+    messages.warning(request, ("User Logged Out"))
     return render(request, "main/home.html")
 
 #REGISTER VIEW
