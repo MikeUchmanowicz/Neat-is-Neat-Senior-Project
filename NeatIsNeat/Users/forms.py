@@ -82,12 +82,7 @@ class UserLoginForm(forms.Form):
         attrs={'class': 'form-control', 'placeholder':'Username', 'style':'width:25%'}), required='true')
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder':'Password', 'style':'width:25%'}), required='true')
-    
-    #INIT
-    def __init__(self, *args, **kwargs):
-        super(UserLoginForm, self).__init__(*args, **kwargs)
 
-    
     #CLEAN USERNAME
     def clean_username(self):  
         username = self.cleaned_data['username'].lower()  

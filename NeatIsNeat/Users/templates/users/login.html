@@ -9,20 +9,21 @@
 {% endblock %}
 
 {% block content %}
-  {% load crispy_forms_tags %}
-    <div style="margin-left: 43%;"
-      <br><br>
-      <h2>Login Form</h2>
-      <br>
+{% load crispy_forms_tags %}
+
+  <div style="margin-left: 43%;"
+  
+    <br><br>
+    <h2>Login Form</h2>
+    <br>
+    
+    <form method="post">
+      {% csrf_token %}
       
+      {{ form|crispy }}
 
-      <form method="post">
-        {% csrf_token %}
-        
-        {{ form.username|as_crispy_field }}
-        {{ form.password|as_crispy_field }}
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+  </div>
 
-        <button type="submit" class="btn btn-primary">Login</button>
-      </form>
-    </div>
 {% endblock %}

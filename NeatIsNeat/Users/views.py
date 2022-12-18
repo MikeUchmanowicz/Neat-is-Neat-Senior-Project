@@ -1,4 +1,3 @@
-from MySQLdb import OperationalError
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout, authenticate
@@ -31,10 +30,11 @@ def logInUser(request):
             else:
                 messages.error(request, ("Username / Password Combination invalid"))
     
-    #BASE
+    #BASE CASE
     #IF USER ENTERS PAGE / DOES NOT SUBMIT FORM / FORM INVALID / USER DOES NOT EXIST
     context = {'form':form}
     return render(request, "users/login.html", context)
+
 
 #LOGOUT VIEW
 @db_operational_handler # EXCEPTION HANDLER
@@ -44,6 +44,7 @@ def logOutUser(request):
     logout(request)
     messages.warning(request, ("User Logged Out"))
     return render(request, "main/home.html")
+
 
 #REGISTER VIEW
 @db_operational_handler # EXCEPTION HANDLER
@@ -61,7 +62,8 @@ def registerUser(request):
             username = form.cleaned_data['username']
             messages.success(request, (f'Account Created. Welcome {username.upper()}!'))
             return redirect("home")
-        
+    
+    #BASE CASE
     #IF USER ENTERS PAGE / DOES NOT SUBMIT FORM / FORM INVALID
     context = {'form':form}
     return render(request, "users/register.html", context)
