@@ -8,11 +8,11 @@ def home(response):
 
 #NEATINFO VIEW
 def neatInfo(response):
-    return render(response, "main/neatinfo.html")
+    return render(response, "main/neatInfo.html")
 
 #GAMEINFO VIEW
 def gameInfo(response):
-    return render(response, "main/gameInfo.html")      
+    return render(response, "main/gameInfo.html")    
 
 
 

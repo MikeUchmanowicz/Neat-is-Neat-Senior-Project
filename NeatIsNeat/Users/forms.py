@@ -66,7 +66,7 @@ class UserRegistrationForm(forms.Form):
         password1 = self.cleaned_data['password1']  
         password2 = self.cleaned_data['password2']
         if password1 and password2 and password1 != password2:  
-            raise ValidationError({"Passwords don't match"})  
+            raise ValidationError("Passwords don't match")  
         return password2  
     
     
