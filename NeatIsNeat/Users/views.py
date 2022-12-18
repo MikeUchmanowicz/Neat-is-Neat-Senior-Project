@@ -1,3 +1,4 @@
+from MySQLdb import OperationalError
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout, authenticate
@@ -5,7 +6,7 @@ from . forms import *
 from . exceptions import db_operational_handler
 
 #LOGIN VIEW
-@db_operational_handler
+@db_operational_handler # EXCEPTION HANDLER
 def logInUser(request):
     form = UserLoginForm()
     
@@ -16,31 +17,27 @@ def logInUser(request):
         #IF FORM VALID
         if form.is_valid():
         
-            #AUTHENTICATE USER WITH FORM CREDENTIALS
+            #CHECK IF USER EXISTS USING GIVEN CREDENTIALS
             username=form.cleaned_data['username']
             password=form.cleaned_data['password']
             user=authenticate(username=username, password=password)
         
-            #IF USER (FORM) DOES NOT EXIST
-            if user is None:
+            #IF USER EXISTS
+            if user is not None:
+                #LOG USER IN
+                auth_login(request, user)
+                messages.success(request, (f'Logged In. Welcome {username.upper()}!'))
+                return redirect("home")
+            else:
                 messages.error(request, ("Username / Password Combination invalid"))
-                context = {'form':form}
-                return render(request, "users/login.html", context)
-        
-            #LOG USER IN
-            auth_login(request, user)
-            messages.success(request, (f' Welcome {username.upper()}!'))
-            return redirect("/")
-
-        #FORM NOT VALID    
-        context = {'form':form}
-        return render(request, "users/login.html", context)
     
-    #IF REQUEST = "GET"
+    #BASE
+    #IF USER ENTERS PAGE / DOES NOT SUBMIT FORM / FORM INVALID / USER DOES NOT EXIST
     context = {'form':form}
     return render(request, "users/login.html", context)
 
 #LOGOUT VIEW
+@db_operational_handler # EXCEPTION HANDLER
 def logOutUser(request):
     
     #LOGOUT USER
@@ -49,6 +46,7 @@ def logOutUser(request):
     return render(request, "main/home.html")
 
 #REGISTER VIEW
+@db_operational_handler # EXCEPTION HANDLER
 def registerUser(request):
     form = UserRegistrationForm()
     
@@ -58,16 +56,13 @@ def registerUser(request):
         
         #IF FORM IS VALID
         if form.is_valid():
+            
             User = form.save()
-            context = {'user':form.cleaned_data['username']}
-            messages.success(request, 'Profile Created.')
-            return render(request, "users/registerSuccess.html", context)
+            username = form.cleaned_data['username']
+            messages.success(request, (f'Account Created. Welcome {username.upper()}!'))
+            return redirect("home")
         
-        #FORM NOT VALID
-        context = {'form':form}
-        return render(request, "users/register.html", context)
-        
-    #IF USER DOES NOT SUBMIT FORM
+    #IF USER ENTERS PAGE / DOES NOT SUBMIT FORM / FORM INVALID
     context = {'form':form}
     return render(request, "users/register.html", context)
         

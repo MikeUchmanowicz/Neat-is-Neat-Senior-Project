@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import render
 
+#Exception Handler for Database Operations
 def db_operational_handler(func):
     def inner_function(*args, **kwargs):
         try:

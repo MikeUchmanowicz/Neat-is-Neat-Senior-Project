@@ -3,8 +3,8 @@ from .models import User
 from django.contrib.auth.forms import UserCreationForm  , AuthenticationForm, UsernameField
 from django.core.exceptions import ValidationError  
 
-#USER REGISTRATION FORM EXTENDS DJANGO.USERCREATIONFORM
-class UserRegistrationForm(UserCreationForm):
+#USER REGISTRATION FORM EXTENDS DJANGO.forms
+class UserRegistrationForm(forms.Form):
     #CONFIG CLASS
     class Meta:
         model = User
@@ -70,8 +70,8 @@ class UserRegistrationForm(UserCreationForm):
         return password2  
     
     
-#USER LOGIN EXTENDS DJANGO.AUTHENTICATIONFORM
-class UserLoginForm(AuthenticationForm):
+#USER LOGIN EXTENDS DJANGO.forms
+class UserLoginForm(forms.Form):
  
     #CONFIG CLASS
     class Meta:
@@ -82,13 +82,6 @@ class UserLoginForm(AuthenticationForm):
         attrs={'class': 'form-control', 'placeholder':'Username', 'style':'width:25%'}), required='true')
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder':'Password', 'style':'width:25%'}), required='true')
-    
-    error_messages = {
-        "invalid_login": (
-            "Please enter a correct %(username)s and password. Note that both "
-            "fields may be case-sensitive."
-        ),
-    }
     
     #INIT
     def __init__(self, *args, **kwargs):

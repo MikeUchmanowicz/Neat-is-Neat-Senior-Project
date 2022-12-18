@@ -9,9 +9,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div style="margin:auto; width:50%;">
-        <button class="button btn-danger" href="users/home.html">home</button>
+
+    <div style="margin-left: 47%;"
+        <form>
+            <a class="btn btn-primary" href="{% url 'home' %}" type="button">Go Home</a>
+        </form>
     </div>
-</div>
+
 {% endblock %}
