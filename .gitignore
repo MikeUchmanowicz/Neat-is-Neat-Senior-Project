@@ -123,6 +123,7 @@ celerybeat.pid
 .env
 .venv
 env/
+venvDjango/
 venv/
 ENV/
 env.bak/
