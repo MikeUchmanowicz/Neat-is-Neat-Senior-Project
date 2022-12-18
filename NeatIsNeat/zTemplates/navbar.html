@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li><a class="nav-item nav-link active" href="{% url 'home' %}">Home</a></li>
+            <li><a class="nav-item nav-link" href="{% url 'demoInfo' %}">Demo INFO</a></li>
+            <li><a class="nav-item nav-link" >Neat INFO (NULL)</a></li>
+            <li><a class="nav-item nav-link" >Game INFO (NULL)</a></li>
+        </ul>
+        
+        <div class="nvcenter">
+            <div>
+                {% if user.is_authenticated %} 
+                <b>
+                CURRENTLY LOGGED IN: {{ user.username.upper }}
+                </b>
+                {% else %} 
+                <b>CURRENTLY NOT LOGGED IN</b>
+                {% endif %}
+            </div>
+        </div>
+        
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            {% if user.is_authenticated %} 
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">LOGOUT</a>
+            </li>
+
+            {% else %} 
+            
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">LOGIN</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}">REGISTER</a>
+            </li>
+
+            {% endif %}
+        </ul>
+        
+    </div>
+</nav>

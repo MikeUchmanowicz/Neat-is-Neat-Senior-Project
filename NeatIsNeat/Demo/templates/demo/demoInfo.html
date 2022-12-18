@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    DATA
+{% endblock %}
+
+{% block nav %}
+
+{% endblock %}
+
+{% block content %}
+    <br>
+    <h2>Results of Demo</h2>
+    <br>
+    <ul class="list-group" style="width: 30%">
+        
+        {% for DataModel in datalist.all %}
+            <li class="list-group-item">gen: {{DataModel.gen}}</li>
+            <li class="list-group-item">popSize: {{DataModel.popSize}}</li>
+            <li class="list-group-item">avgFit: {{DataModel.avgFit}}</li>
+            <li class="list-group-item">stdDevFit: {{DataModel.stdDevFit}}</li>
+            <li class="list-group-item">bestFit: {{DataModel.bestFit}}</li>
+            <li class="list-group-item">adjFit: {{DataModel.adjFit}}</li>
+            <li class="list-group-item">stag: {{DataModel.stag}}</li>
+            <hr>
+        {% endfor %}
+
+    </ul>    
+{% endblock %}
