@@ -28,7 +28,7 @@ def logInUser(request):
                 messages.success(request, (f'Logged In. Welcome {username.upper()}!'))
                 return redirect("home")
             else:
-                messages.error(request, ("Username / Password Combination invalid"))
+                messages.error(request, ("Username / Password Combination Invalid"))
     
     #BASE CASE
     #IF USER ENTERS PAGE / DOES NOT SUBMIT FORM / FORM INVALID / USER DOES NOT EXIST
