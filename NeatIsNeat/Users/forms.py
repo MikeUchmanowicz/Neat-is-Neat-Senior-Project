@@ -45,7 +45,7 @@ class UserRegistrationForm(forms.Form):
         last_name = self.cleaned_data['last_name'].lower()  
         return last_name 
     
-    #CLEAN USERNAME
+    #CLEAN USERNAME AND VALIDATE USERNAME DOES NOT EXIST
     def clean_username(self):  
         username = self.cleaned_data['username'].lower()
         new = User.objects.filter(username = username)  
@@ -53,7 +53,7 @@ class UserRegistrationForm(forms.Form):
             raise ValidationError(" User \"{u}\" already exists".format(u = username))  
         return username     
   
-    #CLEAN EMAIL
+    #CLEAN EMAIL AND VALIDATE EMAIL DOES NOT EXIST
     def clean_email(self):  
         email = self.cleaned_data['email'].lower()    
         new = User.objects.filter(email=email)  
@@ -61,7 +61,7 @@ class UserRegistrationForm(forms.Form):
             raise ValidationError(" Email \"{e}\" already exists".format(e = email))   
         return email    
     
-    #CLEAN PASSWORD
+    #CLEAN PASSWORD AND VALIDATE PASSWORDS MATCH
     def clean_password2(self):  
         password1 = self.cleaned_data['password1']  
         password2 = self.cleaned_data['password2']

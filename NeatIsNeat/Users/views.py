@@ -5,7 +5,7 @@ from . forms import *
 from . exceptions import db_operational_handler
 
 #LOGIN VIEW
-@db_operational_handler # EXCEPTION HANDLER
+@db_operational_handler # EXCEPTION HANDLER WRAPPING FUNCTION
 def logInUser(request):
     form = UserLoginForm()
     
@@ -37,7 +37,7 @@ def logInUser(request):
 
 
 #LOGOUT VIEW
-@db_operational_handler # EXCEPTION HANDLER
+@db_operational_handler # EXCEPTION HANDLER WRAPPING FUNCTION
 def logOutUser(request):
     
     #LOGOUT USER
@@ -47,7 +47,7 @@ def logOutUser(request):
 
 
 #REGISTER VIEW
-@db_operational_handler # EXCEPTION HANDLER
+@db_operational_handler # EXCEPTION HANDLER WRAPPING FUNCTION
 def registerUser(request):
     form = UserRegistrationForm()
     
