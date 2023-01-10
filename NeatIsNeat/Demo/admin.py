@@ -1,5 +1,6 @@
 from django.contrib import admin
-from . models import DataModel
+from Demo.models import DataModel
+
 
 # Register your models here.
 admin.site.register(DataModel)

@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .services import UserManager
 
 #USER CLASS EXTENDS ABSTRACTBASEUSER
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
@@ -15,7 +15,7 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = [first_name, last_name, email, username, password] 
+    REQUIRED_FIELDS = []
 
     objects = UserManager()
 

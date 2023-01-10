@@ -26,7 +26,7 @@ class UserRegistrationForm(forms.Form):
     #SAVE USER USING USER MANAGER
     def save(self, commit = True):
         if commit:  
-            user = User.objects.createUser(
+            user = User.objects.create_user(
                 self.cleaned_data['first_name'],
                 self.cleaned_data['last_name'],
                 self.cleaned_data['email'],   
