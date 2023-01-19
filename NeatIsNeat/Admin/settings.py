@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'Users',
     "crispy_forms",
     "crispy_bootstrap5",
+    "chartjs",
     
 ]
 #CRISPY TEMPLATES FOR FORMS

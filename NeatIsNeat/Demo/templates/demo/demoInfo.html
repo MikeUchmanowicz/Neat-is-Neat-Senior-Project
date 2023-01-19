@@ -4,26 +4,80 @@
     AI Data from Game
 {% endblock %}
 
+
+
 {% block nav %}
 
 {% endblock %}
 
-{% block content %}
-    <br>
-    <h2>Results of Demo</h2>
-    <br>
-    <ul class="list-group" style="width: 30%">
-        
-        {% for DataModel in datalist.all %}
-            <li class="list-group-item"><b>gen</b>: {{DataModel.gen}}</li>
-            <li class="list-group-item"><b>popSize</b>: {{DataModel.popSize}}</li>
-            <li class="list-group-item"><b>avgFit</b>: {{DataModel.avgFit}}</li>
-            <li class="list-group-item"><b>stdDevFit</b>: {{DataModel.stdDevFit}}</li>
-            <li class="list-group-item"><b>bestFit</b>: {{DataModel.bestFit}}</li>
-            <li class="list-group-item"><b>adjFit</b>: {{DataModel.adjFit}}</li>
-            <li class="list-group-item"><b>stag</b>: {{DataModel.stag}}</li>
-            <hr>
-        {% endfor %}
 
-    </ul>    
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+
+            <br>
+            <h2>Results of Demo</h2>
+            <br>
+
+            <ul class="list-group" style="width: 30%">
+                
+                {% for data in aidatalist.all %}
+                    <li class="list-group-item"><b>gen</b>: {{data.gen}}</li>
+                    <li class="list-group-item"><b>popSize</b>: {{data.popSize}}</li>
+                    <li class="list-group-item"><b>avgFit</b>: {{data.avgFit}}</li>
+                    <li class="list-group-item"><b>stdDevFit</b>: {{data.stdDevFit}}</li>
+                    <li class="list-group-item"><b>bestFit</b>: {{data.bestFit}}</li>
+                    <li class="list-group-item"><b>adjFit</b>: {{data.adjFit}}</li>
+                    <li class="list-group-item"><b>stag</b>: {{data.stag}}</li>
+                    <hr>
+                {% endfor %}
+            </ul>    
+        </div>
+
+        <div class="col">
+            
+            <br>
+            <h2>Fitness Over Generations</h2>
+            <br>
+
+            <div style="height:30%; width:100%;">
+                <canvas id="linechart"></canvas>
+            </div>
+                
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+            <script>
+            
+                var ctx = document.getElementById('linechart').getContext('2d');
+                var myLineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [{% for data in aidatalist %}'Gen: {{data.gen}}',{% endfor %}],
+                        datasets: [{
+                            label: 'Best Fitness',
+                            data: [{% for data in aidatalist %}'{{data.bestFit}}',{% endfor %}],
+                            borderColor: '#3e95cd',
+                            fill: true
+                        },{
+                            label: 'Average Fitness',
+                            data: [{% for data in aidatalist %}'{{data.avgFit}}',{% endfor %}],
+                            borderColor: '#1df50a',
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        title: {
+                            display: false,
+                            text: 'Fitness Over Time'
+                        }
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
