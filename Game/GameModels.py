@@ -6,10 +6,11 @@ import random as rnd
 FISH_IMGS = [pygame.image.load(os.path.join("imgs", "fishup.png")), 
             pygame.image.load(os.path.join("imgs", "fishmid.png")), 
             pygame.image.load(os.path.join("imgs", "fishdown.png"))]
+SHARK_IMGS = [pygame.image.load(os.path.join("imgs", "shark.png")),
+            pygame.image.load(os.path.join("imgs", "shark2.png"))]
 WORM_IMG = pygame.image.load(os.path.join("imgs", "worm.png"))
-SHARK_IMG = pygame.image.load(os.path.join("imgs", "shark.png"))
 FISHERMAN_IMG = pygame.image.load(os.path.join  ("imgs", "fisherman.png"))
-BG_IMG = pygame.image.load(os.path.join  ("imgs", "background2.png"))
+BG_IMG = pygame.image.load(os.path.join  ("imgs", "background.png"))
 
 # initialize font and display for score and other stats
 pygame.font.init()
@@ -23,10 +24,8 @@ class Fish:
     def __init__(self, x:int, y:int):
         self.x=x
         self.y=y
-        self.height = self.y
         self.tick_count = 0
         self.img = self.IMGS[0]
-        self.img_count = 0
     
     # causes fish to "go up" when called
     def swimUp(self):
@@ -34,11 +33,24 @@ class Fish:
         
     # causes fish to "fall down" due to gravity when called, this is perpetual.
     def move(self):
-        None
+        self.tick_count += 1
+        
+        #check what image to show based on current image count.
+        if self.tick_count < 6:
+            self.img=self.IMGS[0]
+        elif self.tick_count < 12:
+            self.img=self.IMGS[1]
+        elif self.tick_count < 18:
+            self.img=self.IMGS[2]
+        elif self.tick_count < 24:
+            self.img=self.IMGS[1]
+        elif self.tick_count < 30:
+            self.img=self.IMGS[0]
+            self.tick_count = 0
 
     # Draws the fish on the screen
     def draw(self, win:pygame.display):
-        win.blit(self.img, (self.x, self.height))
+        win.blit(self.img, (self.x, self.y))
     
     # gets mask to later be used with collision detection        
     def get_mask(self):
@@ -46,87 +58,130 @@ class Fish:
 
 # class Worm: used by computer in python game.py
 class Worm:
-    VEL = 7.5
+    SPEED = 7.5
     
     # constructor
-    def __init__(self, x, y):
+    def __init__(self, x:int=650, y:int=200):
         self.x=x
         self.y=y
-        self.height = self.y
         self.img = WORM_IMG
+        
+        self.set_Height()
+    
+    # sets the height of the worm
+    def set_Height(self):
+        self.y=rnd.randrange(50, 400)
     
     # causes worm to "go left" when called
     def move(self):
-        self.x -= self.VEL
-        
-    # sets the height of the worm
-    def set_Height(self):
-        self.height=rnd.randrange(150, 650)
+        self.x -= self.SPEED
     
     # Draws the worm on the screen
     def draw(self, win:pygame.display):
-        win.blit(self.img, (self.x, self.height))
+        win.blit(self.img, (self.x, self.y))
     
     # determines collision with fish to be later used with collision detection
     def collide(self, Fish:Fish):
         None
 
 class Fisherman:
-    VEL = 7.5
+    SPEED = 7.5
     
     # constructor
-    def __init__(self, x:int, y:int):
+    def __init__(self, x:int=650, y:int=-30):
         self.x=x
         self.y=y
-        self.height = self.y
         self.img = FISHERMAN_IMG
-        
+    
     # causes fisherman to "go left" when called
     def move(self):
-        self.x -= self.VEL
+        self.x -= self.SPEED
         
-    # sets the height of the fisherman
-    def set_Height(self):
-        self.height=rnd.randrange(150, 650)
-    
     # Draws the fisherman on the screen
     def draw(self, win:pygame.display):
-        win.blit(self.img, (self.x, self.height))
+        win.blit(self.img, (self.x, self.y))
     
     # determines collision with fish to be later used with collision detection
     def collide(self, Fish:Fish):
         None
         
 class Shark:
-    VEL = 7.5
+    IMGS = SHARK_IMGS
+    SPEED = 7.5
     
     # constructor
-    def __init__(self, x:int, y:int):
+    def __init__(self, x:int=0, y:int=0):
         self.x=x
         self.y=y
-        self.height = self.y
-        self.img = SHARK_IMG
+        self.tick_count = 0
+        self.img = self.IMGS[0]
+        
+        self.set_Height()
+        self.set_x()
+        
+    # sets the y value of the shark
+    def set_Height(self):
+        self.y=rnd.randrange(50, 400)
+        
+    # sets the x value of the shark
+    def set_x(self):
+        self.x=rnd.randrange(650, 750)    
     
     # causes shark to "go left" when called
     def move(self):
-        self.x -= self.VEL
-    
-    # sets the height of the shark
-    def set_Height(self):
-        self.height=rnd.randrange(150, 650)
+        self.x -= self.SPEED
+        self.tick_count += 1
+        
+        #check what image to show based on current image count.
+        if self.tick_count < 8:
+            self.img=self.IMGS[0]
+        elif self.tick_count < 16:
+            self.img=self.IMGS[1]
+        elif self.tick_count < 24:
+            self.img=self.IMGS[0]
+            self.tick_count = 0
     
     # Draws the shark on the screen
     def draw(self, win:pygame.display):
-        win.blit(self.img, (self.x, self.height))
+        win.blit(self.img, (self.x, self.y))
     
     # determines collision with fish to be later used with collision detection
     def collide(self, Fish:Fish):
         None
 
+class Background:
+    SPEED = 7.5
+    WIDTH = BG_IMG.get_width()
+    
+    # constructor
+    def __init__(self, x:int=0, y:int=0):
+        self.x1 = x
+        self.x2 = self.WIDTH
+        self.y = y
+        self.img = BG_IMG
+    
+    # causes background to "go left" when called
+    def move(self):
+        self.x1 -= self.SPEED
+        self.x2 -= self.SPEED
+        
+        if self.x1 + self.WIDTH < 0:
+            self.x1 = self.x2 + self.WIDTH
+            
+        if self.x2 + self.WIDTH <0:
+            self.x2 = self.x1 + self.WIDTH
+    
+    # Draws the background on the screen
+    def draw(self, win):
+        win.blit(self.img, (self.x1, self.y))
+        win.blit(self.img, (self.x2, self.y))  
+    
 # Function Draw Window: used to place all class images onto the screen
-def draw_window(win:pygame.display, fishes, sharks, fishermen, worms):
+def draw_window(win:pygame.display, background, fishes, sharks, fishermen, worms):
     # draw background
     win.blit(BG_IMG, (0,0))
+    
+    background.draw(win)
 
     # draw all fishes, sharks, fishermen, and worms
     for fish in fishes:
