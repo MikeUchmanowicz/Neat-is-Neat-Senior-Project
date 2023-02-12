@@ -6,11 +6,6 @@ html{
 
     font-family: verdana;
 }
-    
-.navbar
-{
-    background-color: black;
-}
 
 .nvcenter {
     float: none;
@@ -20,18 +15,13 @@ html{
     transform: translate(-50%, -50%);
 }
 
-.info {
-    display: grid;
-    grid-template-columns: 50%, 50%;
-    grid-template-rows: 100%, 100%;
+.info
+{
+    display: flex;
+    flex-flow: row wrap;   
+    justify-content: space-evenly;
 }
-
-.col1{
-    grid-column-start:0;
-    grid-column-end:1;
-}
-
-.col2{
-    grid-column-start:1;
-    grid-column-end:2;
+.col{
+    padding-left:1%;
+    padding-right:1%;
 }

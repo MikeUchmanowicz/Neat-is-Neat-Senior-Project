@@ -1,45 +1,47 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     Neat Info
 {% endblock %}
 
-{% block nav %}
-
-{% endblock %}
-
 {% block content %}
 
     
-<div class="container">
-    <div class="row" >
-        <div class="col">
-            <br>
-            <h2>NeuroEvolution of Augmenting Topologies</h2>
-            <h3>Game Info</h3>
-            <h5>(As a Player)</h5>
-
-            We will be creating a population of AI from a NEAT config file that will be provided in the project files. 
-            This config file will determine the AI network’s attributes, like their connection weights (tendencies for certain actions), mutation weights (likeliness to mutate), and population size for each population attempting the game. 
-            Once we create the population from the config file, we can pass that population into the main “fitness” function which will allow them to play the game. 
+<div class="info">
+    <div class="col">
+        <br>
+        <h2>NeuroEvolution of Augmenting Topologies</h2>
+        <br>
+        <p align="justify">
+            &emsp;We will be creating a population of AI Networks from a NEAT config file that will be provided in the project files. 
+            This config file will help determine the AI network’s attributes: for example, their input and output nodes and their weights (influence of input and output), 
+            connection weights (tendencies for certain actions), mutation weights (likeliness to mutate), and population size for each population attempting the game. 
+            Each AI network will be different and will have its own "brain".
+            <br><br>
+            &emsp;Once we create the population from the config file, we can pass that population into the main “fitness” function which will allow them to play the game. 
             They will not be given any information on what to do. They will be passed three different inputs: locations of enemies, locations of obstacles, and locations of objectives. 
             They will be given one output option: to change their height. We must increase or decrease the “fitness” of each AI network based on their desirable or undesirable actions. 
-            If the AI does what we want, like collecting a worm, we can award it points. If it collides with an enemy or obstacle, we take away points. 
+            If the AI does what we want, like collecting a worm or travelling a distance, we can award it points. If it collides with an enemy or obstacle, we can take away points. 
             The main fitness function will end if all AI networks fail by hitting an obstacle or enemy. 
-            Their data will be processed by the AI “run” function, a new generation of AI will be created that is hopefully better than the last generation, and they will attempt the main “fitness” function once again. 
-            This will loop until an AI is seen as satisfactory by achieving a set fitness score. 
+            <br><br>
+            &emsp;Their fitness will be processed by the AI “run” function (from the NEAT algorithm), which will create a new generation of AI that is hopefully better than the last generation.
+            This is where NEAT differs from other AI methods. Because we are using populations of AI that are different, the most successful AI will be selected to be the parents of the next generation.
+            These "parents" will be mutated. Mutation is the process by which the NEAT algorithm adjusts weights of connections and nodes in addition to adding or dropping connections between nodes.
+            The "parents" will then be cross bred to create a new generation of AI.
+            This generation will be passed back into the fitness function to play the game again.
+            <br><br>
+            <i>This whole process will loop until an AI is seen as satisfactory by achieving a set fitness score.</i>
+        </p>
+    </div>
+
+    <div class="col">
+
+        <br><br><br>
+        <div align="center">
+        <i>Below is a photo showing what a gene in a NEAT AI network may look like.</i>
+        <img src="{% static 'imgs/NEATtopology.png' %}" alt="NEAT" style="height:100%; width:100%">
         </div>
-
-
-        <div class="col">
-            {% load static %}
-
-            <br><br><br>
-            <br><br><br>
-            
-            <img src="{% static 'imgs/NEATtopology.png' %}" alt="NEAT" style="height:60%; width:100%">
-        </div>
-
     </div>
 </div>
 

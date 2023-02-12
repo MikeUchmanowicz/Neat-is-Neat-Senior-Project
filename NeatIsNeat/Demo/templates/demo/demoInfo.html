@@ -1,123 +1,106 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     AI Data from Game
 {% endblock %}
 
-
-
-{% block nav %}
-
-{% endblock %}
-
-
 {% block content %}
 
-<div style="width:100%;display:flex;">
-    <div class="row" >
-        <div class="col">
+<div class="info">
 
-            <br>
-            <h2>Results of Demo</h2>
-            <br>
+    <div class="col">
+        <br>
+        <h2 align="center">Results of Demo</h2>
+        <br>
 
-            <ul class="list-group">
-                
-                {% for data in aidatalist.all %}
-                    <li class="list-group-item"><b>gen</b>: {{data.gen}}</li>
-                    <li class="list-group-item"><b>popSize</b>: {{data.popSize}}</li>
-                    <li class="list-group-item"><b>avgFit</b>: {{data.avgFit|floatformat:3}}</li>
-                    <li class="list-group-item"><b>stdDevFit</b>: {{data.stdDevFit}}</li>
-                    <li class="list-group-item"><b>bestFit</b>: {{data.bestFit}}</li>
-                    <li class="list-group-item"><b>adjFit</b>: {{data.adjFit}}</li>
-                    <li class="list-group-item"><b>stag</b>: {{data.stag}}</li>
-                    <hr>
-                {% endfor %}
-            </ul>    
-        </div>
-
-
-        <div class="col">
+        <ul class="list-group">
             
-            <br>
-            <h2>Fitness Over Generations</h2>
-            <br>
-
-            <div style="height:300; width:950;">
-                <canvas id="linechart"></canvas>
-            </div>
-                
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-            <script>
-            
-                var ctx = document.getElementById('linechart').getContext('2d');
-                var myLineChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: [{% for data in aidatalist %}
-                                    'Gen: {{data.gen}}',
-                                {% endfor %}],
-                        datasets: [{
-                            label: 'Best Fitness',
-                            data: [{% for data in aidatalist %}
-                                    '{{data.bestFit}}',
-                                    {% endfor %}],
-                            borderColor: '#3e95cd',
-                            fill: true
-                        },{
-                            label: 'Average Fitness',
-                            data: [{% for data in aidatalist %}
-                                    '{{data.avgFit|floatformat:3}}',
-                                    {% endfor %}],
-                            borderColor: '#1df50a',
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        title: {
-                            display: false,
-                            text: 'Fitness Over Time'
-                        }
-                    }
-                });
-            </script>
-        </div>
-
-        <div class="col">
-            <br>
-            <h2>Sort Results</h2>
-            {% comment %} <div class="btn-group">
-                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Sort By:
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                </div>
-            </div> {% endcomment %}
-
-            <br>
-            <div class="btn-group">
-                <a href="{% url 'sortDemoInfo' value="gen" %}" class="btn btn-primary">Sort: Gen ASC</a>
-                <a href="{% url 'sortDemoInfo' value="bestFit" %}" class="btn btn-primary">Sort: bestFit ASC</a>
-                <a href="{% url 'sortDemoInfo' value="avgFit" %}" class="btn btn-primary">Sort: avgFit ASC</a>
-            </div>
-            <br>
-            <br>
-            <div class="btn-group">
-                <a href="{% url 'sortDemoInfo' value="-gen" %}" class="btn btn-primary">Sort: Gen DESC</a>
-                <a href="{% url 'sortDemoInfo' value="-bestFit" %}" class="btn btn-primary">Sort: bestFit DESC</a>
-                <a href="{% url 'sortDemoInfo' value="-avgFit" %}" class="btn btn-primary">Sort: avgFit DESC</a>
-            </div>
-
-
-        </div>
+            {% for data in aidatalist.all %}
+                <li class="list-group-item"><b>gen</b>: {{data.gen}}</li>
+                <li class="list-group-item"><b>popSize</b>: {{data.popSize}}</li>
+                <li class="list-group-item"><b>avgFit</b>: {{data.avgFit|floatformat:3}}</li>
+                <li class="list-group-item"><b>stdDevFit</b>: {{data.stdDevFit}}</li>
+                <li class="list-group-item"><b>bestFit</b>: {{data.bestFit}}</li>
+                <li class="list-group-item"><b>adjFit</b>: {{data.adjFit}}</li>
+                <li class="list-group-item"><b>stag</b>: {{data.stag}}</li>
+                <hr>
+            {% endfor %}
+        </ul>    
     </div>
+
+    
+    <div class="col" align="center" style="flex-basis: 35%;">
+        
+        <br>
+        <h2 >Fitness Over Generations</h2>
+        <br>
+
+        <div >
+            <canvas style="width:100%;" id="linechart"></canvas>
+        </div>
+            
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <script>
+        
+            var ctx = document.getElementById('linechart').getContext('2d');
+            var myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [{% for data in aidatalist %}
+                                'Gen: {{data.gen}}',
+                            {% endfor %}],
+                    datasets: [{
+                        label: 'Best Fitness',
+                        data: [{% for data in aidatalist %}
+                                '{{data.bestFit}}',
+                                {% endfor %}],
+                        borderColor: '#3e95cd',
+                        fill: true
+                    },{
+                        label: 'Average Fitness',
+                        data: [{% for data in aidatalist %}
+                                '{{data.avgFit|floatformat:3}}',
+                                {% endfor %}],
+                        borderColor: '#1df50a',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    title: {
+                        display: false,
+                        text: 'Fitness Over Time'
+                    }
+                }
+            });
+        </script>
+    </div>
+
+    <div class="col" align="center">
+        <br>
+        <h2>Sort Results</h2>
+        <br><br>
+        <form method="post" action = "{% url 'sortDemoInfo' %}" class="form-control">
+            {% csrf_token %}
+            <select class="form-select form-control" name = "SortBy">
+                <option value = "gen" selected>Generation</option>
+                <option value = "bestFit">Best Fitness</option>
+                <option value = "avgFit">Average Fitness</option>
+            </select>
+            <br>
+            <select class="form-select form-control" name = "OrderBy">
+                <option value = "ascending" selected>Ascending</option>
+                <option value = "descending">Descending</option>
+            </select>
+            <br>
+            <input class= "btn btn-primary form-control" type="submit" value="Submit">
+            <br>
+        </form>
+
+    </div>
+
 </div>
 
 {% endblock %}

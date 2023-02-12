@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     Game Info
@@ -6,30 +7,28 @@
 
 {% block content %}
 
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/mycss.css' %}">
 <div class="info">
-        <div class="col1">
+        <div class="col">
             <br>
             <h2>Swim Fish, Swim</h2>
             <h3>Game Info</h3>
             <h5>(As a Player)</h5>
-
+            <br>
             <ul>
-                <li>The game will be a "scroller" game.</li>
+                <li>The game is written on a local python script.</li>
+                <li>The game will be a 2D "scroller" game.</li>
                 <li>You will play as a fish in the ocean.</li>
                 <li>You will have one control input: spacebar to swim upwards. No input will cause you to descend. </li>
-                <li>You will be tasked with avoiding obstacles (fishermen & sharks) as long as possble</li>
+                <li>You will be tasked with avoiding obstacles (fishermen & sharks) as long as possble.</li>
                 <li>Colliding with an obstacle will end the game.</li>
                 <li>The further your distance within the game, the higher your score.</li>
                 <li>Collecting worms will increase your score.</li>
             </ul>
         </div>
 
-
-        <div class="col2">
+        <div class="col">
             <br>
-            <img src="{% static 'imgs/Game Wireframe.png' %}" alt="Game Sprite Screenshots" style="height:30%; width:30%">
+            <img src="{% static 'imgs/Game Wireframe.png' %}" alt="Game Sprite Screenshots" style="height:80%; width:100%">
         </div>
 
 </div>

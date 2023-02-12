@@ -5,7 +5,7 @@ from . import views
 #DEMO APP URLS
 urlpatterns = [
     path("demoInfo/", views.readDemoInfo, name="demoInfo"),
-    path("demoInfo/sort/<str:value>", views.sortDemoInfo, name="sortDemoInfo")
+    path("demoInfo/sort/", views.sortDemoInfo, name="sortDemoInfo")
 ]
 
 """
