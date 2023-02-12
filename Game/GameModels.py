@@ -24,16 +24,33 @@ class Fish:
     def __init__(self, x:int, y:int):
         self.x=x
         self.y=y
+        self.SPEED = 5.5
         self.tick_count = 0
         self.img = self.IMGS[0]
     
     # causes fish to "go up" when called
     def swimUp(self):
-        None
+        self.tick_count = 0
+        self.SPEED = -5.5
         
     # causes fish to "fall down" due to gravity when called, this is perpetual.
     def move(self):
         self.tick_count += 1
+        
+        # calculate distance to move based on current velocity and tick count
+        # Distance = (velocity * time^2 ) / 2
+        distance = ( self.SPEED * self.tick_count**2 ) / 2
+        
+        #if distance greater than 10 (down), set to 10 (down)
+        if distance>=5.5:
+            distance = 5.5
+        #if distance less than 0 (up), set to 5.5 (down)
+        elif distance<0:
+            distance = - 5.5
+            
+        self.y=self.y+distance
+        
+        self.SPEED = 7.5
         
         #check what image to show based on current image count.
         if self.tick_count < 6:
@@ -132,7 +149,7 @@ class Shark:
         self.x -= self.SPEED
         self.tick_count += 1
         
-        #check what image to show based on current image count.
+        # show animation image based on tick count.
         if self.tick_count < 8:
             self.img=self.IMGS[0]
         elif self.tick_count < 16:
@@ -172,15 +189,14 @@ class Background:
             self.x2 = self.x1 + self.WIDTH
     
     # Draws the background on the screen
-    def draw(self, win):
+    def draw(self, win:pygame.display):
         win.blit(self.img, (self.x1, self.y))
         win.blit(self.img, (self.x2, self.y))  
     
 # Function Draw Window: used to place all class images onto the screen
-def draw_window(win:pygame.display, background, fishes, sharks, fishermen, worms):
-    # draw background
-    win.blit(BG_IMG, (0,0))
+def draw_gameWindow(win:pygame.display, background, fishes, sharks, fishermen, worms):
     
+    # draw background
     background.draw(win)
 
     # draw all fishes, sharks, fishermen, and worms
@@ -196,6 +212,15 @@ def draw_window(win:pygame.display, background, fishes, sharks, fishermen, worms
     for worm in worms:
         worm.draw(win)
         
+    # update the display
+    pygame.display.update()
+    
+def draw_background(win:pygame.display, background):
+
+    # draw background
+    background.draw(win)
+
+    # update the display
     pygame.display.update()
 
 # AI Stats to be uploaded with each iteration of the fitness function
