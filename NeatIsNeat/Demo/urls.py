@@ -2,7 +2,7 @@
 from django.urls import path
 from . import views
 
-#DEMO APP URLS
+#DEMO APP URLS, MAPS URLS TO VIEWS
 urlpatterns = [
     path("demoInfo/", views.readDemoInfo, name="demoInfo"),
     path("demoInfo/sort/", views.sortDemoInfo, name="sortDemoInfo")

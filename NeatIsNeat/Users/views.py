@@ -4,7 +4,7 @@ from django.contrib.auth import login as auth_login, logout, authenticate
 from . forms import *
 from . exceptions import db_operational_handler
 
-#LOGIN VIEW
+#LOGIN VIEW, REDIRECTS TO login.html AND OFFERS USER LOGIN FORM
 @db_operational_handler # EXCEPTION HANDLER WRAPPING FUNCTION
 def logInUser(request):
     form = UserLoginForm()
@@ -36,7 +36,7 @@ def logInUser(request):
     return render(request, "users/login.html", context)
 
 
-#LOGOUT VIEW
+#LOGOUT VIEW, LOGS OUT USER AND REDIRECTS TO home.html
 @db_operational_handler # EXCEPTION HANDLER WRAPPING FUNCTION
 def logOutUser(request):
     
@@ -46,7 +46,7 @@ def logOutUser(request):
     return render(request, "main/home.html")
 
 
-#REGISTER VIEW
+#REGISTER VIEW, REDIRECTS TO register.html AND OFFERS USER REGISTRATION FORM
 @db_operational_handler # EXCEPTION HANDLER WRAPPING FUNCTION
 def registerUser(request):
     form = UserRegistrationForm()
