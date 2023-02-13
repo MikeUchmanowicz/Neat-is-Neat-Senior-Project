@@ -11,7 +11,7 @@
 {% block content %}
     <br>
     <div style="text-align: center;">
-        <h1> Welcome to the Home Page. </h1>
+        <h1> Welcome to NEAT is Neat. </h1>
         
     </div>
         <h2> Abstract </h2>
@@ -19,100 +19,10 @@
         <p align="justify">
             &emsp;The “NEAT is Neat” project will consist of a main application containing a game and an Artificial Intelligence bot paired with a secondary web application to fetch/display data from the main application. The project is intended to further one’s understanding of how an Artificial Intelligence bot evolves to play games proficiently through the creation of an AI that plays games proficiently.
         <br><br>
-            &emsp;Within the main application, the user will be able to select whether they’d like to see a visual demonstration of the AI evolving and playing the game as it evolves or whether they’d like to play the game on their own. The game will be fairly simple, having a couple of objectives in which the player (and/or AI) will be expected to play indefinitely, trying to reach as far in the level as possible while collecting items like worms. Score will be determined by the distance that the player (and/or AI) achieves within the game and by the number of worms collected within that distance. The player (and/or AI) will play until the game is considered over; this is when the player (and/or AI) dies/ collides with an obstacle. There will only be one stage/level, which will have randomized worms to pick up and randomized obstacles to dodge. The AI will need to be taught through configuration of which actions are preferred and which actions are undesirable. The game will be looped until the AI evolves enough to play proficiently. With each iteration of the game, the AI should get progressively better by increasing its score through completing preferred actions like gaining worms or getting farther in the stage. At some point down the iteration line, the AI should be able to play the game as well as, if not better than, a human player.
+            &emsp;Within the main application, the user will be able to select whether they’d like to see a visual demonstration of the AI evolving and playing the game as it evolves or whether they’d like to play the game on their own. The game will be fairly simple, having a couple of objectives in which the player (and/or AI) will be expected to play indefinitely as a "fish", trying to reach as far in the level as possible while collecting items like worms. Score will be determined by the distance that the player (and/or AI) achieves within the game and by the number of worms collected within that distance. The player (and/or AI) will play until the game is considered over; this is when the player (and/or AI) dies/ collides with an obstacle (fishermen & sharks). There will only be one stage/level, which will have randomized worms to pick up and randomized obstacles to dodge. The AI will need to be taught through configuration of which actions are preferred and which actions are undesirable. The game will be looped until the AI evolves enough to play proficiently. With each iteration of the game, the AI should get progressively better by increasing its score through completing preferred actions like gaining worms or getting farther in the stage. At some point down the iteration line, the AI should be able to play the game as well as, if not better than, a human player.
         <br><br>
             &emsp;The scores, distances travelled, coins collected, AI details/characteristics, and other information will be recorded and posted to a database. This web application will then fetch and display this data for observation purposes in addition to providing general information on the technology used to achieve this.
         <br><br>
         </p>
-
-        <h2> Progress (Very General)</h2>
-        <hr><br>
-    <div style="text-align: center;">
-        <table class="table " >
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Sprint #</th>
-                    <th scope="col">Task  #</th>
-                    <th scope="col">Task Description</th>
-                    <th scope="col">Completed?</th>
-    
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background-color:lightgray">
-                    <th scope="row"></th>
-                    <td colspan="3"></td>
-                </tr>
-                <tr>
-                    <th scope="row">Sprint 1</th>
-                    <td>Task 1</td>
-                    <td><b>Project Setup</b>: Created Project Root, added Main App, Users App, and Demo App. Added Parent Templates and other Static Resources</td>
-                    <td>YES</td>
-                </tr>
-                
-                <tr>
-                    <th scope="row">Sprint 1</th>
-                    <td>Task 2</td>
-                    <td><b>Users:</b> Created basic child templates for Login and Register using Django Forms</td>
-                    <td>YES</td>
-                </tr>
-
-                <tr>
-                    <th scope="row">Sprint 1</th>
-                    <td>Task 3</td>
-                    <td><b>Users:</b> Added url configuration to Urls.py</td>
-                    <td>YES</td>
-                </tr>
-                <tr>
-                    <th scope="row">Sprint 1</th>
-                    <td>Task 4</td>
-                    <td><b>Users:</b> Created LogInUser, LogOutUser, and RegisterUser views in Views.py</td>
-                    <td>YES</td>
-                </tr>
-
-                <tr>
-                    <th scope="row">Sprint 1</th>
-                    <td>Task 5</td>
-                    <td><b>Users:</b> Created User model in Models.py</td>
-                    <td>YES</td>
-                </tr>
-
-                <tr>
-                    <th scope="row">Sprint 1</th>
-                    <td>Task 6</td>
-                    <td><b>Users:</b> Created UserCreation and UserRegistration forms in forms.py</td>
-                    <td>YES</td>
-                </tr>
-
-                <tr>
-                    <th scope="row">Sprint 1</th>
-                    <td>Task 7</td>
-                    <td><b>Users:</b> Created UserManager in Services.py</td>
-                    <td>YES</td>
-                </tr>
-
-                <tr>
-                    <th scope="row">Sprint 1</th>
-                    <td>Task 8</td>
-                    <td><b>Users:</b> Added User persistence to database</td>
-                    <td>YES</td>
-                </tr>
-
-                <tr>
-                    <th scope="row">Sprint 1</th>
-                    <td>Task 9</td>
-                    <td><b>Users:</b> Added Exception Handling (Database Connection) to Login and Register within newly created Exceptions.py</td>
-                    <td>YES</td>
-                </tr>
-                
-                <tr style="background-color:lightgray">
-                    <th scope="row"></th>
-                    <td colspan="3"></td>
-                </tr>
-                
-            </tbody>
-        </table>
-
-    </div>
-    <br>
+        <hr>
 {% endblock %}
