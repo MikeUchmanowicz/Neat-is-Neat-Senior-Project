@@ -91,7 +91,8 @@ def game(AI:bool):
     worms = []
 
     # adds objects to lists of objects in use
-    fishes = [Fish(15, 240)]
+    if not AI:
+        fishes = [Fish(15, 240)]
     sharks = [Shark(), Shark()]
     fishermen = [Fisherman()]
     worms = [Worm()]
