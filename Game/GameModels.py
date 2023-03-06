@@ -9,7 +9,7 @@ FISH_IMGS = [pygame.image.load(os.path.join("imgs", "fishup.png")),
 SHARK_IMGS = [pygame.image.load(os.path.join("imgs", "shark.png")),
             pygame.image.load(os.path.join("imgs", "shark2.png"))]
 WORM_IMG = pygame.image.load(os.path.join("imgs", "worm.png"))
-FISHERMAN_IMG = pygame.image.load(os.path.join  ("imgs", "fisherman.png"))
+FISHERMAN_IMG = pygame.image.load(os.path.join  ("imgs", "fisherman2.png"))
 BG_IMG = pygame.image.load(os.path.join  ("imgs", "background.png"))
 
 # initialize font and display for score and other stats
@@ -102,12 +102,11 @@ class Worm:
         fish_mask = fish.get_mask()
         # Create a mask from surface of image
         mask = pygame.mask.from_surface(self.img)
-        offset = (int(self.x) - int(fish.x), int(self.y) - int(fish.y)) #DISTANCE BETWEEN TOP LEFT OF BOTH OBJECTS
-        
-        ifCollision = fish_mask.overlap(fish_mask, offset) #VALUES WILL BE NULL IF NO COLLISION
+        # Calculate offset between the two masks
+        offset = (int(self.x) - int(fish.x), int(self.y) - int(fish.y)) 
         
         #IF VALUES EXIST (collision), RETURN TRUE
-        if ifCollision:
+        if fish_mask.overlap(mask, offset):
             return True
         else:
             return False
@@ -116,7 +115,7 @@ class Fisherman:
     SPEED = 7.5
     
     # constructor
-    def __init__(self, x:int=650, y:int=-30):
+    def __init__(self, x:int=650, y:int= 0):
         self.x=x
         self.y=y
         self.img = FISHERMAN_IMG
@@ -128,18 +127,17 @@ class Fisherman:
     # Draws the fisherman on the screen
     def draw(self, win:pygame.display):
         win.blit(self.img, (self.x, self.y))
-    
+
     # determines collision with fish to be used with collision detection
     def collide(self, fish:Fish):
         fish_mask = fish.get_mask()
         # Create a mask from surface of image
         mask = pygame.mask.from_surface(self.img)
-        offset = (int(self.x) - int(fish.x), int(self.y) - int(fish.y)) #DISTANCE BETWEEN TOP LEFT OF BOTH OBJECTS
-        
-        ifCollision = fish_mask.overlap(fish_mask, offset) #VALUES WILL BE NULL IF NO COLLISION
-        
+        # Calculate offset between the two masks
+        offset = (int(self.x) - int(fish.x), int(self.y) - int(fish.y)) 
+
         #IF VALUES EXIST (collision), RETURN TRUE
-        if ifCollision:
+        if fish_mask.overlap(mask, offset):
             return True
         else:
             return False
@@ -189,12 +187,11 @@ class Shark:
         fish_mask = fish.get_mask()
         # Create a mask from surface of image
         mask = pygame.mask.from_surface(self.img)
-        offset = (int(self.x) - int(fish.x), int(self.y) - int(fish.y)) #DISTANCE BETWEEN TOP LEFT OF BOTH OBJECTS
-        
-        ifCollision = fish_mask.overlap(fish_mask, offset) #VALUES WILL BE NULL IF NO COLLISION
+        # Calculate offset between the two masks
+        offset = (int(self.x) - int(fish.x), int(self.y) - int(fish.y)) 
         
         #IF VALUES EXIST (collision), RETURN TRUE
-        if ifCollision:
+        if fish_mask.overlap(mask, offset):
             return True
         else:
             return False
