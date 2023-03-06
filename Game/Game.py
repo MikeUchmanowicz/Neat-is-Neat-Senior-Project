@@ -20,10 +20,12 @@ def title_screen():
     color_light = (170,170,170)
     color_dark = (100,100,100)
     
+    # Initialize fonts used in title screen
     tiny_font = pygame.font.SysFont('Verdana',20)
     small_font = pygame.font.SysFont('Verdana',35)
     large_font = pygame.font.SysFont('Verdana',69)
     
+    # Initialize text used in title screen
     game_text = small_font.render('Play Game' , True , color)
     demo_text = small_font.render(' AI DEMO ' , True , color)
     not_ready_text = tiny_font.render('Not Ready Yet' , True , color)
@@ -125,6 +127,11 @@ def game(AI:bool):
         # move shark perpetually, if shark goes off screen, add them to a remove list
         for shark in sharks:
             shark.move()   
+            
+            if (not AI):
+                if shark.collide(fishes[0]):
+                    print("You got SHARKBAITED!")
+                    
             if shark.x + shark.img.get_width() < 0:
                 toRemove.append(shark)
                 
@@ -138,6 +145,11 @@ def game(AI:bool):
         # move fisherman perpetually, if fisherman goes off screen, add them to a remove list
         for fisherman in fishermen:
             fisherman.move()
+            
+            if (not AI):
+                if fisherman.collide(fishes[0]):
+                    print("You got HOOKED!")
+                    
             if fisherman.x + fisherman.img.get_width() < 0:
                 toRemove.append(fisherman)
             
@@ -151,6 +163,11 @@ def game(AI:bool):
         # move worm perpetually, if worm goes off screen, add them to a remove list
         for worm in worms:
             worm.move()
+            
+            if (not AI):
+                if worm.collide(fishes[0]):
+                    print("You got a worm!")
+                    
             if worm.x + worm.img.get_width() < 0:
                 toRemove.append(worm)
             
