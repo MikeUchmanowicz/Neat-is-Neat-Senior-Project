@@ -3,9 +3,10 @@ import os
 import random as rnd
 
 #Load all class images. 
-FISH_IMGS = [pygame.image.load(os.path.join("imgs", "fishup.png")), 
-            pygame.image.load(os.path.join("imgs", "fishmid.png")), 
-            pygame.image.load(os.path.join("imgs", "fishdown.png"))]
+FISH_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishup.png")), (55, 42)),
+            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishmid.png")), (55, 42)), 
+            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishdown.png")), (55, 42))]
+
 SHARK_IMGS = [pygame.image.load(os.path.join("imgs", "shark.png")),
             pygame.image.load(os.path.join("imgs", "shark2.png"))]
 WORM_IMG = pygame.image.load(os.path.join("imgs", "worm.png"))
@@ -30,26 +31,24 @@ class Fish:
     
     # causes fish to "go up" when called
     def swimUp(self):
-        self.tick_count = 0
         self.SPEED = -5.5
         
     # causes fish to "fall down" due to gravity when called, this is perpetual.
     def move(self):
         self.tick_count += 1
         
-        # calculate distance to move based on current velocity and tick count
-        # Distance = (velocity * time^2 ) / 2
-        distance = ( self.SPEED * self.tick_count**2 ) / 2
+        # # calculate distance to move based on current velocity and tick count
+        # # Distance = (velocity * time^2 ) / 2
+        # distance = ( self.SPEED * self.tick_count**2 ) / 5
         
-        #if distance greater than 10 (down), set to 10 (down)
-        if distance>=5.5:
-            distance = 5.5
-        #if distance less than 0 (up), set to 5.5 (down)
-        elif distance<0:
-            distance = - 5.5
+        # #if distance greater than 10 (down), set to 10 (down)
+        # if distance>=5.5:
+        #     distance = 5.5
+        # #if distance less than 0 (up), set to 5.5 (down)
+        # elif distance<0:
+        #     distance = - 5.5
             
-        self.y=self.y+distance
-        
+        self.y=self.y+self.SPEED       
         self.SPEED = 7.5
         
         #check what image to show based on current image count.
