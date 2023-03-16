@@ -275,9 +275,7 @@ def gameAI(genomes, config):
                     fishes.pop(x) 
                     nets.pop(x)
                     gens.pop(x)
-                    
-        moveObjects(Shark, sharks, toRemove)  # move objects perpetually, if object goes off screen, remove them and place a new one.
-                
+
         for fisherman in fishermen:
             for x, fish in enumerate(fishes): 
                 
@@ -289,15 +287,15 @@ def gameAI(genomes, config):
                     fishes.pop(x) 
                     nets.pop(x)
                     gens.pop(x)
-                    
-        moveObjects(Fisherman, fishermen, toRemove) # move objects perpetually, if object goes off screen, remove them and place a new one.
 
         for worm in worms:
             for x, fish in enumerate(fishes): 
                 if fish.collide(worm): # if fish collides with worm, increase fitness of fish, remove worm
                     gens[x].fitness += 15
                     toRemove.append(worm)
-        
+                    
+        moveObjects(Shark, sharks, toRemove)  # move objects perpetually, if object goes off screen, remove them and place a new one.
+        moveObjects(Fisherman, fishermen, toRemove) # move objects perpetually, if object goes off screen, remove them and place a new one.
         moveObjects(Worm, worms, toRemove) # move objects perpetually, if object goes off screen, remove them and place a new one.
                             
         # determine max fitness of all fishes/genomes
