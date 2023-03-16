@@ -17,10 +17,6 @@ WORM_IMG = pygame.image.load(os.path.join("imgs", "worm.png"))
 FISHERMAN_IMG = pygame.image.load(os.path.join  ("imgs", "fisherman2.png"))
 BG_IMG = pygame.image.load(os.path.join  ("imgs", "background.png"))
 
-# initialize font and display for score and other stats
-pygame.font.init()
-STAT_FONT = pygame.font.SysFont("verdana", 25)
-
 # class Fish: used by player or ai in python game.py
 class Fish:
     IMGS = FISH_IMGS    
@@ -72,9 +68,19 @@ class Fish:
     def draw(self, win:pygame.display):
         win.blit(self.img, (self.x, self.y))
     
-    # gets mask to later be used with collision detection        
-    def get_mask(self):
-        return pygame.mask.from_surface(self.img)
+    # determines collision with fish to be used with collision detection
+    def collide(self, object):
+        object_mask = object.get_mask()
+        # Create a mask from surface of image
+        mask = pygame.mask.from_surface(self.img)
+        # Calculate offset between the two masks
+        offset = (int(self.x) - int(object.x), int(self.y) - int(object.y)) 
+        
+        #IF VALUES EXIST (collision), RETURN TRUE
+        if object_mask.overlap(mask, offset):
+            return True
+        else:
+            return False
 
 # class Worm: used by computer in python game.py
 class Worm:
@@ -101,19 +107,9 @@ class Worm:
     def draw(self, win:pygame.display):
         win.blit(self.img, (self.x, self.y))
     
-    # determines collision with fish to be used with collision detection
-    def collide(self, fish:Fish):
-        fish_mask = fish.get_mask()
-        # Create a mask from surface of image
-        mask = pygame.mask.from_surface(self.img)
-        # Calculate offset between the two masks
-        offset = (int(self.x) - int(fish.x), int(self.y) - int(fish.y)) 
-        
-        #IF VALUES EXIST (collision), RETURN TRUE
-        if fish_mask.overlap(mask, offset):
-            return True
-        else:
-            return False
+    # gets mask to later be used with collision detection        
+    def get_mask(self):
+        return pygame.mask.from_surface(self.img)
 
 class Fisherman:
     SPEED = 7.5
@@ -133,19 +129,9 @@ class Fisherman:
     def draw(self, win:pygame.display):
         win.blit(self.img, (self.x, self.y))
 
-    # determines collision with fish to be used with collision detection
-    def collide(self, fish:Fish):
-        fish_mask = fish.get_mask()
-        # Create a mask from surface of image
-        mask = pygame.mask.from_surface(self.img)
-        # Calculate offset between the two masks
-        offset = (int(self.x) - int(fish.x), int(self.y) - int(fish.y)) 
-
-        #IF VALUES EXIST (collision), RETURN TRUE
-        if fish_mask.overlap(mask, offset):
-            return True
-        else:
-            return False
+    # gets mask to later be used with collision detection        
+    def get_mask(self):
+        return pygame.mask.from_surface(self.img)
         
 class Shark:
     IMGS = SHARK_IMGS
@@ -168,7 +154,7 @@ class Shark:
         
     # sets the x value of the shark
     def set_x(self):
-        self.x=rnd.randrange(650, 750)    
+        self.x=rnd.randrange(650, 850)    
     
     # causes shark to "go left" when called
     def move(self):
@@ -188,19 +174,9 @@ class Shark:
     def draw(self, win:pygame.display):
         win.blit(self.img, (self.x, self.y))
     
-    # determines collision with fish to be used with collision detection
-    def collide(self, fish:Fish):
-        fish_mask = fish.get_mask()
-        # Create a mask from surface of image
-        mask = pygame.mask.from_surface(self.img)
-        # Calculate offset between the two masks
-        offset = (int(self.x) - int(fish.x), int(self.y) - int(fish.y)) 
-        
-        #IF VALUES EXIST (collision), RETURN TRUE
-        if fish_mask.overlap(mask, offset):
-            return True
-        else:
-            return False
+    # gets mask to later be used with collision detection        
+    def get_mask(self):
+        return pygame.mask.from_surface(self.img)
 
 class Background:
     SPEED = 7.5
@@ -228,41 +204,6 @@ class Background:
     def draw(self, win:pygame.display):
         win.blit(self.img, (self.x1, self.y))
         win.blit(self.img, (self.x2, self.y))  
-    
-# Function Draw Window: used to place all class images onto the screen
-def draw_gameWindow(win:pygame.display, background, fishes, sharks, fishermen, worms, stats):
-    
-    # draw background
-    background.draw(win)
-
-
-    for key, value in stats.items():
-        text = STAT_FONT.render(key + ": " + str(round(value, 3)), 1, (0,0,0))
-        win.blit(text, (10, 10 + text.get_height()*list(stats.keys()).index(key)))
-
-    # draw all fishes, sharks, fishermen, and worms
-    for fish in fishes:
-        fish.draw(win)
-    
-    for shark in sharks:
-        shark.draw(win)
-        
-    for fisherman in fishermen:
-        fisherman.draw(win)
-        
-    for worm in worms:
-        worm.draw(win)
-        
-    # update the display
-    pygame.display.update()
-    
-def draw_background(win:pygame.display, background):
-
-    # draw background
-    background.draw(win)
-
-    # update the display
-    pygame.display.update()
 
 # AI Stats to be uploaded with each iteration of the fitness function
 class DataModel:
