@@ -297,7 +297,7 @@ def gameAI(genomes, config):
                 if fish.collide(worm): # if fish collides with worm, increase fitness of fish, remove worm
                     gens[x].fitness += 15
                     toRemove.append(worm)
-        print(len(sharks))
+        
         moveObjects(Worm, worms, toRemove) # move objects perpetually, if object goes off screen, remove them and place a new one.
                             
         # determine max fitness of all fishes/genomes
