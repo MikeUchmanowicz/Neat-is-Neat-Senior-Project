@@ -2,6 +2,10 @@ import pygame
 import os
 import random as rnd
 
+# set window size and title
+WINDOW_WIDTH = 640
+WINDOW_HEIGHT = 480
+
 #Load all class images. 
 FISH_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishup.png")), (55, 42)),
             pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishmid.png")), (55, 42)), 
@@ -15,7 +19,7 @@ BG_IMG = pygame.image.load(os.path.join  ("imgs", "background.png"))
 
 # initialize font and display for score and other stats
 pygame.font.init()
-STAT_FONT = pygame.font.SysFont("verdana", 50)
+STAT_FONT = pygame.font.SysFont("verdana", 25)
 
 # class Fish: used by player or ai in python game.py
 class Fish:
@@ -31,7 +35,7 @@ class Fish:
     
     # causes fish to "go up" when called
     def swimUp(self):
-        self.SPEED = -5.5
+        self.SPEED = -3.5
         
     # causes fish to "fall down" due to gravity when called, this is perpetual.
     def move(self):
@@ -81,6 +85,7 @@ class Worm:
         self.x=x
         self.y=y
         self.img = WORM_IMG
+        self.passed = False
         
         self.set_Height()
     
@@ -118,6 +123,7 @@ class Fisherman:
         self.x=x
         self.y=y
         self.img = FISHERMAN_IMG
+        self.passed = False
     
     # causes fisherman to "go left" when called
     def move(self):
@@ -151,6 +157,7 @@ class Shark:
         self.y=y
         self.tick_count = 0
         self.img = self.IMGS[0]
+        self.passed = False
         
         self.set_Height()
         self.set_x()
@@ -223,10 +230,15 @@ class Background:
         win.blit(self.img, (self.x2, self.y))  
     
 # Function Draw Window: used to place all class images onto the screen
-def draw_gameWindow(win:pygame.display, background, fishes, sharks, fishermen, worms):
+def draw_gameWindow(win:pygame.display, background, fishes, sharks, fishermen, worms, stats):
     
     # draw background
     background.draw(win)
+
+
+    for key, value in stats.items():
+        text = STAT_FONT.render(key + ": " + str(round(value, 3)), 1, (0,0,0))
+        win.blit(text, (10, 10 + text.get_height()*list(stats.keys()).index(key)))
 
     # draw all fishes, sharks, fishermen, and worms
     for fish in fishes:
