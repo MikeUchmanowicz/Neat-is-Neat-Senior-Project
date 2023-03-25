@@ -68,7 +68,6 @@ class myReporter(neat.StdOutReporter):
             """
             d=models.DataModel(self.generation,n,round(fit_mean, 3), round(fit_std, 3), f, af, st)
             
-        
         ##############################################################################
         print("AIDAO.insertOneGen(d)")    
         AIDAO.insertOneGen(d)

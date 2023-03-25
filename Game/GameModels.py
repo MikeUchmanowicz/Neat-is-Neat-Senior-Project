@@ -28,29 +28,32 @@ class Fish:
         self.SPEED = 5.5
         self.tick_count = 0
         self.img = self.IMGS[0]
-    
+
     # causes fish to "go up" when called
-    def swimUp(self):
-        self.SPEED = -3.5
+    
+    def swimUp(self, ticks):
+        ticksup = ticks
+        
+        if ticksup < 14:
+            self.SPEED = -1*ticksup/2
+        else:
+            self.SPEED = -7.5
+
+        self.y += self.SPEED           
         
     # causes fish to "fall down" due to gravity when called, this is perpetual.
-    def move(self):
-        self.tick_count += 1
+    def move(self, ticks):
         
-        # # calculate distance to move based on current velocity and tick count
-        # # Distance = (velocity * time^2 ) / 2
-        # distance = ( self.SPEED * self.tick_count**2 ) / 5
+        ticksdown = ticks
         
-        # #if distance greater than 10 (down), set to 10 (down)
-        # if distance>=5.5:
-        #     distance = 5.5
-        # #if distance less than 0 (up), set to 5.5 (down)
-        # elif distance<0:
-        #     distance = - 5.5
-            
-        self.y=self.y+self.SPEED       
-        self.SPEED = 7.5
+        if ticksdown < 14:
+            self.SPEED = 1*ticksdown/2
+        else:
+            self.SPEED = 7.5
+
+        self.y += self.SPEED        
         
+    def animate(self):
         #check what image to show based on current image count.
         if self.tick_count < 6:
             self.img=self.IMGS[0]
