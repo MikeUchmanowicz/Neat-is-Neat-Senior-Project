@@ -59,8 +59,6 @@ def game():
         stats['Score'] += .1 # increase score by 1 every frame
         toRemove = []
         
-        
-    
         for fish in fishes: # Check if fish is out of bounds, if so, remove it from the game
             fish.animate()
             
@@ -241,7 +239,7 @@ def gameAI(genomes, config):
             sharks.append(Shark()) # add new object to replace removed object (right)
         toRemove.clear()  
             
-        
+            
         for fisherman in fishermen:
             fisherman.move()
             
@@ -264,7 +262,6 @@ def gameAI(genomes, config):
         toRemove.clear()  
         
         
-        
         for worm in worms:
             worm.move()
             
@@ -281,7 +278,7 @@ def gameAI(genomes, config):
             worms.append(Worm()) # add new object to replace removed object (right)
         toRemove.clear()    
         
-                            
+        
         # determine max fitness of all fishes/genomes
         max_fit = 0
         for g in gens:
@@ -456,7 +453,6 @@ def gameOverScreen():
                     
         #update display
         pygame.display.update()
-
 
 # "Main" function, calls game and tells game whether an AI is being used.
 if __name__ == "__main__":
