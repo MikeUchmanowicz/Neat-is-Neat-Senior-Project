@@ -10,6 +10,9 @@ ___
 Current Loom Video of current work in progress (Game And AI)
 https://www.loom.com/share/15c61583d79746f7b5cda597f2271ad9
 
+Current Loom Video of current work in progress (Django Webapp)
+https://www.loom.com/share/8a45949dfa7e47029cb304b0cad6b1b1 
+
 ___
 
 ## ABSTRACT
