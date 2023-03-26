@@ -7,8 +7,9 @@ ___
 Not all Documentation is included in this documentation. Please refer to the [Documentation within this repository](Documentation/) for All documentation. Included are: High level Block Diagram, Logical Diagram, Physical Diagram, UML, Flowchart, DDL scripts, ER Diagram, Game Wireframe, Django Wireframes, and Sitemap. 
 ___
 
-Current Loom Video of current work in progress
-https://www.loom.com/share/8a45949dfa7e47029cb304b0cad6b1b1
+Current Loom Video of current work in progress (Game And AI)
+https://www.loom.com/share/15c61583d79746f7b5cda597f2271ad9
+
 ___
 
 ## ABSTRACT
