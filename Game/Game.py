@@ -420,25 +420,25 @@ def gameOverScreen():
             pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/3,WINDOW_HEIGHT/2,200,50])
         
         # Menu Screen Button (2), changes color when mouse hovers over
-        menu_hovered = WINDOW_WIDTH/3 <= mouse[0] <= WINDOW_WIDTH/3+115 and WINDOW_HEIGHT/2+75 <= mouse[1] <= WINDOW_HEIGHT/2+125
+        menu_hovered = WINDOW_WIDTH/3+40 <= mouse[0] <= WINDOW_WIDTH/3+155 and WINDOW_HEIGHT/2+75 <= mouse[1] <= WINDOW_HEIGHT/2+125
         if menu_hovered:
-            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/3,WINDOW_HEIGHT/2+75,115,50])
+            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/3+40,WINDOW_HEIGHT/2+75,115,50])
         else:
-            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/3,WINDOW_HEIGHT/2+75,115,50])
+            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/3+40,WINDOW_HEIGHT/2+75,115,50])
             
         # View AI Demo Button (3), changes color when mouse hovers over
-        quit_hovered = WINDOW_WIDTH/3 <= mouse[0] <= WINDOW_WIDTH/3+95 and WINDOW_HEIGHT/2+150 <= mouse[1] <= WINDOW_HEIGHT/2+200
+        quit_hovered = WINDOW_WIDTH/3+50 <= mouse[0] <= WINDOW_WIDTH/3+145 and WINDOW_HEIGHT/2+150 <= mouse[1] <= WINDOW_HEIGHT/2+200
         if quit_hovered:
-            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/3,WINDOW_HEIGHT/2+150,95,50])
+            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/3+50,WINDOW_HEIGHT/2+150,95,50])
         else:
-            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/3,WINDOW_HEIGHT/2+150,95,50])
+            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/3+50,WINDOW_HEIGHT/2+150,95,50])
             
 
         # Place Text for all buttons and title
         win.blit(game_over_text , (WINDOW_WIDTH/5,WINDOW_HEIGHT/6))
         win.blit(play_game_text , (WINDOW_WIDTH/3+10,WINDOW_HEIGHT/2))
-        win.blit(menu_text , (WINDOW_WIDTH/3+10,WINDOW_HEIGHT/2+75))
-        win.blit(quit_text , (WINDOW_WIDTH/3+10,WINDOW_HEIGHT/2+150))
+        win.blit(menu_text , (WINDOW_WIDTH/3+50,WINDOW_HEIGHT/2+75))
+        win.blit(quit_text , (WINDOW_WIDTH/3+60,WINDOW_HEIGHT/2+150))
         win.blit(score_text , (WINDOW_WIDTH/2-100,WINDOW_HEIGHT/3))
         
         for event in pygame.event.get(): 
