@@ -1,5 +1,5 @@
 from GameModels import Fish, Fisherman, Shark, Worm, Background
-from GameUtil import TITLE, WINDOW_HEIGHT, WINDOW_WIDTH, draw_background, draw_gameWindow, moveObjects 
+from GameUtil import TITLE, WINDOW_HEIGHT, WINDOW_WIDTH, draw_background, draw_gameWindow 
 import MyReporter
 import pygame
 import neat
@@ -122,8 +122,6 @@ def game():
                 worms.remove(worm) # remove object from list of objects 
                 worms.append(Worm()) # add new object to replace removed object (right)
             toRemove.clear() 
-                    
-            moveObjects(Worm, worms, toRemove) # move objects perpetually, if object goes off screen, remove them and place a new one.
                             
         stats['Gen'] = GEN # update generation count in stats dictionary
         stats['Fishes Alive'] = len(fishes) # update fish count in stats dictionary
@@ -318,7 +316,7 @@ def titleScreen():
     draw_background(win, Background())
     
     # Initialize colors and variables used within title screen
-    color = (255, 255, 255)
+    color_white = (255, 255, 255)
     color_light = (170, 170, 170)
     color_dark = (100, 100, 100)
     
@@ -327,9 +325,9 @@ def titleScreen():
     large_font = pygame.font.SysFont('Verdana', 69)
     
     # Initialize text used in title screen
-    game_text = small_font.render('Play Game', True, color)
-    demo_text = small_font.render(' AI Demo ', True, color)
-    title_text = large_font.render('Swim, Fish, Swim!', True, color)
+    game_text = small_font.render('Play Game', True, color_white)
+    demo_text = small_font.render(' AI Demo ', True, color_white)
+    title_text = large_font.render('Swim, Fish, Swim!', True, color_white)
     
     # title screen loop
     runTitleScreen = True
@@ -393,7 +391,7 @@ def gameOverScreen():
     draw_background(win, Background())
     
     # Initialize colors and variables used within title screen
-    color = (255, 255, 255)
+    color_white = (255, 255, 255)
     color_light = (170, 170, 170)
     color_dark = (100, 100, 100)
     
@@ -402,10 +400,11 @@ def gameOverScreen():
     large_font = pygame.font.SysFont('Verdana', 69)
     
     # Initialize text used in title screen
-    game_text = small_font.render('Play Again', True, color)
-    game_over_text = large_font.render('Game Over', True, color)
-    score_text = small_font.render('Score: ' + str(round(stats['Score'], 3)), True, color)
-    demo_text = small_font.render('     Quit   ', True, color)
+    play_game_text = small_font.render('Play Again', True, color_white)
+    game_over_text = large_font.render('Game Over', True, color_white)
+    menu_text = small_font.render('Menu', True, color_white)
+    score_text = small_font.render('Score: ' + str(round(stats['Score'], 3)), True, color_white)
+    quit_text = small_font.render('Quit', True, color_white)
     
     # title screen loop
     runGameOverScreen = True
@@ -413,26 +412,34 @@ def gameOverScreen():
         # Initialize mouse
         mouse = pygame.mouse.get_pos()
         
-        # Play Game button (2), changes color when mouse hovers over
-        play_hovered = WINDOW_WIDTH/2-260 <= mouse[0] <= WINDOW_WIDTH/2-60 and WINDOW_HEIGHT/2 <= mouse[1] <= WINDOW_HEIGHT/2+50
+        # Play Game button (1), changes color when mouse hovers over
+        play_hovered = WINDOW_WIDTH/3 <= mouse[0] <= WINDOW_WIDTH/3+200 and WINDOW_HEIGHT/2 <= mouse[1] <= WINDOW_HEIGHT/2+50
         if play_hovered:
-            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/2-260,WINDOW_HEIGHT/2,200,50])
+            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/3,WINDOW_HEIGHT/2,200,50])
         else:
-            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/2-260,WINDOW_HEIGHT/2,200,50])
-            
-        # View AI Demo Button (2), changes color when mouse hovers over
-        exit_hovered = WINDOW_WIDTH/2+100 <= mouse[0] <= WINDOW_WIDTH/2+195 and WINDOW_HEIGHT/2 <= mouse[1] <= WINDOW_HEIGHT/2+50
-        if exit_hovered:
-            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/2+100,WINDOW_HEIGHT/2,95,50])
-        else:
-            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/2+100,WINDOW_HEIGHT/2,95,50])
+            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/3,WINDOW_HEIGHT/2,200,50])
         
+        # Menu Screen Button (2), changes color when mouse hovers over
+        menu_hovered = WINDOW_WIDTH/3 <= mouse[0] <= WINDOW_WIDTH/3+115 and WINDOW_HEIGHT/2+75 <= mouse[1] <= WINDOW_HEIGHT/2+125
+        if menu_hovered:
+            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/3,WINDOW_HEIGHT/2+75,115,50])
+        else:
+            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/3,WINDOW_HEIGHT/2+75,115,50])
+            
+        # View AI Demo Button (3), changes color when mouse hovers over
+        quit_hovered = WINDOW_WIDTH/3 <= mouse[0] <= WINDOW_WIDTH/3+95 and WINDOW_HEIGHT/2+150 <= mouse[1] <= WINDOW_HEIGHT/2+200
+        if quit_hovered:
+            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/3,WINDOW_HEIGHT/2+150,95,50])
+        else:
+            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/3,WINDOW_HEIGHT/2+150,95,50])
+            
+
         # Place Text for all buttons and title
         win.blit(game_over_text , (WINDOW_WIDTH/5,WINDOW_HEIGHT/6))
-        win.blit(game_text , (WINDOW_WIDTH/2-250,WINDOW_HEIGHT/2))
-        win.blit(demo_text , (WINDOW_WIDTH/2+50,WINDOW_HEIGHT/2))
+        win.blit(play_game_text , (WINDOW_WIDTH/3+10,WINDOW_HEIGHT/2))
+        win.blit(menu_text , (WINDOW_WIDTH/3+10,WINDOW_HEIGHT/2+75))
+        win.blit(quit_text , (WINDOW_WIDTH/3+10,WINDOW_HEIGHT/2+150))
         win.blit(score_text , (WINDOW_WIDTH/2-100,WINDOW_HEIGHT/3))
-        
         
         for event in pygame.event.get(): 
             if event.type == pygame.QUIT: # if quit (RED X) button is clicked
@@ -442,12 +449,18 @@ def gameOverScreen():
                 if play_hovered:    # if mouse is clicked on play game button
                     time.sleep(.5)
                     game() # run game
-                    
                     runGameOverScreen=False
                     break
                 
-                elif exit_hovered: # if mouse is clicked on view demo button
+                elif quit_hovered: # if mouse is clicked on view demo button
                     runGameOverScreen = False
+                    pygame.quit()
+                    quit()
+                    
+                elif menu_hovered: # if mouse is clicked on view demo button
+                    runGameOverScreen = False
+                    titleScreen()
+                    
                     pygame.quit()
                     quit()
                     
