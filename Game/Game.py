@@ -64,40 +64,66 @@ def game():
         for fish in fishes: # Check if fish is out of bounds, if so, remove it from the game
             fish.animate()
             
-            keys = pygame.key.get_pressed()
+            keys = pygame.key.get_pressed() #check if space key is being pressed
             if keys[pygame.K_SPACE]:
                 ticksDown = 0
                 ticksUp += 1
-                fish.swimUp(ticksUp)
+                fish.swimUp(ticksUp) # if space is being pressed, swim up
             else:
                 ticksUp = 0
                 ticksDown +=1
-                fish.move(ticksDown)
+                fish.move(ticksDown) # if space is not being pressed, do nothing, fish swims down.
                 
             if fish.y + fish.img.get_height() < 0 or fish.y >= 480: # if fish is out of bounds, end game
                 run = False
-                gameOverScreen()
+                gameOverScreen() # display game over screen
                 break
 
             for shark in sharks:
+                shark.move()
                 if fish.collide(shark): # if fish collides with shark, decrease fitness of fish, remove fish from game
                     run = False
-                    gameOverScreen()
+                    gameOverScreen() # display game over screen
                     break
+                
+                if shark.x + shark.img.get_width() < 0: # if object is off screen (left), remove it 
+                    toRemove.append(shark) # add object to list of objects to remove
                     
-            moveObjects(Shark, sharks, toRemove)  # move objects perpetually, if object goes off screen, remove them and place a new one.
+            for shark in toRemove:
+                sharks.remove(shark) # remove object from list of objects 
+                sharks.append(Shark()) # add new object to replace removed object (right)
+            toRemove.clear() 
         
             for fisherman in fishermen:
+                fisherman.move()
+                
                 if fish.collide(fisherman): # if fish collides with fisherman, decrease fitness of fish, remove fish from game
                     run = False
-                    gameOverScreen()
+                    gameOverScreen() # display game over screen
                     break
-            moveObjects(Fisherman, fishermen, toRemove) # move objects perpetually, if object goes off screen, remove them and place a new one.
+                
+                if fisherman.x + fisherman.img.get_width() < 0: # if object is off screen (left), remove it 
+                    toRemove.append(fisherman) # add object to list of objects to remove
+                    
+            for fisherman in toRemove:
+                fishermen.remove(fisherman) # remove object from list of objects 
+                fishermen.append(Fisherman()) # add new object to replace removed object (right)
+            toRemove.clear() 
         
             for worm in worms:
+                worm.move()
+                
                 if fish.collide(worm): # if fish collides with worm, increase fitness of fish, remove worm
                     stats['Score'] += 15 # increase score by 1 every frame
                     toRemove.append(worm)
+                    
+                if worm.x + worm.img.get_width() < 0: # if object is off screen (left), remove it 
+                    toRemove.append(worm) # add object to list of objects to remove
+                    
+            for worm in toRemove:
+                worms.remove(worm) # remove object from list of objects 
+                worms.append(Worm()) # add new object to replace removed object (right)
+            toRemove.clear() 
                     
             moveObjects(Worm, worms, toRemove) # move objects perpetually, if object goes off screen, remove them and place a new one.
                             
@@ -162,16 +188,16 @@ def gameAI(genomes, config):
                 pygame.quit()
                 quit()
 
-        if len(fishes) < 1: # if fishes dead
-            
-            global GEN; GEN += 1
-            run = False
+        if len(fishes) < 1: # if fishes dead, end round
+            global GEN; GEN += 1 # increase generation count    
+            run = False 
             break
             
         for x, fish in enumerate(fishes): # Check if fish is out of bounds, if so, remove it from the game
             
-            gens[x].fitness += 0.1
+            gens[x].fitness += 0.1 # increase fitness of each fish by .1 every frame (distance moved)
             
+            # activate neural network for each fish, outputting when each network thinks the fish should swim up
             output = nets[x].activate((fish.y + (fish.img.get_height())/2, # FISH HEIGHT center
                                     abs(fish.y - sharks[0].y), #DISTANCE TO SHARK TOP
                                     #abs(fish.y - (sharks[0].y + sharks[0].img.get_height())), #DISTANCE TO SHARK BOTTOM
@@ -180,11 +206,12 @@ def gameAI(genomes, config):
                                     abs(fish.y - (fishermen[0].y + fishermen[0].img.get_height())), #DISTANCE TO FISHERMAN BOTTOM
                                     abs(fish.y - (worms[0].y + worms[0].img.get_height()/2)) #DISTANCE TO WORM CENTER
                                     ))
+            # if output is greater than .5, swim up
             if output[0] > 0.5:
                 ticksDown = 0
                 ticksUp += 1
                 fish.swimUp(ticksUp)
-            else:
+            else: # if output is less than .5, do nothing, gravity causes swim down.
                 ticksUp = 0
                 ticksDown +=1
                 fish.move(ticksDown)
@@ -195,6 +222,7 @@ def gameAI(genomes, config):
                 gens.pop(x)
 
         for shark in sharks:
+            shark.move()
             for x, fish in enumerate(fishes): 
                 
                 #if not shark.passed and shark.x < fish.x:
@@ -205,9 +233,18 @@ def gameAI(genomes, config):
                     fishes.pop(x) 
                     nets.pop(x)
                     gens.pop(x)
-        moveObjects(Shark, sharks, toRemove)  # move objects perpetually, if object goes off screen, remove them and place a new one.
+
+            if shark.x + shark.img.get_width() < 0: # if object is off screen (left), remove it 
+                toRemove.append(shark) # add object to list of objects to remove
+        for shark in toRemove:
+            sharks.remove(shark) # remove object from list of objects 
+            sharks.append(Shark()) # add new object to replace removed object (right)
+        toRemove.clear()  
+            
         
         for fisherman in fishermen:
+            fisherman.move()
+            
             for x, fish in enumerate(fishes): 
                 
                 #if not fisherman.passed and fisherman.x < fish.x:
@@ -218,15 +255,32 @@ def gameAI(genomes, config):
                     fishes.pop(x) 
                     nets.pop(x)
                     gens.pop(x)
-        moveObjects(Fisherman, fishermen, toRemove) # move objects perpetually, if object goes off screen, remove them and place a new one.
+            
+            if fisherman.x + fisherman.img.get_width() < 0: # if object is off screen (left), remove it 
+                toRemove.append(fisherman) # add object to list of objects to remove
+        for fisherman in toRemove:
+            fishermen.remove(fisherman) # remove object from list of objects
+            fishermen.append(Fisherman()) # add new object to replace removed object (right)
+        toRemove.clear()  
+        
         
         
         for worm in worms:
+            worm.move()
+            
             for x, fish in enumerate(fishes): 
-                if fish.collide(worm): # if fish collides with worm, increase fitness of fish, remove worm
+                if not worm.collected and fish.collide(worm): # if fish collides with worm, increase fitness of fish, remove worm
+                    worm.collected = True
                     gens[x].fitness += 15
                     toRemove.append(worm)
-        moveObjects(Worm, worms, toRemove) # move objects perpetually, if object goes off screen, remove them and place a new one.
+            
+            if worm.x + worm.img.get_width() < 0: # if object is off screen (left), remove it 
+                toRemove.append(worm) # add object to list of objects to remove
+        for worm in toRemove:
+            worms.remove(worm) # remove object from list of objects
+            worms.append(Worm()) # add new object to replace removed object (right)
+        toRemove.clear()    
+        
                             
         # determine max fitness of all fishes/genomes
         max_fit = 0
@@ -259,7 +313,7 @@ def run(config_path):
     # Runs the game 150 times, and returns the winner of the game, can be stored.
     bestFit = mypop.run(gameAI,150)
 
-# title screen
+# title screen, allows user to start game, or watch AI play game
 def titleScreen():
 
     # Initialize window
@@ -335,6 +389,7 @@ def titleScreen():
         #update display
         pygame.display.update()
 
+# game over screen, displays score and allows user to play again or quit game once game is over
 def gameOverScreen():
     # Initialize window
     win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))

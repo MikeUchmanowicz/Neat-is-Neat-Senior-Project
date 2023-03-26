@@ -37,27 +37,9 @@ def draw_gameWindow(win:pygame.display, background, fishes, sharks, fishermen, w
     # update the display
     pygame.display.update()
     
+# draw background, used by title screen and game over screen
 def draw_background(win:pygame.display, background):
-
     # draw background
     background.draw(win)
-
     # update the display
     pygame.display.update()
-    
-def moveObjects(Object, objects, toRemove):
-    
-    for obj in objects: # move objects passed in
-        obj.move()
-                
-        if obj.x + obj.img.get_width() < 0: # if object is off screen (left), remove it 
-            toRemove.append(obj)
-    
-    for obj in toRemove:
-        try:
-            objects.remove(obj)
-        except:
-            pass
-        objects.append(Object()) # add new object to replace removed object (right)
-    
-    toRemove.clear()

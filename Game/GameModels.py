@@ -94,7 +94,7 @@ class Worm:
         self.x=x
         self.y=y
         self.img = WORM_IMG
-        self.passed = False
+        self.collected = False
         
         self.set_Height()
     
