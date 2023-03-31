@@ -38,6 +38,29 @@ The user can start the main python script via a terminal.  Upon start of the mai
 
 A Django application will support viewing informational pages, logging in, registering, and the viewing of generational ai data that it will pull from a MySQL database. The Django app will be cloud hosted within an Elastic Beanstalk container in AWS, using AWS EC2 to store the app and AWS RDS to store the database information and data.
  
+## Objectives
+
+* Created game should be, to some degree, fun.  
+*	Game should be logically and visually polished.  
+    *	Game should not have animation issues.  
+    *	Game should keep track of score and other properties.  
+*	AI should play said game proficiently.  
+    *	AI should perform better with each iteration.  
+    *	AI should perform better than a human player.  
+*	Game should post results of individual game and AI network-population details to database  
+*	User should be able to login to a webapp and see this information displayed in a neat and organized manner.  
+*	The webapp and database should be deployed to a cloud-hosting service.  
+*	Web app should be responsive.  
+
+## Scope
+* Play game
+* View demo of AI playing same game.
+* Register onto Webapp.
+*	Login to Webapp.
+*	View results/details of game or demo
+*	Provide general information on NEAT in webapp.
+
+
 ## Design
 
 The python game script will primarily focus on the AI demo but will also allow the user to try the game themselves if they choose. The python game script will consist of different modules: Game.py, GameModels.py, MyReporter.py, and Service.py. Most of the logic for this game and demo will be in the Game module, which imports NEAT, Pygame, GameModels, and MyReporter. The GameModels module will contain the classes of the player object, obstacles, enemies, objectives, and images. The Game module will have a main “fitness” function which will contain the game logic and an AI “run” function that initiates the AI and applies the AI to the main “fitness” function. This “fitness” function will be looped by the AI “run” function for each generation of ai that is created at the end of the previous iteration of the main “fitness” function. We call this a “fitness” function because it determines each AI networks fitness or “score” within the game. 
@@ -105,6 +128,11 @@ The user will start the main python script from their local machine, where it wi
 - Django-extensions 3.2.1 (to create a Django visualized UML)
 - Pyparsing 3.0.9 (for use in combination with Django-extensions to create UML)
 - Pydot 1.4.2 (for use in combination with Django-extensions to create UML)
+
+
+#### Risks and Challenges
+
+
 
 
 #### General Technical approach
