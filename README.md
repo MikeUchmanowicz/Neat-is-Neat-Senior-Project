@@ -128,12 +128,27 @@ The user will start the main python script from their local machine, where it wi
 - Django-extensions 3.2.1 (to create a Django visualized UML)
 - Pyparsing 3.0.9 (for use in combination with Django-extensions to create UML)
 - Pydot 1.4.2 (for use in combination with Django-extensions to create UML)
+- Graphviz 0.20.1 (for use in combination with pydot and pyparsing to create UML)
 
 
 #### Risks and Challenges
 
+- Create game in pygame with little engine knowledge
+- Create webapp in Django with little Django knowledge
+- Use Neat AI to play game with little NEAT knowledge
+- Unsure of whether to use MYSQL or MongoDB, not sure which is optimized / will work better
+- Upload Django project and MySQL database to AWS
 
+#### Proof of Concepts
 
+- Create A Demo Django Python webapp (Complete)
+- Upload Demo Model to Database from Python (Complete)
+- Retrieve Demo Model from Database to webapp (Complete)
+- Create a Demo python Game to get a feel for pyGame Library (Complete)
+- Play around with object behavior and Refine Demo game (Complete)
+- Use NEAT AI to “solve” demo Pygame app (Complete)
+- Refine NEAT AI to better solve Demo PyGame app more proficiently (Complete)
+- Dependency Injection within Python (Discarded)
 
 #### General Technical approach
 
