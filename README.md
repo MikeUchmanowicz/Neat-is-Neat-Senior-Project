@@ -108,6 +108,28 @@ The user will connect to the Django webapp via HTTPS and will be responsible for
 </div>  
 The user will start the main python script from their local machine, where it will be stored locally. The script will run the python game or AI demo and then post generational data using a model (if AI Demo) to an AWS RDS container using port 3306 within AWS EBS (Elastic Bean Stalk). A Django webapp running in an AWS EC2 container within the AWS EBS will retrieve this data via port 3306 and display it to the user within the Django app via port 80.
 
+
+## Risks and Challenges
+
+- Create game in pygame with little engine knowledge
+- Create webapp in Django with little Django knowledge
+- Use Neat AI to play game with little NEAT knowledge
+- Unsure of whether to use MYSQL or MongoDB, not sure which is optimized / will work better
+- Upload Django project and MySQL database to AWS
+
+
+## Proof of Concepts
+
+- Create A Demo Django Python webapp (Complete)
+- Upload Demo Model to Database from Python (Complete)
+- Retrieve Demo Model from Database to webapp (Complete)
+- Create a Demo python Game to get a feel for pyGame Library (Complete)
+- Play around with object behavior and Refine Demo game (Complete)
+- Use NEAT AI to “solve” demo Pygame app (Complete)
+- Refine NEAT AI to better solve Demo PyGame app more proficiently (Complete)
+- Dependency Injection within Python (Discarded)
+
+
 ## Design Choices
 
 #### Tehnologies Used
@@ -130,25 +152,6 @@ The user will start the main python script from their local machine, where it wi
 - Pydot 1.4.2 (for use in combination with Django-extensions to create UML)
 - Graphviz 0.20.1 (for use in combination with pydot and pyparsing to create UML)
 
-
-#### Risks and Challenges
-
-- Create game in pygame with little engine knowledge
-- Create webapp in Django with little Django knowledge
-- Use Neat AI to play game with little NEAT knowledge
-- Unsure of whether to use MYSQL or MongoDB, not sure which is optimized / will work better
-- Upload Django project and MySQL database to AWS
-
-#### Proof of Concepts
-
-- Create A Demo Django Python webapp (Complete)
-- Upload Demo Model to Database from Python (Complete)
-- Retrieve Demo Model from Database to webapp (Complete)
-- Create a Demo python Game to get a feel for pyGame Library (Complete)
-- Play around with object behavior and Refine Demo game (Complete)
-- Use NEAT AI to “solve” demo Pygame app (Complete)
-- Refine NEAT AI to better solve Demo PyGame app more proficiently (Complete)
-- Dependency Injection within Python (Discarded)
 
 #### General Technical approach
 
