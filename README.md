@@ -58,7 +58,7 @@ A Django application will support viewing informational pages, logging in, regis
 * Register onto Webapp.
 *	Login to Webapp.
 *	View results/details of game or demo
-*	Provide general information on NEAT in webapp.
+*	Provide general information on NEAT and Game/ AI Demo in webapp.
 
 
 ## Design
