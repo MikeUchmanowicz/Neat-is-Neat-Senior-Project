@@ -43,6 +43,7 @@ class Fish:
         
     # causes fish to "fall down" due to gravity when called, this is perpetual.
     def move(self, ticks):
+        self.tick_count+=1
         
         ticksdown = ticks
         
