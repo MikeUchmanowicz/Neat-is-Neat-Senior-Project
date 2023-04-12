@@ -207,19 +207,19 @@ def gameAI(genomes, config, trainedAI=False):
             #                         ))
 
             output = nets[x].activate((
-                                    fish.y + (fish.img.get_height()/2), # FISH HEIGHT center
-                                    sharks[0].y + (sharks[0].img.get_height()/2), #SHARK HEIGHT center
-                                    sharks[1].y + (sharks[1].img.get_height()/2), #SHARK HEIGHT center
-                                    fishermen[0].y + fishermen[0].img.get_height(), #FISHERMAN HEIGHT center
-                                    worms[0].y + (worms[0].img.get_height()/2), #FISHERMAN HEIGHT center
+                                    # fish.y + (fish.img.get_height()/2), # FISH HEIGHT center
+                                    # sharks[0].y + (sharks[0].img.get_height()/2), #SHARK HEIGHT center
+                                    # sharks[1].y + (sharks[1].img.get_height()/2), #SHARK HEIGHT center
+                                    # fishermen[0].y + fishermen[0].img.get_height(), #FISHERMAN HEIGHT center
+                                    # worms[0].y + (worms[0].img.get_height()/2), #FISHERMAN HEIGHT center
                                     abs(fish.y - (sharks[0].y + sharks[0].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
                                     abs(fish.y - (sharks[1].y + sharks[1].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
                                     abs(fish.y - (fishermen[0].y + fishermen[0].img.get_height())), #DISTANCE TO FISHERMAN BOTTOM Y
                                     abs(fish.y -(worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
-                                    abs(fish.x - (sharks[0].x + sharks[0].img.get_width()/2)), #DISTANCE TO SHARK CENTER X
-                                    abs(fish.x - (sharks[1].x + sharks[1].img.get_width()/2)), #DISTANCE TO SHARK CENTER X
-                                    abs(fish.x - (fishermen[0].x + fishermen[0].img.get_width())), #DISTANCE TO FISHERMAN BOTTOM X
-                                    abs(fish.x -(worms[0].x + worms[0].img.get_width()/2)) #DISTANCE TO WORM CENTER X
+                                    abs(fish.x - sharks[0].x), #DISTANCE TO SHARK X
+                                    abs(fish.x - sharks[1].x), #DISTANCE TO SHARK X
+                                    abs(fish.x - fishermen[0].x), #DISTANCE TO FISHERMAN X
+                                    abs(fish.x - worms[0].x) #DISTANCE TO WORM CENTER X
                                     ))
             
             # if output is greater than .5, swim up
