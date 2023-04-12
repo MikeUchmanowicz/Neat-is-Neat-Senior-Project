@@ -3,6 +3,8 @@ from GameUtil import TITLE, WINDOW_HEIGHT, WINDOW_WIDTH, draw_background, draw_g
 import MyReporter
 import pygame
 import neat
+import visualize
+import pickle
 import time
 import random as rnd
 import os
@@ -131,7 +133,7 @@ def game():
         draw_gameWindow(win, background, fishes, sharks, fishermen, worms, stats)
         
 # main game loop. Used by player
-def gameAI(genomes, config):
+def gameAI(genomes, config, trainedAI=False):
     
     # Initialize window
     win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -193,15 +195,33 @@ def gameAI(genomes, config):
             
             gens[x].fitness += 0.1 # increase fitness of each fish by .1 every frame (distance moved)
             
-            # activate neural network for each fish, outputting when each network thinks the fish should swim up
-            output = nets[x].activate((fish.y + (fish.img.get_height())/2, # FISH HEIGHT center
-                                    abs(fish.y - sharks[0].y), #DISTANCE TO SHARK TOP
-                                    #abs(fish.y - (sharks[0].y + sharks[0].img.get_height())), #DISTANCE TO SHARK BOTTOM
-                                    abs(fish.y - sharks[1].y), #DISTANCE TO SHARK TOP
-                                    #abs(fish.y - (sharks[1].y + sharks[0].img.get_height())), #DISTANCE TO SHARK BOTTOM
-                                    abs(fish.y - (fishermen[0].y + fishermen[0].img.get_height())), #DISTANCE TO FISHERMAN BOTTOM
-                                    abs(fish.y - (worms[0].y + worms[0].img.get_height()/2)) #DISTANCE TO WORM CENTER
+            # # activate neural network for each fish, outputting when each network thinks the fish should swim up
+            # output = nets[x].activate((
+            #                            fish.y + (fish.img.get_height())/2, # FISH HEIGHT center
+            #                         abs(fish.y - sharks[0].y), #DISTANCE TO SHARK TOP
+            #                         #abs(fish.y - (sharks[0].y + sharks[0].img.get_height())), #DISTANCE TO SHARK BOTTOM
+            #                         abs(fish.y - sharks[1].y), #DISTANCE TO SHARK TOP
+            #                         #abs(fish.y - (sharks[1].y + sharks[0].img.get_height())), #DISTANCE TO SHARK BOTTOM
+            #                         abs(fish.y - (fishermen[0].y + fishermen[0].img.get_height())), #DISTANCE TO FISHERMAN BOTTOM
+            #                         abs(fish.y - (worms[0].y + worms[0].img.get_height()/2)) #DISTANCE TO WORM CENTER
+            #                         ))
+
+            output = nets[x].activate((
+                                    fish.y + (fish.img.get_height()/2), # FISH HEIGHT center
+                                    sharks[0].y + (sharks[0].img.get_height()/2), #SHARK HEIGHT center
+                                    sharks[1].y + (sharks[1].img.get_height()/2), #SHARK HEIGHT center
+                                    fishermen[0].y + fishermen[0].img.get_height(), #FISHERMAN HEIGHT center
+                                    worms[0].y + (worms[0].img.get_height()/2), #FISHERMAN HEIGHT center
+                                    abs(fish.y - (sharks[0].y + sharks[0].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
+                                    abs(fish.y - (sharks[1].y + sharks[1].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
+                                    abs(fish.y - (fishermen[0].y + fishermen[0].img.get_height())), #DISTANCE TO FISHERMAN BOTTOM Y
+                                    abs(fish.y -(worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
+                                    abs(fish.x - (sharks[0].x + sharks[0].img.get_width()/2)), #DISTANCE TO SHARK CENTER X
+                                    abs(fish.x - (sharks[1].x + sharks[1].img.get_width()/2)), #DISTANCE TO SHARK CENTER X
+                                    abs(fish.x - (fishermen[0].x + fishermen[0].img.get_width())), #DISTANCE TO FISHERMAN BOTTOM X
+                                    abs(fish.x -(worms[0].x + worms[0].img.get_width()/2)) #DISTANCE TO WORM CENTER X
                                     ))
+            
             # if output is greater than .5, swim up
             if output[0] > 0.5:
                 ticksDown = 0
@@ -225,7 +245,7 @@ def gameAI(genomes, config):
                     #gens[x].fitness += 10
                 
                 if fish.collide(shark): # if fish collides with shark, decrease fitness of fish, remove fish from game
-                    gens[x].fitness -= 15
+                    #gens[x].fitness -= 15
                     fishes.pop(x) 
                     nets.pop(x)
                     gens.pop(x)
@@ -247,7 +267,7 @@ def gameAI(genomes, config):
                     #gens[x].fitness += 10
                 
                 if fish.collide(fisherman): # if fish collides with fisherman, decrease fitness of fish, remove fish from game
-                    gens[x].fitness -= 15
+                    #gens[x].fitness -= 15
                     fishes.pop(x) 
                     nets.pop(x)
                     gens.pop(x)
@@ -292,21 +312,56 @@ def gameAI(genomes, config):
         draw_gameWindow(win, background, fishes, sharks, fishermen, worms, stats)
         
 # run NEAT 
-def run(config_path):
+def run(config_path, trainedAI=False):
     
     # Loads the config file
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
-    
-    # Creates a population based off config & A Reporter Exctension.        
-    mypop = neat.Population(config)
-    mystats = neat.StatisticsReporter()
-    
-    #p.add_reporter(neat.StdOutReporter(True))
-    mypop.add_reporter(mystats)
-    mypop.add_reporter(MyReporter.myReporter(True)) #MyReporter is a Std.Out Reporter Extension in which we upload GenDatamodel to database.
-    
-    # Runs the game 150 times, and returns the winner of the game, can be stored.
-    bestFit = mypop.run(gameAI,150)
+        
+    if not trainedAI:
+        # Creates a population based off config & A Reporter Exctension.        
+        mypop = neat.Population(config)
+        mystats = neat.StatisticsReporter()
+        
+        #p.add_reporter(neat.StdOutReporter(True))
+        mypop.add_reporter(mystats)
+        mypop.add_reporter(MyReporter.myReporter(True)) #MyReporter is a Std.Out Reporter Extension in which we upload GenDatamodel to database.
+        
+        # Runs the game 150 times, and returns the winner of the game, can be stored.
+        bestFit = mypop.run(gameAI,1000)
+        
+        with open('trainedModel.pkl', 'wb') as f:
+            pickle.dump(bestFit, f)
+            f.close()
+            
+        print(bestFit) 
+        
+        try:
+        
+            visualize.plot_stats(stats, ylog=True, view=True, filename="feedforward-fitness.svg")
+            visualize.plot_species(stats, view=True, filename="feedforward-speciation.svg")
+
+            node_names = {-1: 'x', -2: 'dx', -3: 'theta', -4: 'dtheta', 0: 'control'}
+            visualize.draw_net(config, bestFit, True, node_names=node_names)
+
+            visualize.draw_net(config, bestFit, view=True, node_names=node_names,
+                            filename="winner-feedforward.gv")
+            visualize.draw_net(config, bestFit, view=True, node_names=node_names,
+                            filename="winner-feedforward-enabled-pruned.gv", prune_unused=True)
+        
+        except:
+            print("Error in Visualizing")
+        
+        
+    else:
+        with open('trainedModel.pkl', 'rb') as f:
+            genome = pickle.load(f)
+            f.close()
+        
+        # Convert loaded genome into required data structure
+        genomes = [(1, genome)]
+        
+        gameAI(genomes, config)
+
 
 # title screen, allows user to start game, or watch AI play game
 def titleScreen():
@@ -326,7 +381,8 @@ def titleScreen():
     
     # Initialize text used in title screen
     game_text = small_font.render('Play Game', True, color_white)
-    demo_text = small_font.render(' AI Demo ', True, color_white)
+    demo_text = small_font.render('AI Learning Demo', True, color_white)
+    trainedDemo_text = small_font.render('AI Trained Demo', True, color_white)
     title_text = large_font.render('Swim, Fish, Swim!', True, color_white)
     
     # title screen loop
@@ -335,28 +391,43 @@ def titleScreen():
         # Initialize mouse
         mouse = pygame.mouse.get_pos()
         
-        fishes = [Fish(WINDOW_WIDTH/3, WINDOW_HEIGHT/2), Fish(WINDOW_WIDTH/3, WINDOW_HEIGHT/2), Fish(WINDOW_WIDTH/3, WINDOW_HEIGHT/2), Fish(WINDOW_WIDTH/3, WINDOW_HEIGHT/2)]
+        #create fish for images in background
+        fish = Fish(WINDOW_WIDTH/3, WINDOW_HEIGHT/2)
+        
         # Play Game button (1), changes color when mouse hovers over
-        play_hovered = WINDOW_WIDTH/2-260 <= mouse[0] <= WINDOW_WIDTH/2-50 and WINDOW_HEIGHT/2 <= mouse[1] <= WINDOW_HEIGHT/2+50
+        play_hovered = WINDOW_WIDTH/2-285 <= mouse[0] <= WINDOW_WIDTH/2-75 and WINDOW_HEIGHT/2 <= mouse[1] <= WINDOW_HEIGHT/2+50
         if play_hovered:
-            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/2-260,WINDOW_HEIGHT/2,210,50])
+            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/2-285,WINDOW_HEIGHT/2,210,50])
         else:
-            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/2-260,WINDOW_HEIGHT/2,210,50])
+            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/2-285,WINDOW_HEIGHT/2,210,50])
             
         # View AI Demo Button (2), changes color when mouse hovers over
-        demo_hovered = WINDOW_WIDTH/2+50 <= mouse[0] <= WINDOW_WIDTH/2+230 and WINDOW_HEIGHT/2 <= mouse[1] <= WINDOW_HEIGHT/2+50
+        demo_hovered = WINDOW_WIDTH/2-45 <= mouse[0] <= WINDOW_WIDTH/2+295 and WINDOW_HEIGHT/2 <= mouse[1] <= WINDOW_HEIGHT/2+50
         if demo_hovered:
-            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/2+50, WINDOW_HEIGHT/2, 180, 50])
+            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/2-45, WINDOW_HEIGHT/2, 340, 50])
         else:
-            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/2+50, WINDOW_HEIGHT/2, 180, 50])
+            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/2-45, WINDOW_HEIGHT/2, 340, 50])
+            
+        # View AI Demo Button (2), changes color when mouse hovers over
+        trained_demo_hovered = WINDOW_WIDTH/2-20 <= mouse[0] <= WINDOW_WIDTH/2+295 and WINDOW_HEIGHT/2+125 <= mouse[1] <= WINDOW_HEIGHT/2+175
+        if trained_demo_hovered:
+            pygame.draw.rect(win,color_light,[WINDOW_WIDTH/2-20, WINDOW_HEIGHT/2+125, 315, 50])
+        else:
+            pygame.draw.rect(win,color_dark,[WINDOW_WIDTH/2-20, WINDOW_HEIGHT/2+125, 315, 50])
+        
         
         # Place Text for all buttons and title
-        win.blit(game_text , (WINDOW_WIDTH/2-250,WINDOW_HEIGHT/2))
-        win.blit(demo_text , (WINDOW_WIDTH/2+50,WINDOW_HEIGHT/2))
-        win.blit(fishes[0].img, (WINDOW_WIDTH/4.5, WINDOW_HEIGHT/2.75))
+        win.blit(game_text , (WINDOW_WIDTH/2-275,WINDOW_HEIGHT/2))
+        win.blit(demo_text , (WINDOW_WIDTH/2-35,WINDOW_HEIGHT/2))
+        win.blit(trainedDemo_text , (WINDOW_WIDTH/2-10,WINDOW_HEIGHT/2+125))
+        win.blit(fish.IMGS[2], (WINDOW_WIDTH/6, WINDOW_HEIGHT/2.75))
+        win.blit(fish.IMGS[2], ((WINDOW_WIDTH/1.5) -10, (WINDOW_HEIGHT/1.5)-10 ))
         
-        for i in range(0,3):
-            win.blit(fishes[i].img, ((WINDOW_WIDTH/2)+30+(75*i), WINDOW_HEIGHT/2.75))
+        for i in range(0,5):
+            if i < 3:
+                win.blit(fish.IMGS[i], ((WINDOW_WIDTH/2)-50+(75*i), WINDOW_HEIGHT/2.75))
+            else:
+                win.blit(fish.IMGS[i-2], ((WINDOW_WIDTH/2)-50+(75*i), WINDOW_HEIGHT/2.75))
         win.blit(title_text , (5,0))
         
         for event in pygame.event.get(): 
@@ -376,8 +447,18 @@ def titleScreen():
                     local_dir = os.path.dirname(__file__)
                     config_path = os.path.join(local_dir, "config.txt")
                     time.sleep(.5)
-                    run(config_path) # run NEAT AI Simulation
                     
+                    run(config_path) # run NEAT AI Simulation
+                    runTitleScreen = False
+                    break
+                
+                elif trained_demo_hovered:
+                    # load config file
+                    local_dir = os.path.dirname(__file__)
+                    config_path = os.path.join(local_dir, "configTrained.txt")
+                    time.sleep(.5)
+                    
+                    run(config_path, trainedAI=True) # run NEAT AI Simulation
                     runTitleScreen = False
                     break
                     
