@@ -1,18 +1,3 @@
-
-
-INPUTS - Bird Y POS, top pipe distance, bot pipe distance
-
-OUTPUTS - Jump?
-
-Activation Function - TanH
-
-POPULATION SIZE - 100
-
-FITNESS FUNCTION distance
-
-MAX GENERATIONS - 30
-
-
 fitness_criterion     = max     # min, max, or mean.  How we determine the best birds? Max gives us the birds with the highest or "max" fitness
 fitness_threshold     = 100     # what fitness level do we want before we terminate the program
 pop_size              = 20      # pop size

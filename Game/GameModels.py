@@ -30,43 +30,46 @@ class Fish:
         self.img = self.IMGS[0]
 
     # causes fish to "go up" when called
-    
     def swimUp(self, ticks):
+        
         ticksup = ticks
         
-        if ticksup < 14:
-            self.SPEED = -1*ticksup/2
+        if ticksup < 20:
+            self.SPEED = -1*ticksup/2.5
         else:
             self.SPEED = -7.5
 
-        self.y += self.SPEED           
+        self.y += self.SPEED     
         
     # causes fish to "fall down" due to gravity when called, this is perpetual.
     def move(self, ticks):
-        self.tick_count+=1
-        
+    
         ticksdown = ticks
         
-        if ticksdown < 14:
-            self.SPEED = 1*ticksdown/2
+        if ticksdown < 20:
+            self.SPEED = 1*ticksdown/2.5
         else:
             self.SPEED = 7.5
 
         self.y += self.SPEED        
         
+    # animates the fish
+    
     def animate(self):
+        self.tick_count+=1
+        
         #check what image to show based on current image count.
-        if self.tick_count < 6:
+        if self.tick_count < 12:
             self.img=self.IMGS[0]
-        elif self.tick_count < 12:
-            self.img=self.IMGS[1]
-        elif self.tick_count < 18:
-            self.img=self.IMGS[2]
         elif self.tick_count < 24:
             self.img=self.IMGS[1]
-        elif self.tick_count < 30:
+        elif self.tick_count < 36:
+            self.img=self.IMGS[2]
+        elif self.tick_count < 48:
+            self.img=self.IMGS[1]
+        elif self.tick_count < 60:
             self.img=self.IMGS[0]
-            self.tick_count = 0
+            self.tick_count = 0  
 
     # Draws the fish on the screen
     def draw(self, win:pygame.display):
