@@ -3,7 +3,6 @@ from GameUtil import TITLE, WINDOW_HEIGHT, WINDOW_WIDTH, draw_background, draw_g
 import MyReporter
 import pygame
 import neat
-import visualize
 import pickle
 import time
 import random as rnd
@@ -223,7 +222,7 @@ def gameAI(genomes, config, trainedAI=False):
                 ticksDown +=1
                 fish.move(ticksDown)
         
-            if fish.y + fish.img.get_height() <= 5 or fish.y >= 475: # if fish is out of bounds, decrease fitness of fish, remove fish from game
+            if fish.y + fish.img.get_height() <= 5 or fish.y >= 470: # if fish is out of bounds, decrease fitness of fish, remove fish from game
                 gens[x].fitness -= 50
                 fishes.pop(x)
                 nets.pop(x)
@@ -234,7 +233,7 @@ def gameAI(genomes, config, trainedAI=False):
             for x, fish in enumerate(fishes): 
                 
                 if not shark.passed and shark.x < fish.x:
-                    gens[x].fitness += 5
+                    gens[x].fitness += 15
                     shark.passed = True
                 
                 if fish.collide(shark): # if fish collides with shark, decrease fitness of fish, remove fish from game
@@ -257,7 +256,7 @@ def gameAI(genomes, config, trainedAI=False):
             for x, fish in enumerate(fishes): 
                 
                 if not fisherman.passed and fisherman.x < fish.x:
-                    gens[x].fitness += 5
+                    gens[x].fitness += 15
                     fisherman.passed = True
                 
                 if fish.collide(fisherman): # if fish collides with fisherman, decrease fitness of fish, remove fish from game
@@ -340,14 +339,14 @@ def run(config_path, trainedAI=False):
         #genomes = [(1, genome)]
         
         # Load the population from a checkpoint file
-        checkpoint_file = 'neat-checkpoint-264'
+        checkpoint_file = 'neat-checkpoint-359'
         mypop = neat.Checkpointer.restore_checkpoint(checkpoint_file)
         mystats = neat.StatisticsReporter()
         
         #p.add_reporter(neat.StdOutReporter(True))
         mypop.add_reporter(mystats)
         #gameAI(genomes, config)
-        mypop.run(gameAI, 2000)
+        bestFit = mypop.run(gameAI, 2000)
 
 
 # title screen, allows user to start game, or watch AI play game
