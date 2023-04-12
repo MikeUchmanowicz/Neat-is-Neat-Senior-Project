@@ -3,7 +3,10 @@ from GameUtil import TITLE, WINDOW_HEIGHT, WINDOW_WIDTH, draw_background, draw_g
 import MyReporter
 import pygame
 import neat
+<<<<<<< HEAD
 import visualize
+=======
+>>>>>>> 202a7ced933b33d885b25fd04a0c28bb1dee4068
 import pickle
 import time
 import random as rnd
@@ -210,6 +213,7 @@ def gameAI(genomes, config, trainedAI=False):
                                     fish.y + (fish.img.get_height()/2), # FISH HEIGHT center
                                     sharks[0].y + (sharks[0].img.get_height()/2), #SHARK HEIGHT center
                                     sharks[1].y + (sharks[1].img.get_height()/2), #SHARK HEIGHT center
+<<<<<<< HEAD
                                     fishermen[0].y + fishermen[0].img.get_height(), #FISHERMAN HEIGHT center
                                     worms[0].y + (worms[0].img.get_height()/2), #FISHERMAN HEIGHT center
                                     abs(fish.y - (sharks[0].y + sharks[0].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
@@ -220,6 +224,14 @@ def gameAI(genomes, config, trainedAI=False):
                                     abs(fish.x - (sharks[1].x + sharks[1].img.get_width()/2)), #DISTANCE TO SHARK CENTER X
                                     abs(fish.x - (fishermen[0].x + fishermen[0].img.get_width())), #DISTANCE TO FISHERMAN BOTTOM X
                                     abs(fish.x -(worms[0].x + worms[0].img.get_width()/2)) #DISTANCE TO WORM CENTER X
+=======
+                                    fishermen[0].y + fishermen[0].img.get_height(), #FISHERMAN HEIGHT BOTTOM
+                                    worms[0].y + (worms[0].img.get_height()/2), #FISHERMAN HEIGHT center
+                                    abs(fish.y - sharks[0].y + (sharks[0].img.get_height()/2)), #DISTANCE TO SHARK CENTER
+                                    abs(fish.y - sharks[1].y + (sharks[1].img.get_height()/2)), #DISTANCE TO SHARK CENTER
+                                    abs(fish.y - fishermen[0].y + fishermen[0].img.get_height()), #DISTANCE TO FISHERMAN BOTTOM
+                                    abs(fish.y -worms[0].y + (worms[0].img.get_height()/2)) #DISTANCE TO WORM CENTER
+>>>>>>> 202a7ced933b33d885b25fd04a0c28bb1dee4068
                                     ))
             
             # if output is greater than .5, swim up
@@ -327,6 +339,7 @@ def run(config_path, trainedAI=False):
         mypop.add_reporter(MyReporter.myReporter(True)) #MyReporter is a Std.Out Reporter Extension in which we upload GenDatamodel to database.
         
         # Runs the game 150 times, and returns the winner of the game, can be stored.
+<<<<<<< HEAD
         bestFit = mypop.run(gameAI,1000)
         
         with open('trainedModel.pkl', 'wb') as f:
@@ -351,10 +364,17 @@ def run(config_path, trainedAI=False):
         except:
             print("Error in Visualizing")
         
+=======
+        bestFit = mypop.run(gameAI,500)
+        
+        with open('trainedModel.pkl', 'wb') as f:
+            pickle.dump(bestFit, f)
+>>>>>>> 202a7ced933b33d885b25fd04a0c28bb1dee4068
         
     else:
         with open('trainedModel.pkl', 'rb') as f:
             genome = pickle.load(f)
+<<<<<<< HEAD
             f.close()
         
         # Convert loaded genome into required data structure
@@ -362,6 +382,16 @@ def run(config_path, trainedAI=False):
         
         gameAI(genomes, config)
 
+=======
+        
+        # Convert loaded genome into required data structure
+        genomes = [(1, genome)]
+
+        # Call game with only the loaded genome
+        gameAI(genomes, config)
+    
+    
+>>>>>>> 202a7ced933b33d885b25fd04a0c28bb1dee4068
 
 # title screen, allows user to start game, or watch AI play game
 def titleScreen():
