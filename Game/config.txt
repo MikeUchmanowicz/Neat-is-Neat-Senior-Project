@@ -2,7 +2,7 @@
 # The criterion to use for selecting the most fit genomes
     fitness_criterion     = max
 # The fitness threshold at which the evolutionary process will stop
-    fitness_threshold     = 1500
+    fitness_threshold     = 1750
 # The size of the population
     pop_size              = 35
 # Whether to reset the population if it goes extinct

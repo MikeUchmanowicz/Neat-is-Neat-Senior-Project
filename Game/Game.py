@@ -316,14 +316,14 @@ def run(config_path, trainedAI=False):
         
         #p.add_reporter(neat.StdOutReporter(True))
         mypop.add_reporter(mystats)
-        mypop.add_reporter(MyReporter.myReporter(True)) #MyReporter is a Std.Out Reporter Extension in which we upload GenDatamodel to database.
+        mypop.add_reporter(MyReporter.myReporter(True, True)) #MyReporter is a Std.Out Reporter Extension in which we upload GenDatamodel to database.
         
         # Create a save / checkpoint file every 100 generations
         checkpoint = neat.Checkpointer(generation_interval=50, filename_prefix='neat-checkpoint-')
         mypop.add_reporter(checkpoint)
         
         # Runs the game 150 times, and returns the winner of the game, can be stored.
-        bestFit = mypop.run(gameAI,2000)
+        bestFit = mypop.run(gameAI,5000)
         
         with open('trainedModel.pkl', 'wb') as f:
             pickle.dump(bestFit, f)
@@ -338,14 +338,19 @@ def run(config_path, trainedAI=False):
         #genomes = [(1, genome)]
         
         # Load the population from a checkpoint file
-        checkpoint_file = 'neat-checkpoint-324'
+        checkpoint_file = 'neat-checkpoint-693'
         mypop = neat.Checkpointer.restore_checkpoint(checkpoint_file)
         mystats = neat.StatisticsReporter()
         
+        # Create a save / checkpoint file every 100 generations
+        checkpoint = neat.Checkpointer(generation_interval=50, filename_prefix='neat-checkpoint-')
+        mypop.add_reporter(checkpoint)
+        
         #p.add_reporter(neat.StdOutReporter(True))
+        mypop.add_reporter(MyReporter.myReporter(True, False)) #MyReporter is a Std.Out Reporter Extension in which we upload GenDatamodel to database.
         mypop.add_reporter(mystats)
         #gameAI(genomes, config)
-        bestFit = mypop.run(gameAI, 2000)
+        bestFit = mypop.run(gameAI, 5000)
 
 
 # title screen, allows user to start game, or watch AI play game

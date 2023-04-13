@@ -7,17 +7,19 @@ from DataAccess import AIDAO
 
 class myReporter(neat.StdOutReporter):
     
-    def __init__(self, show_species_detail):
+    def __init__(self, show_species_detail, useDatabase):
+        self.useDatabase = useDatabase
         self.show_species_detail = show_species_detail
         self.generation = None
         self.generation_start_time = None
         self.generation_times = []
         self.num_extinctions = 0
         
-        ##############################################################################
-        print("AIDAO.deleteAllGen()")
-        AIDAO.deleteAllGen()
-        ##############################################################################
+        if self.useDatabase:
+            ##############################################################################
+            print("AIDAO.deleteAllGen()")
+            AIDAO.deleteAllGen()
+            ##############################################################################
         
     def post_evaluate(self, config, population, species, best_genome):
         print ("\n START POST EVAL \n")
@@ -68,12 +70,13 @@ class myReporter(neat.StdOutReporter):
             """
             d=models.DataModel(self.generation,n,round(fit_mean, 3), round(fit_std, 3), f, af, st)
             
-        ##############################################################################
-        print("AIDAO.insertOneGen(d)")    
-        AIDAO.insertOneGen(d)
-        ##############################################################################    
-        
-        print ("\n END POST EVAL \n")  
+        if self.useDatabase:    
+            ##############################################################################
+            print("AIDAO.insertOneGen(d)")    
+            AIDAO.insertOneGen(d)
+            ##############################################################################    
+            
+            print ("\n END POST EVAL \n")  
         
         
 
