@@ -7,14 +7,14 @@ WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 480
 
 #Load all class images. 
-FISH_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishup.png")), (55, 42)),
-            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishmid.png")), (55, 42)), 
-            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishdown.png")), (55, 42))]
+FISH_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishup.png")), (49, 38)),
+            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishmid.png")), (49, 38)), 
+            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishdown.png")), (49, 38))]
 
-SHARK_IMGS = [pygame.image.load(os.path.join("imgs", "shark.png")),
-            pygame.image.load(os.path.join("imgs", "shark2.png"))]
+SHARK_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark.png")), (170, 84)),
+            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark2.png")), (170, 84))]
 WORM_IMG = pygame.image.load(os.path.join("imgs", "worm.png"))
-FISHERMAN_IMG = pygame.image.load(os.path.join  ("imgs", "fisherman2.png"))
+FISHERMAN_IMG = pygame.image.load(os.path.join  ("imgs", "fisherman3.png"))
 BG_IMG = pygame.image.load(os.path.join  ("imgs", "background.png"))
 
 # class Fish: used by player or ai in python game.py
@@ -161,7 +161,7 @@ class Shark:
         
     # sets the x value of the shark
     def set_x(self):
-        self.x=rnd.randrange(650, 850)    
+        self.x=rnd.randrange(700, 950)    
     
     # causes shark to "go left" when called
     def move(self):
@@ -169,11 +169,11 @@ class Shark:
         self.tick_count += 1
         
         # show animation image based on tick count.
-        if self.tick_count < 8:
+        if self.tick_count < 20:
             self.img=self.IMGS[0]
-        elif self.tick_count < 16:
+        elif self.tick_count < 40:
             self.img=self.IMGS[1]
-        elif self.tick_count < 24:
+        elif self.tick_count < 60:
             self.img=self.IMGS[0]
             self.tick_count = 0
     

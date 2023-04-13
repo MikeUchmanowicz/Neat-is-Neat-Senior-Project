@@ -202,18 +202,18 @@ def gameAI(genomes, config, trainedAI=False):
                                     sharks[1].y + (sharks[1].img.get_height()/2), #SHARK HEIGHT center
                                     fishermen[0].y + fishermen[0].img.get_height(), #FISHERMAN HEIGHT center
                                     worms[0].y + (worms[0].img.get_height()/2), #FISHERMAN HEIGHT center
-                                    abs(fish.y - (sharks[0].y + sharks[0].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
-                                    abs(fish.y - (sharks[1].y + sharks[1].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
-                                    abs(fish.y - (fishermen[0].y + fishermen[0].img.get_height())), #DISTANCE TO FISHERMAN BOTTOM Y
-                                    abs(fish.y -(worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
-                                    abs(fish.x - sharks[0].x), #DISTANCE TO SHARK X
-                                    abs(fish.x - sharks[1].x), #DISTANCE TO SHARK X
-                                    abs(fish.x - fishermen[0].x), #DISTANCE TO FISHERMAN X
-                                    abs(fish.x - worms[0].x) #DISTANCE TO WORM CENTER X
+                                    (fish.y - (sharks[0].y + sharks[0].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
+                                    (fish.y - (sharks[1].y + sharks[1].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
+                                    (fish.y - (fishermen[0].y + fishermen[0].img.get_height())), #DISTANCE TO FISHERMAN BOTTOM Y
+                                    (fish.y -(worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
+                                    (fish.x - sharks[0].x), #DISTANCE TO SHARK X
+                                    (fish.x - sharks[1].x), #DISTANCE TO SHARK X
+                                    (fish.x - fishermen[0].x), #DISTANCE TO FISHERMAN X
+                                    (fish.x - worms[0].x) #DISTANCE TO WORM CENTER X
                                     ))
             
             # if output is greater than .5, swim up
-            if output[0] > 0.5:
+            if output[0] > 0:
                 ticksDown = 0
                 ticksUp += 1
                 fish.swimUp(ticksUp)
@@ -223,7 +223,7 @@ def gameAI(genomes, config, trainedAI=False):
                 fish.move(ticksDown)
         
             if fish.y + fish.img.get_height() <= 5 or fish.y >= 470: # if fish is out of bounds, decrease fitness of fish, remove fish from game
-                gens[x].fitness -= 50
+                gens[x].fitness -= 25
                 fishes.pop(x)
                 nets.pop(x)
                 gens.pop(x)
@@ -232,8 +232,9 @@ def gameAI(genomes, config, trainedAI=False):
             shark.move()
             for x, fish in enumerate(fishes): 
                 
-                if not shark.passed and shark.x < fish.x:
-                    gens[x].fitness += 15
+                if not shark.passed and (shark.x + shark.img.get_width()) < fish.x:
+                    for g in gens:
+                        g.fitness += 13
                     shark.passed = True
                 
                 if fish.collide(shark): # if fish collides with shark, decrease fitness of fish, remove fish from game
@@ -249,14 +250,14 @@ def gameAI(genomes, config, trainedAI=False):
             sharks.append(Shark()) # add new object to replace removed object (right)
         toRemove.clear()  
             
-            
         for fisherman in fishermen:
             fisherman.move()
             
             for x, fish in enumerate(fishes): 
                 
-                if not fisherman.passed and fisherman.x < fish.x:
-                    gens[x].fitness += 15
+                if not fisherman.passed and (fisherman.x + fisherman.img.get_width()) < fish.x:
+                    for g in gens:
+                        g.fitness += 13
                     fisherman.passed = True
                 
                 if fish.collide(fisherman): # if fish collides with fisherman, decrease fitness of fish, remove fish from game
@@ -271,7 +272,6 @@ def gameAI(genomes, config, trainedAI=False):
             fishermen.remove(fisherman) # remove object from list of objects
             fishermen.append(Fisherman()) # add new object to replace removed object (right)
         toRemove.clear()  
-        
         
         for worm in worms:
             worm.move()
@@ -288,7 +288,6 @@ def gameAI(genomes, config, trainedAI=False):
             worms.remove(worm) # remove object from list of objects
             worms.append(Worm()) # add new object to replace removed object (right)
         toRemove.clear()    
-        
         
         # determine max fitness of all fishes/genomes
         max_fit = 0
@@ -320,7 +319,7 @@ def run(config_path, trainedAI=False):
         mypop.add_reporter(MyReporter.myReporter(True)) #MyReporter is a Std.Out Reporter Extension in which we upload GenDatamodel to database.
         
         # Create a save / checkpoint file every 100 generations
-        checkpoint = neat.Checkpointer(generation_interval=100, filename_prefix='neat-checkpoint-')
+        checkpoint = neat.Checkpointer(generation_interval=50, filename_prefix='neat-checkpoint-')
         mypop.add_reporter(checkpoint)
         
         # Runs the game 150 times, and returns the winner of the game, can be stored.
@@ -339,7 +338,7 @@ def run(config_path, trainedAI=False):
         #genomes = [(1, genome)]
         
         # Load the population from a checkpoint file
-        checkpoint_file = 'neat-checkpoint-359'
+        checkpoint_file = 'neat-checkpoint-324'
         mypop = neat.Checkpointer.restore_checkpoint(checkpoint_file)
         mystats = neat.StatisticsReporter()
         
