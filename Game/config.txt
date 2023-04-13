@@ -4,7 +4,7 @@
 # The fitness threshold at which the evolutionary process will stop
     fitness_threshold     = 1750
 # The size of the population
-    pop_size              = 35
+    pop_size              = 50
 # Whether to reset the population if it goes extinct
     reset_on_extinction   = True
 
@@ -73,7 +73,7 @@
 
 # Network parameters
     num_hidden              = 0
-    num_inputs              = 14
+    num_inputs              = 7
     num_outputs             = 1
 
 # Node response options
