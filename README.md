@@ -33,11 +33,11 @@ The project consists of a main python script using Pygame with an implemented Ne
 
 The user can start the main python script via a terminal.  Upon start of the main script, the user will be prompted via a Pygame GUI to select whether they’d like to play the game or view the AI demo. Based on their selection, the game module will be launched and they will be loaded into their selection. If they chose to play the game, a game window will open in which they can control a “fish” and navigate him through the “water”, collecting worms and avoiding “fishermen” and “sharks” while attempting to go the furthest distance possible. If they chose to view the AI demo, they will be loaded into a visual demonstration where they can watch the AI attempt the same game through evolving generations. With each generation of the game, the main python script will create a model and post that generation’s data to the MySQL database.
 <div align="center">
-<img alt = "High Level Block Diagram" src="Documentation/Game Wireframe.png">
+<img alt = "Game Wireframe" src="Documentation/Game Wireframe.png">
 </div>  
 
 A Django application will support viewing informational pages, logging in, registering, and the viewing of generational ai data that it will pull from a MySQL database. The Django app will be cloud hosted within an Elastic Beanstalk container in AWS, using AWS EC2 to store the app and AWS RDS to store the database information and data.
- 
+
 ## Objectives
 
 * Created game should be, to some degree, fun.  
@@ -74,24 +74,11 @@ Essentially, we will be creating a population of AI from a NEAT config file that
 </div>  
 
 The Django web-application will be simple. It will consist of three “apps” or “applets”, one for general information display like accessing any home or informatory pages, another app for registering and logging in users, and another app for retrieving and displaying AI generational data that will be retrieved from a MySQL database A user must login to use the website, and otherwise will only be able to see the home page. The views will only be able to interact with models using the Django ORM which will be implemented in included Service modules. The Django app will be cloud hosted within an Elastic Beanstalk container in AWS, using aws EC2 to store the app and AWS RDS to store the database information and data.
-<!--
-## Visual Design
 
-Here is a wireframe of the Game / Main Scripts elements.
-<div align="center">
-<img alt = "Game's Wireframe" src="Documentation/Game Wireframe.png">
-</div>  
 
-Here is a wireframe of the Django DemoInfo page that will be updated with each iteration of the AI attempting the game 
-<div align="center">
-<img alt = "Game's Wireframe" src="Documentation/Django Wireframes/DemoInfo.png">
-</div>  
-
-For the sake of time and space, all other wireframes are included in the [Documentation within this repository](Documentation/). 
--->
 ## Logical Design
 <div align="center">
-<img alt = "Logical Diagram" src="Documentation/LOGICAL DIAGRAM.png">
+<img alt = "Logical Diagram" src="Documentation/LOGICAL DIAGRAMNEW.png">
 </div>  
 
 #### Game AI & Demo
@@ -104,7 +91,7 @@ The user will connect to the Django webapp via HTTPS and will be responsible for
 
 ## Physical Design
 <div align="center">
-<img alt = "Physical Diagram" src="Documentation/PHYSICAL DIAGRAM.png">
+<img alt = "Physical Diagram" src="Documentation/PHYSICAL DIAGRAMNEW.png">
 </div>  
 The user will start the main python script from their local machine, where it will be stored locally. The script will run the python game or AI demo and then post generational data using a model (if AI Demo) to an AWS RDS container using port 3306 within AWS EBS (Elastic Bean Stalk). A Django webapp running in an AWS EC2 container within the AWS EBS will retrieve this data via port 3306 and display it to the user within the Django app via port 80.
 
@@ -171,7 +158,7 @@ Out of scope features include: configuration of the AI config file through the w
 ## Additional Documentation
 
 #### ER Diagram
-<img alt = "ER Diagram" src="Documentation/ER DIAGRAM.png">
+<img alt = "ER Diagram" src="Documentation/ER DIAGRAMNEW.png">
 
 #### Game UML
 
@@ -179,7 +166,7 @@ Out of scope features include: configuration of the AI config file through the w
 
 #### Django UML
 
-<img alt = "UML Diagram" src="Documentation/UML.png">
+<img alt = "UML Diagram" src="Documentation/DJANGOUMLNEW.png">
 
 ____
 
