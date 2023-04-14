@@ -173,7 +173,7 @@ def gameAI(genomes, config, trainedAI=False):
     # adds base objects
     sharks = [Shark(), Shark()]
     fishermen = [Fisherman()]
-    worms = []
+    worms = [Worm()]
     background = Background()
     toRemove=[] #list of objects to remove (if they go off screen)
 
@@ -197,7 +197,7 @@ def gameAI(genomes, config, trainedAI=False):
             #gens[x].fitness += 0.1 # increase fitness of each fish by .1 every frame (distance moved)
 
             output = nets[x].activate((
-                                    fish.SPEED , # FISH SPEED
+                                    fish.SPEED, # FISH SPEED
                                     # fish.y + (fish.img.get_height()/2), # FISH HEIGHT center
                                     # sharks[0].y + (sharks[0].img.get_height()/2), #SHARK HEIGHT center
                                     # sharks[1].y + (sharks[1].img.get_height()/2), #SHARK HEIGHT center
@@ -206,15 +206,16 @@ def gameAI(genomes, config, trainedAI=False):
                                     (fish.y - (sharks[0].y + sharks[0].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
                                     (fish.y - (sharks[1].y + sharks[1].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
                                     (fish.y - (fishermen[0].y + fishermen[0].img.get_height())), #DISTANCE TO FISHERMAN BOTTOM Y
-                                    #(fish.y -(worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
+                                    (fish.y -(worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
+                                    (WINDOW_HEIGHT - fish.y),    # distance to window bottom
                                     (fish.x - sharks[0].x), #DISTANCE TO SHARK X
                                     (fish.x - sharks[1].x), #DISTANCE TO SHARK X
                                     (fish.x - fishermen[0].x), #DISTANCE TO FISHERMAN X
-                                    #(fish.x - worms[0].x) #DISTANCE TO WORM CENTER X
+                                    (fish.x - worms[0].x) #DISTANCE TO WORM CENTER X
                                     ))
             
             # if output is greater than .5, swim up
-            if output[0] > 0:
+            if output[0] > output[1]:
                 ticksDown = 0
                 ticksUp += 1
                 fish.swimUp(ticksUp)
@@ -223,7 +224,7 @@ def gameAI(genomes, config, trainedAI=False):
                 ticksDown +=1
                 fish.move(ticksDown)
         
-            if fish.y + fish.img.get_height() <= 5 or fish.y >= 470: # if fish is out of bounds, decrease fitness of fish, remove fish from game
+            if fish.y <= 0 or (fish.y + fish.img.get_height()) >= WINDOW_HEIGHT: # if fish is out of bounds, decrease fitness of fish, remove fish from game
                 gens[x].fitness -= 50
                 fishes.pop(x)
                 nets.pop(x)
@@ -239,13 +240,12 @@ def gameAI(genomes, config, trainedAI=False):
                         g.fitness += 7.5
                     shark.passed = True
                 
-                if not (shark.y - 43 <= (fish.y + fish.img.get_width()) <= shark.y + 42):
-                    gens[x].fitness += .15
-                else:
-                    gens[x].fitness += .15
+                if not (shark.y - 43 <= (fish.y + fish.img.get_width()) <= shark.y + 43):
+                    gens[x].fitness += .1
+                
                 
                 if fish.collide(shark): # if fish collides with shark, decrease fitness of fish, remove fish from game
-                    gens[x].fitness -= 25
+                    #gens[x].fitness -= 50
                     fishes.pop(x) 
                     nets.pop(x)
                     gens.pop(x)
@@ -264,11 +264,14 @@ def gameAI(genomes, config, trainedAI=False):
                 
                 if not fisherman.passed and (fisherman.x + fisherman.img.get_width()) < fish.x:
                     for g in gens:
-                        g.fitness += 13
+                        g.fitness += 7.5
                     fisherman.passed = True
+                    
+                if not (fish.y  <= (fisherman.y + fisherman.img.get_height())):
+                    gens[x].fitness += .1
                 
                 if fish.collide(fisherman): # if fish collides with fisherman, decrease fitness of fish, remove fish from game
-                    gens[x].fitness -= 25
+                    #gens[x].fitness -= 50
                     fishes.pop(x) 
                     nets.pop(x)
                     gens.pop(x)
@@ -280,23 +283,22 @@ def gameAI(genomes, config, trainedAI=False):
             fishermen.append(Fisherman()) # add new object to replace removed object (right)
         toRemove.clear()  
         
-        # for worm in worms:
-        #     worm.move()
+        for worm in worms:
+            worm.move()
             
-        #     for x, fish in enumerate(fishes): 
-        #         if not worm.collected and fish.collide(worm): # if fish collides with worm, increase fitness of fish, remove worm
-        #             gens[x].fitness += 25
-        #             worm.collected = True
-        #             toRemove.append(worm)
+            for x, fish in enumerate(fishes): 
+                if not worm.collected and fish.collide(worm): # if fish collides with worm, increase fitness of fish, remove worm
+                    gens[x].fitness += 25
+                    worm.collected = True
+                    toRemove.append(worm)
             
-        #     if worm.x + worm.img.get_width() < 0: # if object is off screen (left), remove it 
-        #         toRemove.append(worm) # add object to list of objects to remove
-        # for worm in toRemove:
-        #     worms.remove(worm) # remove object from list of objects
-        #     worms.append(Worm()) # add new object to replace removed object (right)
-        # toRemove.clear()    
+            if worm.x + worm.img.get_width() < 0: # if object is off screen (left), remove it 
+                toRemove.append(worm) # add object to list of objects to remove
+        for worm in toRemove:
+            worms.remove(worm) # remove object from list of objects
+            worms.append(Worm()) # add new object to replace removed object (right)
+        toRemove.clear()    
         
-        # determine max fitness of all fishes/genomes
         max_fit = 0
         for g in gens:
             if g.fitness > max_fit:

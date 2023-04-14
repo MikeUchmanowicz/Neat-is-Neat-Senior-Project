@@ -3,8 +3,8 @@ import os
 import random as rnd
 
 # set window size and title
-WINDOW_WIDTH = 640
-WINDOW_HEIGHT = 480
+WINDOW_WIDTH:int = 640
+WINDOW_HEIGHT:int = 480
 
 #Load all class images. 
 FISH_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishup.png")), (49, 38)),
