@@ -162,7 +162,7 @@ Out of scope features include: configuration of the AI config file through the w
 
 #### Game UML
 
-<img alt = "UML Diagram" src="Documentation/GAMEUML.png">
+<img alt = "UML Diagram" src="Documentation/GAMEUMLNEW.png">
 
 #### Django UML
 
