@@ -288,7 +288,7 @@ def gameAI(genomes, config, trainedAI=False):
             
             for x, fish in enumerate(fishes): 
                 if not worm.collected and fish.collide(worm): # if fish collides with worm, increase fitness of fish, remove worm
-                    gens[x].fitness += 50
+                    gens[x].fitness += 25
                     worm.collected = True
                     toRemove.append(worm)
             

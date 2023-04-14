@@ -32,9 +32,9 @@
 
 [DefaultGenome]
 # Node activation options
-    activation_default      = relu
+    activation_default      = tanh
     activation_mutate_rate  = 0.0
-    activation_options      = relu
+    activation_options      = tanh
 
 # Node aggregation options
     aggregation_default     = sum
@@ -65,7 +65,7 @@
 # Whether to use a feed-forward network
     feed_forward            = True
 # The initial connection type (e.g. full or partial)
-    initial_connection      = full_nodirect
+    initial_connection      = full
 
 # Node add/remove rates
     node_add_prob           = 0.2
@@ -73,7 +73,7 @@
 
 # Network parameters
     num_inputs              = 6
-    num_hidden              = 4
+    num_hidden              = 0
     num_outputs             = 2
 
 # Node response options
