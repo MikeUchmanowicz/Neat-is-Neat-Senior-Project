@@ -14,7 +14,6 @@ import os
 
 pygame.display.set_caption(TITLE)
 
-
 stats = {'Score':0}
 stats = {'High Score':0}
 GEN = 0  
@@ -197,21 +196,22 @@ def gameAI(genomes, config, trainedAI=False):
             #gens[x].fitness += 0.1 # increase fitness of each fish by .1 every frame (distance moved)
 
             output = nets[x].activate((
-                                    fish.SPEED, # FISH SPEED
-                                    # fish.y + (fish.img.get_height()/2), # FISH HEIGHT center
+                                    fish.SPEED, # FISH SPEED / velocity
+                                    abs(WINDOW_HEIGHT - fish.y),    # distance to window bottom
+                                    # fish.y, # FISH HEIGHT
                                     # sharks[0].y + (sharks[0].img.get_height()/2), #SHARK HEIGHT center
                                     # sharks[1].y + (sharks[1].img.get_height()/2), #SHARK HEIGHT center
                                     # fishermen[0].y + fishermen[0].img.get_height(), #FISHERMAN HEIGHT center
                                     # worms[0].y + (worms[0].img.get_height()/2), #WORM HEIGHT center
-                                    (fish.y - (sharks[0].y + sharks[0].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
-                                    (fish.y - (sharks[1].y + sharks[1].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
-                                    (fish.y - (fishermen[0].y + fishermen[0].img.get_height())), #DISTANCE TO FISHERMAN BOTTOM Y
-                                    (fish.y -(worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
-                                    (WINDOW_HEIGHT - fish.y),    # distance to window bottom
-                                    (fish.x - sharks[0].x), #DISTANCE TO SHARK X
-                                    (fish.x - sharks[1].x), #DISTANCE TO SHARK X
-                                    (fish.x - fishermen[0].x), #DISTANCE TO FISHERMAN X
-                                    (fish.x - worms[0].x) #DISTANCE TO WORM CENTER X
+                                    abs(fish.y - (sharks[0].y + sharks[0].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
+                                    abs(fish.y - (sharks[1].y + sharks[1].img.get_height()/2)), #DISTANCE TO SHARK CENTER Y
+                                    abs(fish.y - (fishermen[0].y + fishermen[0].img.get_height())), #DISTANCE TO FISHERMAN BOTTOM Y
+                                    abs(fish.y - (worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
+                                    
+                                    # (fish.x - sharks[0].x), #DISTANCE TO SHARK X
+                                    # (fish.x - sharks[1].x), #DISTANCE TO SHARK X
+                                    # (fish.x - fishermen[0].x), #DISTANCE TO FISHERMAN X
+                                    # (fish.x - worms[0].x), #DISTANCE TO WORM CENTER X
                                     ))
             
             # if output is greater than .5, swim up
@@ -225,7 +225,7 @@ def gameAI(genomes, config, trainedAI=False):
                 fish.move(ticksDown)
         
             if fish.y <= 0 or (fish.y + fish.img.get_height()) >= WINDOW_HEIGHT: # if fish is out of bounds, decrease fitness of fish, remove fish from game
-                gens[x].fitness -= 50
+                gens[x].fitness = 0
                 fishes.pop(x)
                 nets.pop(x)
                 gens.pop(x)
@@ -240,12 +240,12 @@ def gameAI(genomes, config, trainedAI=False):
                         g.fitness += 7.5
                     shark.passed = True
                 
-                if not (shark.y - 43 <= (fish.y + fish.img.get_width()) <= shark.y + 43):
+                if not (shark.y - 43 <= (fish.y + fish.img.get_height()/2) <= shark.y + 43):
                     gens[x].fitness += .1
                 
                 
                 if fish.collide(shark): # if fish collides with shark, decrease fitness of fish, remove fish from game
-                    #gens[x].fitness -= 50
+                    #gens[x].fitness = 0
                     fishes.pop(x) 
                     nets.pop(x)
                     gens.pop(x)
@@ -271,7 +271,7 @@ def gameAI(genomes, config, trainedAI=False):
                     gens[x].fitness += .1
                 
                 if fish.collide(fisherman): # if fish collides with fisherman, decrease fitness of fish, remove fish from game
-                    #gens[x].fitness -= 50
+                    #gens[x].fitness = 0
                     fishes.pop(x) 
                     nets.pop(x)
                     gens.pop(x)
@@ -288,7 +288,7 @@ def gameAI(genomes, config, trainedAI=False):
             
             for x, fish in enumerate(fishes): 
                 if not worm.collected and fish.collide(worm): # if fish collides with worm, increase fitness of fish, remove worm
-                    gens[x].fitness += 25
+                    gens[x].fitness += 50
                     worm.collected = True
                     toRemove.append(worm)
             
