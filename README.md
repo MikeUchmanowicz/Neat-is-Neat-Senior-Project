@@ -158,7 +158,7 @@ Out of scope features include: configuration of the AI config file through the w
 ## Additional Documentation
 
 #### ER Diagram
-<img alt = "ER Diagram" src="Documentation/ER DIAGRAMNEW.png">
+<img alt = "ER Diagram" src="Documentation/ERDIAGRAMNEW.png">
 
 #### Game UML
 
