@@ -11,8 +11,8 @@ FISH_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fish
             pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishmid.png")), (49, 38)), 
             pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishdown.png")), (49, 38))]
 
-SHARK_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark.png")), (170, 84)),
-            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark2.png")), (170, 84))]
+SHARK_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark.png")), (170, 78)),
+            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark2.png")), (170, 78))]
 WORM_IMG = pygame.image.load(os.path.join("imgs", "worm.png"))
 FISHERMAN_IMG = pygame.image.load(os.path.join  ("imgs", "fisherman3.png"))
 BG_IMG = pygame.image.load(os.path.join  ("imgs", "background.png"))
@@ -28,6 +28,8 @@ class Fish:
         self.SPEED = 5.5
         self.tick_count = 0
         self.img = self.IMGS[0]
+        self.lastTime = 0
+        self.lastPos = 0
 
     # causes fish to "go up" when called
     def swimUp(self, ticks):
@@ -168,6 +170,7 @@ class Shark:
         self.x -= self.SPEED
         self.tick_count += 1
         
+    def animate(self):
         # show animation image based on tick count.
         if self.tick_count < 20:
             self.img=self.IMGS[0]

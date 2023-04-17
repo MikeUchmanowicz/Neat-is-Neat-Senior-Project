@@ -19,9 +19,14 @@ html{
 {
     display: flex;
     flex-flow: row wrap;   
-    justify-content: space-evenly;
+
 }
 .col{
     padding-left:1%;
     padding-right:1%;
+}
+
+.chartbox{
+    flex-basis:70%;
+    float:top;
 }

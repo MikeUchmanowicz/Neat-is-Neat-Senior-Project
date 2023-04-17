@@ -8,36 +8,15 @@
 {% block content %}
 
 <div class="info">
-
-    <div class="col">
-        <br>
-        <h2 align="center">Results of Demo</h2>
-        <br>
-
-        <ul class="list-group">
-            
-            {% for data in aidatalist.all %}
-                <li class="list-group-item"><b>gen</b>: {{data.gen}}</li>
-                <li class="list-group-item"><b>popSize</b>: {{data.popSize}}</li>
-                <li class="list-group-item"><b>avgFit</b>: {{data.avgFit|floatformat:3}}</li>
-                <li class="list-group-item"><b>stdDevFit</b>: {{data.stdDevFit}}</li>
-                <li class="list-group-item"><b>bestFit</b>: {{data.bestFit}}</li>
-                <li class="list-group-item"><b>adjFit</b>: {{data.adjFit}}</li>
-                <li class="list-group-item"><b>stag</b>: {{data.stag}}</li>
-                <hr>
-            {% endfor %}
-        </ul>    
-    </div>
-
     
-    <div class="col" align="center" style="flex-basis: 35%;">
+    <div class="col" style="flex-basis:70%;">
         
         <br>
-        <h2 >Fitness Over Generations</h2>
+        <h2 align="center">Fitness Over Generations</h2>
         <br>
 
         <div >
-            <canvas style="width:100%;" id="linechart"></canvas>
+            <canvas style="width:100%; height:800;" id="linechart"></canvas>
         </div>
             
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
@@ -78,9 +57,27 @@
         </script>
     </div>
 
-    <div class="col" align="center">
+    <div class="col">
+        <h2 align="center">Results of Demo</h2>
         <br>
-        <h2>Sort Results</h2>
+        <ul class="list-group" >
+            
+            {% for data in aidatalist.all %}
+                <li class="list-group-item"><b>gen</b>: {{data.gen}}</li>
+                <li class="list-group-item"><b>popSize</b>: {{data.popSize}}</li>
+                <li class="list-group-item"><b>avgFit</b>: {{data.avgFit|floatformat:3}}</li>
+                <li class="list-group-item"><b>stdDevFit</b>: {{data.stdDevFit}}</li>
+                <li class="list-group-item"><b>bestFit</b>: {{data.bestFit}}</li>
+                <li class="list-group-item"><b>adjFit</b>: {{data.adjFit}}</li>
+                <li class="list-group-item"><b>stag</b>: {{data.stag}}</li>
+                <hr>
+            {% endfor %}
+        </ul>    
+    </div>
+
+    <div class="col" style="width:20%">
+        <br>
+        <h2 align="center">Sort Results</h2>
         <br><br>
         <form method="post" action = "{% url 'sortDemoInfo' %}" class="form-control">
             {% csrf_token %}
@@ -98,7 +95,7 @@
             <input class= "btn btn-primary form-control" type="submit" value="Submit">
             <br>
         </form>
-
+        <br>
     </div>
 
 </div>
