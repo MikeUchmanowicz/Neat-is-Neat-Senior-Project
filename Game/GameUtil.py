@@ -1,4 +1,7 @@
 import pygame
+import os
+import graphviz
+import neat
 
 # set window size and title
 WINDOW_WIDTH = 640
@@ -43,3 +46,32 @@ def draw_background(win:pygame.display, background):
     background.draw(win)
     # update the display
     pygame.display.update()
+    
+
+
+def draw_net(config, genome, view=False, filename=None):
+    # Load the configuration file
+    node_names = { -1:'x', -2:'y', 0:'output' }
+    for i in range(len(config.genome_config.input_keys)):
+        node_names[i] = 'input{}'.format(i)
+    # Create a Graphviz graph
+    g = graphviz.Digraph(format='png')
+    # Add nodes for each neuron
+    for node in genome.nodes:
+        if node in node_names:
+            label = node_names[node]
+        else:
+            label = str(node)
+        color = 'blue' if node < 0 else 'black'
+        g.node(str(node), label=label, style='filled', fillcolor=color)
+    # Add edges for each connection
+    for edge in genome.connections.values():
+        if edge.enabled:
+            color = 'green' if edge.weight > 0 else 'red'
+            g.edge(str(edge.in_node), str(edge.out_node), label='{:.1f}'.format(edge.weight), color=color)
+    # View or save the graph
+    if view:
+        g.view()
+    if filename:
+        g.render(filename, directory=os.path.join(os.getcwd(), 'graphs'), cleanup=True)
+

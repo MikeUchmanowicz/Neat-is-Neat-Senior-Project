@@ -2,9 +2,9 @@
 # The criterion to use for selecting the most fit genomes
     fitness_criterion     = max
 # The fitness threshold at which the evolutionary process will stop
-    fitness_threshold     = 1750
+    fitness_threshold     = 1500
 # The size of the population
-    pop_size              = 10
+    pop_size              = 1
 # Whether to reset the population if it goes extinct
     reset_on_extinction   = True
 
@@ -32,9 +32,9 @@
 
 [DefaultGenome]
 # Node activation options
-    activation_default      = tanh
+    activation_default      = leaky_ReLU
     activation_mutate_rate  = 0.0
-    activation_options      = tanh
+    activation_options      = leaky_ReLU
 
 # Node aggregation options
     aggregation_default     = sum

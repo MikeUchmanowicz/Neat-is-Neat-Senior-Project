@@ -1,13 +1,14 @@
 from GameModels import Fish, Fisherman, Shark, Worm, Background
-from GameUtil import TITLE, WINDOW_HEIGHT, WINDOW_WIDTH, draw_background, draw_gameWindow 
+from GameUtil import TITLE, WINDOW_HEIGHT, WINDOW_WIDTH, draw_background, draw_gameWindow, draw_net
 import MyReporter
 import pygame
 import neat
+import visualize
 import pickle
 import time
 import random as rnd
 import os
-import stopwatch as sw
+
 
 """
     NEAT AI Implementation, allowing a user to start a game of Swim, Fish, Swim! to either play the game themselves or watch the AI play the game.
@@ -262,8 +263,8 @@ def gameAI(genomes, config):
                                     #(worms[0].x - fish.x), #DISTANCE TO WORM CENTER X
                                     ))
         
-            # if output is greater than other output, swim up
-            if output[0] > output[1]:
+            # if output is greater than 0, swim up
+            if output[0] > 0.01:
                 ticksDown = 0
                 ticksUp += 1
                 fish.swimUp(ticksUp)
@@ -276,19 +277,20 @@ def gameAI(genomes, config):
             if time % 10 == 0:
                 fish.lastPos = fish.y
                 
-            # if any fish haven't moved more than 2 pixels, increase lastTime
-            if abs(fish.lastPos - fish.y) < 6:
+            # if any fish haven't moved more than 3 pixels, increase lastTime
+            if abs(fish.lastPos - fish.y) < 4:
                 fish.lastTime += 100
             else:
                 fish.lastTime = 0
                 
-            # if fish hasn't moved more than 2 pixels in 40 seconds, remove fish from game
-            if fish.lastPos - fish.y < 6 and fish.lastTime > 40000:
+            # if fish hasn't moved more than 3 pixels in 30 seconds, remove fish from game
+            if fish.lastPos - fish.y < 4 and fish.lastTime > 15000:
                 gens[x].fitness -=.2
+                
             
             # if fish is out of bounds, decrease fitness of fish, remove fish from game
             if fish.y <= 0 or (fish.y + fish.img.get_height()) >= WINDOW_HEIGHT: 
-                gens[x].fitness = 0
+                gens[x].fitness -= 50
                 fishes.pop(x)
                 nets.pop(x)
                 gens.pop(x)
@@ -305,12 +307,12 @@ def gameAI(genomes, config):
                 #     shark.passed = True
                                                                         #IF ALL OF FISH IS INSIDE SHARK Y
                 if (shark.y <= (fish.y) <= shark.y + shark.img.get_height()) and (shark.y <= (fish.y + fish.img.get_height()) <= shark.y + shark.img.get_height()):
-                    gens[x].fitness -= .1
+                    gens[x].fitness -= .3
                                                                         #IF SOME OF FISH IS INSIDE SHARK Y 
                 elif (shark.y <= (fish.y) <= shark.y + shark.img.get_height()) or (shark.y <= (fish.y + fish.img.get_height()) <= shark.y + shark.img.get_height()):
-                    gens[x].fitness -= .05
+                    gens[x].fitness -= .1
                 else:                                                   #IF NONE OF FISH IS INSIDE SHARK Y
-                    gens[x].fitness +=.2
+                    gens[x].fitness +=.3
                 
                 if fish.collide(shark): # if fish collides with shark, decrease fitness of fish, remove fish from game
                     fishes.pop(x) 
@@ -336,7 +338,7 @@ def gameAI(genomes, config):
                 #     fisherman.passed = True
                     
                 if (fish.y  <= fisherman.img.get_height()):
-                    gens[x].fitness -= .1
+                    gens[x].fitness -= .2
                 
                 if fish.collide(fisherman): # if fish collides with fisherman, decrease fitness of fish, remove fish from game
                     gens[x].fitness -= 50
@@ -390,53 +392,69 @@ def leaky_ReLU(x):
         return 0.01*x  
 
 # run NEAT 
-def run(config_path, trainedAI=False):
+def run():
+    
+    local_dir = os.path.dirname(__file__)
+    config_path = os.path.join(local_dir, "config.txt")
     
     # Loads the config file
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
-    config.genome_config.add_activation('leakyReLU', leaky_ReLU)    
-    if not trainedAI:
-        # Creates a population based off config & A Reporter Exctension.        
-        mypop = neat.Population(config)
-        mystats = neat.StatisticsReporter()
+    # Loads self-defined activation function
+    config.genome_config.add_activation('leakyReLU', leaky_ReLU)  
+
+    # Creates a population based off config & A Reporter Exctension.        
+    mypop = neat.Population(config)
+    mystats = neat.StatisticsReporter()
+    
+    #p.add_reporter(neat.StdOutReporter(True))
+    mypop.add_reporter(mystats)
+    mypop.add_reporter(MyReporter.myReporter(True, True)) #MyReporter is a Std.Out Reporter Extension in which we upload GenDatamodel to database.
+    
+    # Create a save / checkpoint file every 100 generations
+    checkpoint = neat.Checkpointer(generation_interval=50, filename_prefix='neat-checkpoint-')
+    mypop.add_reporter(checkpoint)
+    
+    # Runs the game 150 times, and returns the winner of the game, can be stored.
+    best_genome = mypop.run(gameAI, 250)
+
+    # Save the best genome
+    with open('trainedModel.pkl', 'wb') as f:
+        pickle.dump(best_genome, f)
+        f.close()
         
-        #p.add_reporter(neat.StdOutReporter(True))
-        mypop.add_reporter(mystats)
-        mypop.add_reporter(MyReporter.myReporter(True, True)) #MyReporter is a Std.Out Reporter Extension in which we upload GenDatamodel to database.
-        
-        # Create a save / checkpoint file every 100 generations
-        checkpoint = neat.Checkpointer(generation_interval=50, filename_prefix='neat-checkpoint-')
-        mypop.add_reporter(checkpoint)
-        
-        # Runs the game 150 times, and returns the winner of the game, can be stored.
-        bestFit = mypop.run(gameAI,5000)
-        
-        with open('trainedModel.pkl', 'wb') as f:
-            pickle.dump(bestFit, f)
-            f.close()
-        
-    else:
-        #with open('trainedModel.pkl', 'rb') as f:
-            #genome = pickle.load(f)
-            #f.close()
-        
-        # Convert loaded genome into required data structure
-        #genomes = [(1, genome)]
-        
-        # Load the population from a checkpoint file
-        checkpoint_file = 'latest-checkpoint-4776'
-        mypop = neat.Checkpointer.restore_checkpoint(checkpoint_file)
-        mystats = neat.StatisticsReporter()
-        
-        # Create a save / checkpoint file every 100 generations
-        checkpoint = neat.Checkpointer(generation_interval=50, filename_prefix='neat-checkpoint-')
-        mypop.add_reporter(checkpoint)
-        
-        #p.add_reporter(neat.StdOutReporter(True))
-        mypop.add_reporter(MyReporter.myReporter(True, False)) #MyReporter is a Std.Out Reporter Extension in which we upload GenDatamodel to database.
-        mypop.add_reporter(mystats)
-        #gameAI(genomes, config)
-        bestFit = mypop.run(gameAI, 8000)
+def runTrained():
+    
+    local_dir = os.path.dirname(__file__)
+    config_path = os.path.join(local_dir, "config.txt")
+
+    # load the best genome
+    with open('trainedModel.pkl', 'rb') as f:
+        best_genome = pickle.load(f)
+        f.close()
+    
+    # Convert loaded genome into list of genome tuples
+    genomes = [(1, best_genome)]
+    
+    # Loads the config file
+    config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
+
+    # Loads self-defined activation function
+    config.genome_config.add_activation('leakyReLU', leaky_ReLU) 
+
+    # Load the population from a checkpoint file
+    # checkpoint_file = 'latest-checkpoint-4776'
+    # mypop = neat.Checkpointer.restore_checkpoint(checkpoint_file)
+    
+    # Creates a population based off config & A Reporter Extension.        
+    mypop = neat.Population(config)
+    #mypop.best_genome = best_genome
+    mystats = neat.StatisticsReporter()
+    
+    #p.add_reporter(neat.StdOutReporter(True))
+    mypop.add_reporter(MyReporter.myReporter(True, False)) #MyReporter is a Std.Out Reporter Extension in which we upload GenDatamodel to database.
+    mypop.add_reporter(mystats)
+    #gameAI(genomes, config)
+    gameAI(genomes, config)
 
 
 # title screen, allows user to start game, or watch AI play game
@@ -519,22 +537,16 @@ def titleScreen():
                     break
                 
                 elif demo_hovered: # if mouse is clicked on view demo button
-                    # load config file
-                    local_dir = os.path.dirname(__file__)
-                    config_path = os.path.join(local_dir, "config.txt")
                     time.sleep(.5)
                     
-                    run(config_path) # run NEAT AI Simulation
+                    run() # run NEAT AI Simulation
                     runTitleScreen = False
                     break
                 
                 elif trained_demo_hovered:
-                    # load config file
-                    local_dir = os.path.dirname(__file__)
-                    config_path = os.path.join(local_dir, "configTrained.txt")
                     time.sleep(.5)
                     
-                    run(config_path, trainedAI=True) # run NEAT AI Simulation
+                    runTrained() # run NEAT AI Simulation
                     runTitleScreen = False
                     break
                     
