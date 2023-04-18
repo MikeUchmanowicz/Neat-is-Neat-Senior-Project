@@ -254,7 +254,7 @@ def gameAI(genomes, config):
                                     shark0, #DISTANCE TO SHARK Y BASED ON POSITION OF FISH
                                     shark1, #DISTANCE TO SHARK2 Y BASED ON POSITION OF FISH
                                     
-                                    ((fish.y + fish.img.get_height()/2) - (fishermen[0].img.get_height())), #DISTANCE TO FISHERMAN BOTTOM Y
+                                    ((fish.y) - (fishermen[0].img.get_height())), #DISTANCE TO FISHERMAN BOTTOM Y
                                     #((fish.y + fish.img.get_height()/2) - (worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
                                     
                                     (sharks[0].x - (fish.x + fish.img.get_width())), #DISTANCE TO SHARK X
@@ -264,7 +264,7 @@ def gameAI(genomes, config):
                                     ))
         
             # if output is greater than 0, swim up
-            if output[0] > 0.01:
+            if output[0] > 0:
                 ticksDown = 0
                 ticksUp += 1
                 fish.swimUp(ticksUp)
@@ -285,12 +285,12 @@ def gameAI(genomes, config):
                 
             # if fish hasn't moved more than 3 pixels in 30 seconds, remove fish from game
             if fish.lastPos - fish.y < 4 and fish.lastTime > 15000:
-                gens[x].fitness -=.2
+                gens[x].fitness -=.5
                 
             
             # if fish is out of bounds, decrease fitness of fish, remove fish from game
             if fish.y <= 0 or (fish.y + fish.img.get_height()) >= WINDOW_HEIGHT: 
-                gens[x].fitness -= 50
+                #gens[x].fitness -= 50
                 fishes.pop(x)
                 nets.pop(x)
                 gens.pop(x)
@@ -303,11 +303,11 @@ def gameAI(genomes, config):
                 
                 # if not shark.passed and (shark.x + shark.img.get_width()) < fish.x:
                 #     for genome in gens:
-                #         genome.fitness += 7.5
+                #         genome.fitness += 2.5
                 #     shark.passed = True
                                                                         #IF ALL OF FISH IS INSIDE SHARK Y
                 if (shark.y <= (fish.y) <= shark.y + shark.img.get_height()) and (shark.y <= (fish.y + fish.img.get_height()) <= shark.y + shark.img.get_height()):
-                    gens[x].fitness -= .3
+                    gens[x].fitness -= .2
                                                                         #IF SOME OF FISH IS INSIDE SHARK Y 
                 elif (shark.y <= (fish.y) <= shark.y + shark.img.get_height()) or (shark.y <= (fish.y + fish.img.get_height()) <= shark.y + shark.img.get_height()):
                     gens[x].fitness -= .1
@@ -334,14 +334,14 @@ def gameAI(genomes, config):
                 
                 # if not fisherman.passed and (fisherman.x + fisherman.img.get_width()) < fish.x:
                 #     for genome in gens:
-                #         genome.fitness += 7.5
+                #         genome.fitness += 5
                 #     fisherman.passed = True
                     
                 if (fish.y  <= fisherman.img.get_height()):
                     gens[x].fitness -= .2
                 
                 if fish.collide(fisherman): # if fish collides with fisherman, decrease fitness of fish, remove fish from game
-                    gens[x].fitness -= 50
+                    #gens[x].fitness -= 50
                     fishes.pop(x) 
                     nets.pop(x)
                     gens.pop(x)
@@ -415,7 +415,7 @@ def run():
     mypop.add_reporter(checkpoint)
     
     # Runs the game 150 times, and returns the winner of the game, can be stored.
-    best_genome = mypop.run(gameAI, 250)
+    best_genome = mypop.run(gameAI, 5000)
 
     # Save the best genome
     with open('trainedModel.pkl', 'wb') as f:

@@ -2,7 +2,7 @@
 # The criterion to use for selecting the most fit genomes
     fitness_criterion     = max
 # The fitness threshold at which the evolutionary process will stop
-    fitness_threshold     = 1500
+    fitness_threshold     = 1000
 # The size of the population
     pop_size              = 1
 # Whether to reset the population if it goes extinct
@@ -15,12 +15,12 @@
 # The number of generations a species can go without improvement before it is considered stagnant
     max_stagnation       = 15
 # The number of species that will be preserved through elitism
-    species_elitism      = 0
+    species_elitism      = 3
 
 
 [DefaultReproduction]
 # The number of genomes that will be preserved through elitism
-    elitism = 1
+    elitism = 2
 # The threshold fitness value that determines which genomes will survive
     survival_threshold = 0.2
 
@@ -32,9 +32,9 @@
 
 [DefaultGenome]
 # Node activation options
-    activation_default      = leaky_ReLU
+    activation_default      = leakyReLU
     activation_mutate_rate  = 0.0
-    activation_options      = leaky_ReLU
+    activation_options      = leakyReLU
 
 # Node aggregation options
     aggregation_default     = sum
@@ -65,15 +65,15 @@
 # Whether to use a feed-forward network
     feed_forward            = True
 # The initial connection type (e.g. full or partial)
-    initial_connection      = full
+    initial_connection      = full_nodirect
 
 # Node add/remove rates
     node_add_prob           = 0.2
     node_delete_prob        = 0.2
 
 # Network parameters
-    num_hidden              = 0
-    num_inputs              = 14
+    num_inputs              = 8
+    num_hidden              = 2
     num_outputs             = 1
 
 # Node response options
