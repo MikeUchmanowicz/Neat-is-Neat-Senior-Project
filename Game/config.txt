@@ -4,7 +4,7 @@
 # The fitness threshold at which the evolutionary process will stop
     fitness_threshold     = 1000
 # The size of the population
-    pop_size              = 50
+    pop_size              = 25
 # Whether to reset the population if it goes extinct
     reset_on_extinction   = True
 
@@ -32,9 +32,9 @@
 
 [DefaultGenome]
 # Node activation options
-    activation_default      = leakyReLU
-    activation_mutate_rate  = 0.0
-    activation_options      = leakyReLU
+    activation_default      = relu
+    activation_mutate_rate  = 1.0
+    activation_options      = relu
 
 # Node aggregation options
     aggregation_default     = sum
@@ -42,7 +42,7 @@
     aggregation_options     = sum
 
 # Node bias options
-    bias_init_mean          = 0.0
+    bias_init_mean          = 3.0
     bias_init_stdev         = 1.0
     bias_max_value          = 30.0
     bias_min_value          = -30.0
@@ -65,7 +65,7 @@
 # Whether to use a feed-forward network
     feed_forward            = True
 # The initial connection type (e.g. full or partial)
-    initial_connection      = full_nodirect
+    initial_connection      = full_direct
 
 # Node add/remove rates
     node_add_prob           = 0.2
@@ -73,7 +73,7 @@
 
 # Network parameters
     num_inputs              = 8
-    num_hidden              = 10
+    num_hidden              = 3
     num_outputs             = 1
 
 # Node response options

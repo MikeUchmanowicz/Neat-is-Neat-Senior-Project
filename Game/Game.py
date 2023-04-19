@@ -264,7 +264,7 @@ def gameAI(genomes, config):
                                     ))
         
             # if output is greater than 0, swim up
-            if output[0] > 0:
+            if output[0] > 0.01:
                 ticksDown = 0
                 ticksUp += 1
                 fish.swimUp(ticksUp)
@@ -283,8 +283,8 @@ def gameAI(genomes, config):
             else:
                 fish.lastTime = 0
                 
-            # if fish hasn't moved more than 3 pixels in 30 seconds, remove fish from game
-            if fish.lastPos - fish.y < 4 and fish.lastTime > 15000:
+            # if fish hasn't moved more than 3 pixels in 10 seconds, remove fish from game
+            if fish.lastPos - fish.y < 4 and fish.lastTime > 10000:
                 gens[x].fitness -=.5
                 
             
@@ -307,10 +307,10 @@ def gameAI(genomes, config):
                 #     shark.passed = True
                                                                         #IF ALL OF FISH IS INSIDE SHARK Y
                 if (shark.y <= (fish.y) <= shark.y + shark.img.get_height()) and (shark.y <= (fish.y + fish.img.get_height()) <= shark.y + shark.img.get_height()):
-                    gens[x].fitness -= .2
+                    gens[x].fitness -= .1
                                                                         #IF SOME OF FISH IS INSIDE SHARK Y 
                 elif (shark.y <= (fish.y) <= shark.y + shark.img.get_height()) or (shark.y <= (fish.y + fish.img.get_height()) <= shark.y + shark.img.get_height()):
-                    gens[x].fitness -= .1
+                    gens[x].fitness -= .05
                 else:                                                   #IF NONE OF FISH IS INSIDE SHARK Y
                     gens[x].fitness +=.3
                 
@@ -337,8 +337,8 @@ def gameAI(genomes, config):
                 #         genome.fitness += 5
                 #     fisherman.passed = True
                     
-                if (fish.y  <= fisherman.img.get_height()):
-                    gens[x].fitness -= .2
+                #if (fish.y  <= fisherman.img.get_height()):
+                    #gens[x].fitness -= .2
                 
                 if fish.collide(fisherman): # if fish collides with fisherman, decrease fitness of fish, remove fish from game
                     #gens[x].fitness -= 50

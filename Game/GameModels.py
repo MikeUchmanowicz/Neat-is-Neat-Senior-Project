@@ -30,6 +30,7 @@ class Fish:
         self.img = self.IMGS[0]
         self.lastTime = 0
         self.lastPos = 0
+        self.good = False
 
     # causes fish to "go up" when called
     def swimUp(self, ticks):

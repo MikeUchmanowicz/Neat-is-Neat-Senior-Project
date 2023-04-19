@@ -46,8 +46,6 @@ def draw_background(win:pygame.display, background):
     background.draw(win)
     # update the display
     pygame.display.update()
-    
-
 
 def draw_net(config, genome, view=False, filename=None):
     # Load the configuration file

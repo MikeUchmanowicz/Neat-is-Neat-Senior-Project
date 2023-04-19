@@ -7,10 +7,10 @@ class AIDAO():
     
     def deleteAllGen():
         try:
-            connection = mysql.connector.connect(host='localhost',
+            connection = mysql.connector.connect(host='database-neatisneat.c030eerfzyc1.us-east-1.rds.amazonaws.com',
                                                 database='neatisneat',    #CONNECT
-                                                user='root',
-                                                password='root')
+                                                user='admin',
+                                                password='password')
             if connection.is_connected():
                 db_Info = connection.get_server_info()
                 cursor = connection.cursor()
