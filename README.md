@@ -73,7 +73,7 @@ Essentially, we will be creating a population of AI from a NEAT config file that
 <img alt = "Django Sitemap" src="Documentation/SITEMAP.png" >
 </div>  
 
-The Django web-application will be simple. It will consist of three “apps” or “applets”, one for general information display like accessing any home or informatory pages, another app for registering and logging in users, and another app for retrieving and displaying AI generational data that will be retrieved from a MySQL database A user must login to use the website, and otherwise will only be able to see the home page. The views will only be able to interact with models using the Django ORM which will be implemented in included Service modules. The Django app will be cloud hosted within an Elastic Beanstalk container in AWS, using aws EC2 to store the app and AWS RDS to store the database information and data.
+The Django web-application will be simple. It will consist of three “apps” or “applets”, one for general information display like accessing any home or informatory pages, another app for registering and logging in users, and another app for retrieving and displaying AI generational data that will be retrieved from a MySQL database A user must login to use the website, and otherwise will only be able to see the home page. The views will only be able to interact with models using the Django ORM which will be implemented in included Service modules. The Django app will be cloud hosted within an Elastic Container Service in AWS, using aws EC2 to store the app and AWS RDS to store the database information and data.
 
 
 ## Logical Design
