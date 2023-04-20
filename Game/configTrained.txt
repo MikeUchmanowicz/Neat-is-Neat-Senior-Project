@@ -2,7 +2,7 @@
 # The criterion to use for selecting the most fit genomes
     fitness_criterion     = max
 # The fitness threshold at which the evolutionary process will stop
-    fitness_threshold     = 500
+    fitness_threshold     = 1000
 # The size of the population
     pop_size              = 25
 # Whether to reset the population if it goes extinct
@@ -13,7 +13,7 @@
 # The function to use for calculating the fitness of a species
     species_fitness_func = max
 # The number of generations a species can go without improvement before it is considered stagnant
-    max_stagnation       = 15
+    max_stagnation       = 20
 # The number of species that will be preserved through elitism
     species_elitism      = 0
 
@@ -73,7 +73,7 @@
 
 # Network parameters
     num_inputs              = 6
-    num_hidden              = 3
+    num_hidden              = 11
     num_outputs             = 1
 
 # Node response options

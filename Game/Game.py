@@ -436,7 +436,7 @@ def trainWithCheckpoint():
     config.genome_config.add_activation('leaky_relu', leaky_relu)  
     
     # Load the population from a checkpoint file
-    checkpoint_file = 'best-checkpoint-464'
+    checkpoint_file = 'neat-checkpoint-697'
     mypop = neat.Checkpointer.restore_checkpoint(checkpoint_file)
     
     # Creates a population based off config & A Reporter Extension.        
@@ -463,7 +463,7 @@ def runTrained():
     config_path = os.path.join(local_dir, "configTrained.txt")
 
     # load the best genome
-    with open('trainedModel.pkl', 'rb') as f:
+    with open('trainedModel3.pkl', 'rb') as f:
         best_genome = pickle.load(f)
         f.close()
         
