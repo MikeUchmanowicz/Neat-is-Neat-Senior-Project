@@ -20,7 +20,7 @@ class AIDAO():
                 
                 mycursor = connection.cursor()
                 
-                sql = "DELETE FROM demo_datamodel"
+                sql = "DELETE FROM Demo_datamodel"
                 
                 affected = mycursor.execute(sql)
                 connection.commit()
@@ -42,10 +42,10 @@ class AIDAO():
     
     def insertOneGen(data:models.DataModel):
         try:
-            connection = mysql.connector.connect(host='localhost',
+            connection = mysql.connector.connect(host='database-neatisneat.c030eerfzyc1.us-east-1.rds.amazonaws.com',
                                                 database='neatisneat',    #CONNECT
-                                                user='root',
-                                                password='root')
+                                                user='admin',
+                                                password='password')
             if connection.is_connected():
                 db_Info = connection.get_server_info()
                 cursor = connection.cursor()
@@ -55,7 +55,7 @@ class AIDAO():
                 
                 mycursor = connection.cursor()
                 
-                sql = "INSERT INTO demo_datamodel (gen, popsize, avgfit, stddevfit, bestfit, adjfit, stag) VALUES (%s, %s, %s,%s,%s,%s,%s)"
+                sql = "INSERT INTO Demo_datamodel (gen, popsize, avgfit, stddevfit, bestfit, adjfit, stag) VALUES (%s, %s, %s,%s,%s,%s,%s)"
                 val = (data.gen, data.popSize, data.avgFit, data.stdDevFit, data.bestFit, data.adjFit, data.stag)
 
                 affected = mycursor.execute(sql, val)

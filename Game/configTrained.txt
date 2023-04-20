@@ -2,9 +2,9 @@
 # The criterion to use for selecting the most fit genomes
     fitness_criterion     = max
 # The fitness threshold at which the evolutionary process will stop
-    fitness_threshold     = 1000
+    fitness_threshold     = 500
 # The size of the population
-    pop_size              = 1
+    pop_size              = 25
 # Whether to reset the population if it goes extinct
     reset_on_extinction   = True
 
@@ -15,7 +15,7 @@
 # The number of generations a species can go without improvement before it is considered stagnant
     max_stagnation       = 15
 # The number of species that will be preserved through elitism
-    species_elitism      = 3
+    species_elitism      = 0
 
 
 [DefaultReproduction]
@@ -32,17 +32,17 @@
 
 [DefaultGenome]
 # Node activation options
-    activation_default      = leakyReLU
+    activation_default      = leaky_relu
     activation_mutate_rate  = 0.0
-    activation_options      = leakyReLU
+    activation_options      = leaky_relu
 
 # Node aggregation options
     aggregation_default     = sum
-    aggregation_mutate_rate = 0.0
+    aggregation_mutate_rate = 0.1
     aggregation_options     = sum
 
 # Node bias options
-    bias_init_mean          = 0.0
+    bias_init_mean          = 1.0
     bias_init_stdev         = 1.0
     bias_max_value          = 30.0
     bias_min_value          = -30.0
@@ -65,15 +65,15 @@
 # Whether to use a feed-forward network
     feed_forward            = True
 # The initial connection type (e.g. full or partial)
-    initial_connection      = full_nodirect
+    initial_connection      = partial_nodirect .5
 
 # Node add/remove rates
     node_add_prob           = 0.2
     node_delete_prob        = 0.2
 
 # Network parameters
-    num_inputs              = 8
-    num_hidden              = 2
+    num_inputs              = 6
+    num_hidden              = 3
     num_outputs             = 1
 
 # Node response options

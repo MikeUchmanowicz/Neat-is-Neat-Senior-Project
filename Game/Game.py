@@ -1,5 +1,6 @@
+from turtle import window_height
 from GameModels import Fish, Fisherman, Shark, Worm, Background
-from GameUtil import TITLE, WINDOW_HEIGHT, WINDOW_WIDTH, draw_background, draw_gameWindow, draw_net
+from GameUtil import TITLE, WINDOW_HEIGHT, WINDOW_WIDTH, draw_background, draw_gameWindow
 import MyReporter
 import pygame
 import neat
@@ -8,6 +9,7 @@ import pickle
 import time
 import random as rnd
 import os
+import numpy as np
 
 
 """
@@ -157,7 +159,7 @@ def gameAI(genomes, config):
 
     # sets variables for use in determining frame rate
     clock=pygame.time.Clock()
-    FPS = 60
+    FPS = 120
     
     # variables for use in determining fish swimming up and down
     ticksDown = 0
@@ -212,69 +214,79 @@ def gameAI(genomes, config):
             break
             
         for x, fish in enumerate(fishes):
+            
             #fish.animate()
-            shark0=0
-            shark1=0
+            shark0val=0
+            shark1val=0
             
             if fish.y + fish.img.get_height() < sharks[0].y:    #If Shark is below fish
-                shark0 = ((sharks[0].y) - (fish.y + fish.img.get_height()))
+                shark0val = ((sharks[0].y) - (fish.y + fish.img.get_height()))
+
             elif fish.y > sharks[0].y + sharks[0].img.get_height():  #If Shark is above fish
-                shark0 = ((fish.y) - (sharks[0].y + sharks[0].img.get_height()))
+                shark0val = ((fish.y) - (sharks[0].y + sharks[0].img.get_height()))
             else:        
                                 # if fish is partially inside shark (from top)
                 if fish.y <= sharks[0].y <= fish.y + fish.img.get_height() and (fish.y + fish.img.get_height() < sharks[0].y + sharks[0].img.get_height()/2): 
-                    shark0 = (sharks[0].y - (fish.y + fish.img.get_height()))
+                    shark0val = -99 #(sharks[0].y - (fish.y + fish.img.get_height()))
                                 # if fish is partially inside shark (from bottom)
                 if sharks[0].y <= fish.y <= sharks[0].y + sharks[0].img.get_height() and (fish.y > sharks[0].y + sharks[0].img.get_height()/2): 
-                    shark0 = (fish.y - (sharks[0].y + sharks[0].img.get_height()))
+                    shark0val = -99 #(fish.y - (sharks[0].y + sharks[0].img.get_height()))
                     
             if fish.y + fish.img.get_height() < sharks[1].y:    #If Shark is below fish
-                shark1 = ((sharks[1].y) - (fish.y + fish.img.get_height()))
+                shark1val = ((sharks[1].y) - (fish.y + fish.img.get_height()))
             elif fish.y > sharks[1].y + sharks[1].img.get_height():  #If Shark is above fish
-                shark1 = ((fish.y) - (sharks[1].y + sharks[1].img.get_height()))
+                shark1val = ((fish.y) - (sharks[1].y + sharks[1].img.get_height()))
             else:        
                                 # if fish is partially inside shark (from top)
                 if fish.y <= sharks[1].y <= fish.y + fish.img.get_height() and (fish.y + fish.img.get_height() < sharks[1].y + sharks[1].img.get_height()/2): 
-                    shark1 = (sharks[1].y - (fish.y + fish.img.get_height()))
+                    shark1val = -99 #(sharks[1].y - (fish.y + fish.img.get_height()))
                                 # if fish is partially inside shark (from bottom)
                 if sharks[1].y <= fish.y <= sharks[1].y + sharks[1].img.get_height() and (fish.y > sharks[1].y + sharks[1].img.get_height()/2): 
-                    shark1 = (fish.y - (sharks[1].y + sharks[1].img.get_height()))
-                
+                    shark1val = -99 #(fish.y - (sharks[1].y + sharks[1].img.get_height()))
+            
+            # if fish.y < fishermen[0].y + fishermen[0].img.get_height(): # if fish is above fisherman
+            #     fisherman0val = -99
+            # else:
+            #     fisherman0val = ((fish.y) - (fishermen[0].img.get_height()))
+
             # determine AI output through inputs
             output = nets[x].activate((
-                                    fish.SPEED, # FISH SPEED / POS - NEG
+                                    #fish.SPEED, # FISH SPEED / POS - NEG
                                     abs(WINDOW_HEIGHT - fish.y),    # DISTANCE TO WINDOW BOTTOM
                                     
                                     # fish.y, # FISH HEIGHT
                                     # sharks[0].y + (sharks[0].img.get_height()/2), #SHARK HEIGHT center
                                     # sharks[1].y + (sharks[1].img.get_height()/2), #SHARK HEIGHT center
-                                    #fishermen[0].y + fishermen[0].img.get_height(), #FISHERMAN HEIGHT center
+                                    # fishermen[0].y + fishermen[0].img.get_height(), #FISHERMAN HEIGHT center
                                     # worms[0].y + (worms[0].img.get_height()/2), #WORM HEIGHT center
 
-                                    shark0, #DISTANCE TO SHARK Y BASED ON POSITION OF FISH
-                                    shark1, #DISTANCE TO SHARK2 Y BASED ON POSITION OF FISH
+                                    shark0val, #DISTANCE TO SHARK Y BASED ON POSITION OF FISH
+                                    shark1val, #DISTANCE TO SHARK2 Y BASED ON POSITION OF FISH
+                                    #sharks[0].passed, #FISH PASSED SHARK
+                                    #sharks[1].passed, #FISH PASSED SHARK
                                     
-                                    ((fish.y) - (fishermen[0].img.get_height())), #DISTANCE TO FISHERMAN BOTTOM Y
-                                    #((fish.y + fish.img.get_height()/2) - (worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
-                                    
+                                    #fisherman0val, #DISTANCE TO FISHERMAN BOTTOM Y
+                                    abs((fish.y + fish.img.get_height()/2) - (worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
                                     (sharks[0].x - (fish.x + fish.img.get_width())), #DISTANCE TO SHARK X
                                     (sharks[1].x - (fish.x + fish.img.get_width())), #DISTANCE TO SHARK X
-                                    (fishermen[0].x - fish.x ), #DISTANCE TO FISHERMAN X
+                                    #(fishermen[0].x - fish.x ), #DISTANCE TO FISHERMAN X
                                     #(worms[0].x - fish.x), #DISTANCE TO WORM CENTER X
                                     ))
         
             # if output is greater than 0, swim up
-            if output[0] > 0.01:
-                ticksDown = 0
-                ticksUp += 1
-                fish.swimUp(ticksUp)
+            if output[0] > 0:
+                #if not (fish.y < 1):
+                    ticksDown = 0
+                    ticksUp += 1
+                    fish.swimUp(ticksUp)
             else: # if output is less than other output, gravity causes swim down.
-                ticksUp = 0
-                ticksDown +=1
-                fish.move(ticksDown)
+                #if not (fish.y + fish.img.get_height() > WINDOW_HEIGHT -1):
+                    ticksUp = 0
+                    ticksDown +=1
+                    fish.move(ticksDown)
                 
-            # Update Last Position every 10 ticks
-            if time % 10 == 0:
+            # Update Last Position
+            if time % 100 == 0:
                 fish.lastPos = fish.y
                 
             # if any fish haven't moved more than 3 pixels, increase lastTime
@@ -284,16 +296,15 @@ def gameAI(genomes, config):
                 fish.lastTime = 0
                 
             # if fish hasn't moved more than 3 pixels in 10 seconds, remove fish from game
-            if fish.lastPos - fish.y < 4 and fish.lastTime > 10000:
-                gens[x].fitness -=.5
+            if abs(fish.lastPos - fish.y) < 4 and fish.lastTime > 7500:
+                gens[x].fitness -= 1
                 
-            
             # if fish is out of bounds, decrease fitness of fish, remove fish from game
             if fish.y <= 0 or (fish.y + fish.img.get_height()) >= WINDOW_HEIGHT: 
-                #gens[x].fitness -= 50
-                fishes.pop(x)
+                gens[x].fitness = 0
                 nets.pop(x)
                 gens.pop(x)
+                fishes.pop(x)
             
         for shark in sharks:
             shark.move()
@@ -301,23 +312,21 @@ def gameAI(genomes, config):
             
             for x, fish in enumerate(fishes): 
                 
-                # if not shark.passed and (shark.x + shark.img.get_width()) < fish.x:
-                #     for genome in gens:
-                #         genome.fitness += 2.5
-                #     shark.passed = True
                                                                         #IF ALL OF FISH IS INSIDE SHARK Y
                 if (shark.y <= (fish.y) <= shark.y + shark.img.get_height()) and (shark.y <= (fish.y + fish.img.get_height()) <= shark.y + shark.img.get_height()):
-                    gens[x].fitness -= .1
+                    gens[x].fitness -= .2
+                    pass
                                                                         #IF SOME OF FISH IS INSIDE SHARK Y 
                 elif (shark.y <= (fish.y) <= shark.y + shark.img.get_height()) or (shark.y <= (fish.y + fish.img.get_height()) <= shark.y + shark.img.get_height()):
-                    gens[x].fitness -= .05
+                    #gens[x].fitness -= .1
+                    pass
                 else:                                                   #IF NONE OF FISH IS INSIDE SHARK Y
                     gens[x].fitness +=.3
                 
                 if fish.collide(shark): # if fish collides with shark, decrease fitness of fish, remove fish from game
-                    fishes.pop(x) 
                     nets.pop(x)
                     gens.pop(x)
+                    fishes.pop(x)
 
             if shark.x + shark.img.get_width() < 0: # if object is off screen (left), remove it 
                 toRemove.append(shark) # add object to list of objects to remove
@@ -332,19 +341,14 @@ def gameAI(genomes, config):
             
             for x, fish in enumerate(fishes): 
                 
-                # if not fisherman.passed and (fisherman.x + fisherman.img.get_width()) < fish.x:
-                #     for genome in gens:
-                #         genome.fitness += 5
-                #     fisherman.passed = True
-                    
-                #if (fish.y  <= fisherman.img.get_height()):
-                    #gens[x].fitness -= .2
+                # if (fish.y  <= fisherman.img.get_height()):
+                #     gens[x].fitness -= .2
                 
                 if fish.collide(fisherman): # if fish collides with fisherman, decrease fitness of fish, remove fish from game
-                    #gens[x].fitness -= 50
-                    fishes.pop(x) 
+                    gens[x].fitness -= 50
                     nets.pop(x)
                     gens.pop(x)
+                    fishes.pop(x)
             
             if fisherman.x + fisherman.img.get_width() < 0: # if object is off screen (left), remove it 
                 toRemove.append(fisherman) # add object to list of objects to remove
@@ -353,21 +357,21 @@ def gameAI(genomes, config):
             fishermen.append(Fisherman()) # add new object to replace removed object (right)
         toRemove.clear()  
         
-        # for worm in worms:
-        #     worm.move()
+        for worm in worms:
+            worm.move()
             
-        #     for x, fish in enumerate(fishes): 
-        #         if not worm.collected and fish.collide(worm): # if fish collides with worm, increase fitness of fish, remove worm
-        #             gens[x].fitness += 5
-        #             worm.collected = True
-        #             toRemove.append(worm)
+            for x, fish in enumerate(fishes): 
+                if not worm.collected and fish.collide(worm): # if fish collides with worm, increase fitness of fish, remove worm
+                    gens[x].fitness += 50
+                    worm.collected = True
+                    toRemove.append(worm)
             
-        #     if worm.x + worm.img.get_width() < 0: # if object is off screen (left), remove it 
-        #         toRemove.append(worm) # add object to list of objects to remove
-        # for worm in toRemove:
-        #     worms.remove(worm) # remove object from list of objects
-        #     worms.append(Worm()) # add new object to replace removed object (right)
-        # toRemove.clear()    
+            if worm.x + worm.img.get_width() < 0: # if object is off screen (left), remove it 
+                toRemove.append(worm) # add object to list of objects to remove
+        for worm in toRemove:
+            worms.remove(worm) # remove object from list of objects
+            worms.append(Worm()) # add new object to replace removed object (right)
+        toRemove.clear()    
         
         max_fit = 0
         for g in gens:
@@ -385,11 +389,8 @@ def gameAI(genomes, config):
         # draw all objects perpetually, updating the screen with current positions / locations
         draw_gameWindow(win, background, fishes, sharks, fishermen, worms, stats)
 
-def leaky_ReLU(x):
-    if x>0 :
-        return x
-    else :
-        return 0.01*x  
+def leaky_relu(x):
+    return np.maximum(0.01*x, x)
 
 # run NEAT 
 def run():
@@ -400,7 +401,7 @@ def run():
     # Loads the config file
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
     # Loads self-defined activation function
-    config.genome_config.add_activation('leakyReLU', leaky_ReLU)  
+    config.genome_config.add_activation('leaky_relu', leaky_relu)  
 
     # Creates a population based off config & A Reporter Exctension.        
     mypop = neat.Population(config)
@@ -415,22 +416,58 @@ def run():
     mypop.add_reporter(checkpoint)
     
     # Runs the game 150 times, and returns the winner of the game, can be stored.
-    best_genome = mypop.run(gameAI, 5000)
+    best_genome = mypop.run(gameAI, 3000)
 
     # Save the best genome
     with open('trainedModel.pkl', 'wb') as f:
         pickle.dump(best_genome, f)
         f.close()
         
-def runTrained():
+    print("Model Saved")
+        
+def trainWithCheckpoint():
     
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, "config.txt")
+    
+    # Loads the config file
+    config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
+    # Loads self-defined activation function
+    config.genome_config.add_activation('leaky_relu', leaky_relu)  
+    
+    # Load the population from a checkpoint file
+    checkpoint_file = 'best-checkpoint-464'
+    mypop = neat.Checkpointer.restore_checkpoint(checkpoint_file)
+    
+    # Creates a population based off config & A Reporter Extension.        
+    mypop = neat.Population(config)
+    #mypop.best_genome = best_genome
+    mystats = neat.StatisticsReporter()
+    
+    #p.add_reporter(neat.StdOutReporter(True))
+    mypop.add_reporter(MyReporter.myReporter(True, False)) #MyReporter is a Std.Out Reporter Extension in which we upload GenDatamodel to database.
+    mypop.add_reporter(mystats)
+    #gameAI(genomes, config)
+    winner = mypop.run(gameAI, 2000)
+    
+    # Save the best genome
+    with open('trainedModel2.pkl', 'wb') as f:
+        pickle.dump(winner, f)
+        f.close()
+        
+    print("Model Saved")
+
+def runTrained():
+    
+    local_dir = os.path.dirname(__file__)
+    config_path = os.path.join(local_dir, "configTrained.txt")
 
     # load the best genome
     with open('trainedModel.pkl', 'rb') as f:
         best_genome = pickle.load(f)
         f.close()
+        
+    print("Model Loaded")
     
     # Convert loaded genome into list of genome tuples
     genomes = [(1, best_genome)]
@@ -439,7 +476,7 @@ def runTrained():
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
 
     # Loads self-defined activation function
-    config.genome_config.add_activation('leakyReLU', leaky_ReLU) 
+    config.genome_config.add_activation('leaky_relu', leaky_relu) 
 
     # Load the population from a checkpoint file
     # checkpoint_file = 'latest-checkpoint-4776'
@@ -549,7 +586,11 @@ def titleScreen():
                     runTrained() # run NEAT AI Simulation
                     runTitleScreen = False
                     break
-                    
+                
+            keys = pygame.key.get_pressed() #check if space key is being pressed
+            if keys[pygame.K_SPACE]:
+                trainWithCheckpoint()
+                
         #update display
         pygame.display.update()
 

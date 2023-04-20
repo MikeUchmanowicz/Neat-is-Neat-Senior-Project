@@ -1,15 +1,14 @@
-FROM python:3.9-alpine
+FROM python:latest
 
 WORKDIR /WebApp
 
 COPY requirements.txt .
 
-RUN apk update && \
-    apk add --virtual build-deps gcc python3-dev musl-dev && \
-    apk add postgresql-dev && \
-    apk add mariadb-dev && \
-    pip install -r requirements.txt && \
-    apk del build-deps
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
 COPY . .
 

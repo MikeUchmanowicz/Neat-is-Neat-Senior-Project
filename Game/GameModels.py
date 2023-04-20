@@ -11,7 +11,7 @@ FISH_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fish
             pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishmid.png")), (49, 38)), 
             pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishdown.png")), (49, 38))]
 
-SHARK_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark.png")), (170, 78)),
+SHARK_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark.png")), (170, 78)), #(170, 78)
             pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark2.png")), (170, 78))]
 WORM_IMG = pygame.image.load(os.path.join("imgs", "worm.png"))
 FISHERMAN_IMG = pygame.image.load(os.path.join  ("imgs", "fisherman3.png"))
@@ -30,7 +30,6 @@ class Fish:
         self.img = self.IMGS[0]
         self.lastTime = 0
         self.lastPos = 0
-        self.good = False
 
     # causes fish to "go up" when called
     def swimUp(self, ticks):
@@ -107,7 +106,7 @@ class Worm:
     
     # sets the height of the worm
     def set_Height(self):
-        self.y=rnd.randrange(50, 400)
+        self.y=rnd.randrange(130, 260)
     
     # causes worm to "go left" when called
     def move(self):
