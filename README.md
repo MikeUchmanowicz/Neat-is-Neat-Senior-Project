@@ -36,7 +36,7 @@ The user can start the main python script via a terminal.  Upon start of the mai
 <img alt = "Game Wireframe" src="Documentation/Game Wireframe.png">
 </div>  
 
-A Django application will support viewing informational pages, logging in, registering, and the viewing of generational ai data that it will pull from a MySQL database. The Django app will be cloud hosted within an Elastic Beanstalk container in AWS, using AWS EC2 to store the app and AWS RDS to store the database information and data.
+A Django application will support viewing informational pages, logging in, registering, and the viewing of generational ai data that it will pull from a MySQL database. The Django app is containerized and cloud hosted within an Elastic Container Service in AWS, using AWS EC2 to store the app and AWS RDS to store the database information and data.
 
 ## Objectives
 
