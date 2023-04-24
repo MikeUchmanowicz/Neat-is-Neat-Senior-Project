@@ -18,9 +18,9 @@ ___
 ## ABSTRACT
 
 
-The “NEAT is Neat” project will consist of a main application containing a game and an Artificial Intelligence bot paired with a secondary web application to fetch/display data from the main application. The project is intended to further one’s understanding of how an Artificial Intelligence bot evolves to play games proficiently through the creation of an AI that plays games proficiently.
+The “NEAT is Neat” project will consist of a main application containing a game and an Artificial Intelligence bot paired with a secondary web application to fetch/display data from the main application. The project is intended to further one’s understanding of how an Artificial Intelligence bot evolves to play games proficiently through the creation of an AI that can learn & play a game.
 
-Within the main application, the user will be able to select whether they’d like to see a visual demonstration of the AI evolving and playing the game as it evolves or whether they’d like to play the game on their own. The game will be fairly simple, having a couple of objectives in which the player (and/or AI) will be expected to play indefinitely as a "fish", trying to reach as far in the level as possible while collecting items like worms. Score will be determined by the distance that the player (and/or AI) achieves within the game and by the number of worms collected within that distance. The player (and/or AI) will play until the game is considered over; this is when the player (and/or AI) dies/ collides with an obstacle (fishermen & sharks). There will only be one stage/level, which will have randomized worms to pick up and randomized obstacles to dodge. The AI will need to be taught through configuration of which actions are preferred and which actions are undesirable. The game will be looped until the AI evolves enough to play proficiently. With each iteration of the game, the AI should get progressively better by increasing its score through completing preferred actions like gaining worms or getting farther in the stage. At some point down the iteration line, the AI should be able to play the game as well as, if not better than, a human player.
+Within the main application, the user will be able to select whether they’d like to see a visual demonstration of the AI evolving and playing the game as it evolves or whether they’d like to play the game on their own. The game will be fairly simple, having a couple of objectives in which the player (and/or AI) will be expected to play indefinitely as a "fish", trying to reach as far in the level as possible while collecting items like worms. Score will be determined by the distance that the player (and/or AI) achieves within the game and by the number of worms collected within that distance. The player (and/or AI) will play until the game is considered over; this is when the player (and/or AI) dies/ collides with an obstacle (fishermen & sharks). There will only be one stage/level, which will have randomized worms to pick up and randomized obstacles to dodge. The AI will need to be taught through configuration of which actions are preferred and which actions are undesirable. The game will be looped until the AI evolves enough to play proficiently. With each iteration of the game, the AI should get progressively better by increasing its score through completing preferred actions like gaining worms or getting farther in the stage. At some point down the iteration line, the AI should be able to play the game well.
 
 The scores, distances travelled, coins collected, AI details/characteristics, and other information will be recorded and posted to a database. The before-mentioned web application will then fetch and display this data for observation purposes in addition to providing general information on the technology used to achieve this.
 
@@ -40,20 +40,19 @@ A Django application will support viewing informational pages, logging in, regis
 
 ## Objectives
 
-* Created game should be, to some degree, fun.  
-*	Game should be logically and visually polished.  
-    *	Game should not have animation issues.  
-    *	Game should keep track of score and other properties.  
-*	AI should play said game proficiently.  
-    *	AI should perform better with each iteration.  
-    *	AI should perform better than a human player.  
-*	Game should post results of individual game and AI network-population details to database  
-*	User should be able to login to a webapp and see this information displayed in a neat and organized manner.  
+* The Created game should be, to some degree, fun.  
+*	The Game should be logically and visually polished.  
+    *	The Game should not have animation issues.  
+    *	The Game should keep track of score and other properties.  
+*	The AI should play said game proficiently.  
+    *	The AI should perform better with each iteration.  
+*	The Game should post results of individual game and AI network-population details to database  
+*	The User should be able to login to a webapp and see this information displayed in a neat and organized manner.  
 *	The webapp and database should be deployed to a cloud-hosting service.  
-*	Web app should be responsive.  
+*	The Web app should be responsive.  
 
 ## Scope
-* Play game
+* Play the game
 * View demo of AI playing same game.
 * Register onto Webapp.
 *	Login to Webapp.
@@ -96,13 +95,19 @@ The user will connect to the Django webapp via HTTPS and will be responsible for
 The user will start the main python script from their local machine, where it will be stored locally. The script will run the python game or AI demo and then post generational data using a model (if AI Demo) to an AWS RDS container using port 3306 within AWS EBS (Elastic Bean Stalk). A Django webapp running in an AWS EC2 container within the AWS EBS will retrieve this data via port 3306 and display it to the user within the Django app via port 80.
 
 
-## Risks and Challenges
+## Risks
 
 - Create game in pygame with little engine knowledge
 - Create webapp in Django with little Django knowledge
 - Use Neat AI to play game with little NEAT knowledge
 - Unsure of whether to use MYSQL or MongoDB, not sure which is optimized / will work better
 - Upload Django project and MySQL database to AWS
+
+## Challenges
+
+- determining best inputs for AI
+- configuration for AI in Neat-Python.
+- Standard training of AI (because of the evolutionary approach)
 
 
 ## Proof of Concepts
