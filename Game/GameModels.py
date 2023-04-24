@@ -1,6 +1,7 @@
 import pygame
 import os
 import random as rnd
+import math
 
 # set window size and title
 WINDOW_WIDTH:int = 640
@@ -11,8 +12,10 @@ FISH_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fish
             pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishmid.png")), (49, 38)), 
             pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishdown.png")), (49, 38))]
 
-SHARK_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark.png")), (170, 78)), #(170, 78)
-            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark2.png")), (170, 78))]
+FISH_GRAD = pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishTrained.png")), (49, 38))
+
+SHARK_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark.png")), (220, 112)), #(170, 78)
+            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark2.png")), (220, 112))]  #(170, 78)
 WORM_IMG = pygame.image.load(os.path.join("imgs", "worm.png"))
 FISHERMAN_IMG = pygame.image.load(os.path.join  ("imgs", "fisherman3.png"))
 BG_IMG = pygame.image.load(os.path.join  ("imgs", "background.png"))

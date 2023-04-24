@@ -68,7 +68,7 @@ class myReporter(neat.StdOutReporter):
                 adjFit = af
                 stag = st
             """
-            d=models.DataModel(self.generation,n,round(fit_mean, 3), round(fit_std, 3), f, af, st)
+            d=models.DataModel(self.generation,n,round(fit_mean, 3), round(fit_std, 3), best_genome.fitness, af, st)
             
         if self.useDatabase:    
             ##############################################################################
