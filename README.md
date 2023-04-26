@@ -24,6 +24,8 @@ Within the main application, the user will be able to select whether they’d li
 
 The scores, distances travelled, coins collected, AI details/characteristics, and other information will be recorded and posted to a database. The before-mentioned web application will then fetch and display this data for observation purposes in addition to providing general information on the technology used to achieve this.
 
+[![Image from Gyazo](https://i.gyazo.com/0b497269afe8ec0c24c5ea0e9a7f0037.gif)](https://gyazo.com/0b497269afe8ec0c24c5ea0e9a7f0037)
+
 ## Design Introduction
 
 The project consists of a main python script using Pygame with an implemented Neuro Evolutionary AI (NEAT-Python) and a secondary Python (Django) web-application. The Main script will post Generational AI details/ results to a MySQL database that the Django web-application will retrieve and display. 
