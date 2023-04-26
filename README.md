@@ -24,8 +24,6 @@ Within the main application, the user will be able to select whether they’d li
 
 The scores, distances travelled, coins collected, AI details/characteristics, and other information will be recorded and posted to a database. The before-mentioned web application will then fetch and display this data for observation purposes in addition to providing general information on the technology used to achieve this.
 
-[![Image from Gyazo](https://i.gyazo.com/0b497269afe8ec0c24c5ea0e9a7f0037.gif)](https://gyazo.com/0b497269afe8ec0c24c5ea0e9a7f0037)
-
 ## Design Introduction
 
 The project consists of a main python script using Pygame with an implemented Neuro Evolutionary AI (NEAT-Python) and a secondary Python (Django) web-application. The Main script will post Generational AI details/ results to a MySQL database that the Django web-application will retrieve and display. 
@@ -69,7 +67,7 @@ The python game script will primarily focus on the AI demo but will also allow t
 <img alt = "'Fitness' Function FlowChart" src="Documentation/FLOWCHART.png">
 </div>  
 
-Essentially, we will be creating a population of AI from a NEAT config file that will be provided in the project files. This config file will determine the AI network’s attributes, like their connection weights (tendencies for certain actions), mutation weights (likeliness to mutate), and population size for each population attempting the game. Once we create the population from the config file, we can pass that population into the main “fitness” function which will allow them to play the game. They will not be given any information on what to do. They will be passed three different inputs: locations of enemies, locations of obstacles, and locations of objectives. They will be given one output option: to change their height. We must increase or decrease the “fitness” of each AI network based on their desirable or undesirable actions. If the AI does what we want, like collecting a worm, we can award it points. If it collides with an enemy or obstacle, we take away points. The main fitness function will end if all AI networks fail by hitting an obstacle or enemy. Their data will be processed by the AI “run” function, a new generation of AI will be created that is hopefully better than the last generation, and they will attempt the main “fitness” function once again. This will loop until an AI is seen as satisfactory by achieving a set fitness score. The MyReporter module which extends Neat.StdOutReporter, will be called at the end of every loop of the main “fitness” function. It is responsible for the reporting of AI data and printing it to the console. MyReporter will use the Service Module to post the AI generational results to a MySQL database through the use of mysql-connector-python.
+Essentially, we will be creating a population of AI from a NEAT config file that will be provided in the project files. This config file will determine the AI network’s attributes, like their connection weights (tendencies for certain actions), mutation weights (likeliness to mutate), and population size for each population attempting the game. Once we create the population from the config file, we can pass that population into the main “fitness” function which will allow them to play the game. They will not be given any information on what to do. They will be passed 20 different inputs: 19 inputs will be provided as distances to enemies/obstacles using a raycasting algorithm. They will also have one input for distance (Y) to worms. They will be given two output options: to change their height via swimming up or doing nothing (falling due to gravity). We must increase or decrease the “fitness” of each AI network based on their desirable or undesirable actions. If the AI does what we want, like collecting a worm, we can award it points. If it collides with an enemy or obstacle, we take away points. The main fitness function will end if all AI networks fail by hitting an obstacle or enemy. Their data will be processed by the AI “run” function, a new generation of AI will be created that is hopefully better than the last generation, and they will attempt the main “fitness” function once again. This will loop until an AI is seen as satisfactory by achieving a set fitness score. The MyReporter module which extends Neat.StdOutReporter, will be called at the end of every loop of the main “fitness” function. It is responsible for the reporting of AI data and printing it to the console. MyReporter will use the Service Module to post the AI generational results to a MySQL database through the use of mysql-connector-python.
 <div align="center">
 <img alt = "Django Sitemap" src="Documentation/SITEMAP.png" >
 </div>  
@@ -108,8 +106,9 @@ The user will start the main python script from their local machine, where it wi
 ## Challenges
 
 - determining best inputs for AI
+- using a raycasting algorithm for ai inputs was a little tough
 - configuration for AI in Neat-Python.
-- Standard training of AI (because of the evolutionary approach)
+- fundamentals of training of AI (because of the evolutionary approach)
 
 
 ## Proof of Concepts
@@ -133,6 +132,7 @@ The user will start the main python script from their local machine, where it wi
 - Django v. 4.1.1 (Python WebApp Framework)
 - Pygame v. 3.1.2 (Python Game Engine / Library)
 - NEAT-Python v. 0.92 (NEAT Artificial Intelligence Library)
+- numpy 1.24.2 (for math)
 - mysql-connector-python   v. 8.0.30
 - Mysqlclient 2.1.1
 - Chrome Devtools
@@ -142,6 +142,9 @@ The user will start the main python script from their local machine, where it wi
 - Docker 4.14.1 (for imaging python)
 - Virtualenv 20.16.5 (for creating Virtual Environments to install packages)
 - Django-extensions 3.2.1 (to create a Django visualized UML)
+- Django_crispy_forms
+- crispy_bootstrap5
+- ChartJs 1.2 (for graphing AI Data)
 - Pyparsing 3.0.9 (for use in combination with Django-extensions to create UML)
 - Pydot 1.4.2 (for use in combination with Django-extensions to create UML)
 - Graphviz 0.20.1 (for use in combination with pydot and pyparsing to create UML)
@@ -159,6 +162,8 @@ Django normally consists of one project that contains smaller apps, or applets. 
 #### Technical Design Decisions
 
 Regarding technological decisions, Visual Studio code was chosen as the Intelligent Development Environment for this project due to its simplicity and the Developer’s preference. Python was chosen as the language for this app due to its lightweight form, flexibility, and its increasing popularity among Artificial Intelligence developers. Django was chosen as the full-stack web application framework for python because of its massive amount of functionality and its increasing popularity. Like python, this was also chosen to challenge the developer in learning something new in so little time. The NEAT AI library was chosen as the AI for the main python script due to its NeuroEvolutionary take on AI that can learn much faster than other Artificial Intelligence models. A relational database like MySQL was chosen over other databases because the developer knows MySQL well and it just so happens that Django plays nicely with Mysql as compared to a Non-relational database like mongoDB, which have very little support in Django. This was also tested regardless of research. MongoDB is very complicated in Django and research shows that developers prefer using a Relational Database.
+
+It is worth mentioning that AI learning was a little rough with standard y distance inputs, I had tried different inputs and configurations but nothing came of it. Switching the AI's inputs to that of a raycasting algorithm improved the AI's elarning exponentially.
 
 Out of scope features include: configuration of the AI config file through the webapp, playing against the AI when playing the game, and an additional Game / Game Script to test the AI. These features are out of scope due to their being unnecessary to the completion of this project and concept.
 
