@@ -8,9 +8,9 @@ WINDOW_WIDTH:int = 640
 WINDOW_HEIGHT:int = 480
 
 #Load all class images. 
-FISH_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishup.png")), (49, 38)),
-            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishmid.png")), (49, 38)), 
-            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishdown.png")), (49, 38))]
+FISH_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishup.png")), (45, 34)), #49, 38
+            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishmid.png")), (45, 34)), 
+            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishdown.png")), (45, 34))]
 
 FISH_GRAD = pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishTrained.png")), (49, 38))
 
@@ -95,8 +95,8 @@ class Fish:
             return False
         
     def raycast(self, sharks, win, fisherman):
-        ray_length = 150
-        centerx = self.x + self.img.get_width()
+        ray_length = 400
+        centerx = self.x + (self.img.get_width() * (2/3))
         centery = self.y + self.img.get_height() / 2
         start_pos = (centerx, centery)
 
@@ -107,7 +107,7 @@ class Fish:
 
         wall_rects = (pygame.Rect(0,5,640,1), pygame.Rect(0,475,640, 1))
 
-        angles = [80, 60, 40, 20, 0, -20, -40, -60, -80]
+        angles = [ 90, 80, 70, 60, 50, 40, 30, 20, 10, 0, -10, -20, -30, -40, -50, -60, -70, -80, -90]
         
         distances = [ray_length] * len(angles)  # initialize with maximum possible distance
 
@@ -225,7 +225,7 @@ class Shark:
         
     # sets the x value of the shark
     def set_x(self):
-        self.x=rnd.randrange(700, 950)    
+        self.x=rnd.randrange(650, 1000)    
     
     # causes shark to "go left" when called
     def move(self):

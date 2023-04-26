@@ -168,7 +168,7 @@ def gameAI(genomes, config):
 
     # sets variables for use in determining frame rate
     clock=pygame.time.Clock()
-    FPS = 60
+    FPS = 90
     
     # variables for use in determining fish swimming up and down
     ticksDown = 0
@@ -232,16 +232,26 @@ def gameAI(genomes, config):
             
             # determine AI output through inputs
             output = nets[x].activate((
-                distances[0],#N
-                distances[1],#NE
-                distances[2],#NE
-                distances[3],#NE
-                distances[4],#E
-                distances[5],#SE
-                distances[6],#SE
-                distances[7],#SE
-                distances[8],#S
-                #abs((fish.y + fish.img.get_height()/2) - (worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
+                distances[0],
+                distances[1],
+                distances[2],
+                distances[3],
+                distances[4],
+                distances[5],
+                distances[6],
+                distances[7],
+                distances[8],
+                distances[9],
+                distances[10],
+                distances[11],
+                distances[12],
+                distances[13],
+                distances[14],
+                distances[15],
+                distances[16],
+                distances[17],
+                distances[18],
+                abs((fish.y + fish.img.get_height()/2) - (worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
                 
                 #fish.SPEED, # FISH SPEED / POS - NEG
                 #abs(WINDOW_HEIGHT - (fish.y + fish.img.get_height())),    # DISTANCE TO WINDOW BOTTOM
@@ -266,7 +276,7 @@ def gameAI(genomes, config):
                 ))
         
             # if output is greater than 0, swim up
-            if output[0] > output[1]:
+            if output[0] < output[1]:
                 #if not (fish.y < 1):
                     ticksDown = 0
                     ticksUp += 1
@@ -288,7 +298,7 @@ def gameAI(genomes, config):
                 fish.lastTime = 0
                 
             # if fish hasn't moved more than 3 pixels in 3 seconds, remove fish from game
-            if abs(fish.lastPos - fish.y) < 5 and fish.lastTime > 30000:
+            if abs(fish.lastPos - fish.y) < 5 and fish.lastTime > 50000:
                 nets.pop(x)
                 gens.pop(x)
                 fishes.pop(x)
@@ -322,7 +332,6 @@ def gameAI(genomes, config):
                     shark.passed = True
                 
                 if fish.collide(shark): # if fish collides with shark, decrease fitness of fish, remove fish from game
-                    gens[x].fitness = 0
                     nets.pop(x)
                     gens.pop(x)
                     fishes.pop(x)
@@ -339,9 +348,6 @@ def gameAI(genomes, config):
             fisherman.move()
             
             for x, fish in enumerate(fishes): 
-                
-                #if (fish.y  <= fisherman.img.get_height()):
-                    #gens[x].fitness -= .2
                 
                 if fish.collide(fisherman): # if fish collides with fisherman, decrease fitness of fish, remove fish from game
                     nets.pop(x)
@@ -360,7 +366,7 @@ def gameAI(genomes, config):
             
             for x, fish in enumerate(fishes): 
                 if not worm.collected and fish.collide(worm): # if fish collides with worm, increase fitness of fish, remove worm
-                    gens[x].fitness += 100
+                    gens[x].fitness += 150
                     worm.collected = True
                     toRemove.append(worm)
             
@@ -422,43 +428,11 @@ def run():
         f.close()
         
     print("Model Saved")
-        
-def trainFromCheckpoint():
-    
-    local_dir = os.path.dirname(__file__)
-    config_path = os.path.join(local_dir, "config.txt")
-    
-    # Loads the config file
-    config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
-    # Loads self-defined activation function
-    config.genome_config.add_activation('leaky_relu', leaky_relu)  
-    
-    # Load the population from a checkpoint file
-    checkpoint_file = 'neat-checkpoint-125'
-    mypop = neat.Checkpointer.restore_checkpoint(checkpoint_file)
-    
-    # Creates a population based off config & A Reporter Extension.        
-    mypop = neat.Population(config)
-    #mypop.best_genome = best_genome
-    mystats = neat.StatisticsReporter()
-    
-    #p.add_reporter(neat.StdOutReporter(True))
-    mypop.add_reporter(MyReporter.myReporter(True, False)) #MyReporter is a Std.Out Reporter Extension in which we upload GenDatamodel to database.
-    mypop.add_reporter(mystats)
-    #gameAI(genomes, config)
-    winner = mypop.run(gameAI, 2000)
-    
-    # Save the best genome
-    with open('trainedModel.pkl', 'wb') as f:
-        pickle.dump(winner, f)
-        f.close()
-        
-    print("Model Saved")
 
 def runTrained():
     
     local_dir = os.path.dirname(__file__)
-    config_path = os.path.join(local_dir, "config.txt")
+    config_path = os.path.join(local_dir, "configTrained.txt")
 
     # load the best genome
     with open('trainedmodel.pkl', 'rb') as f:
