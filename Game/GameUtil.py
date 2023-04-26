@@ -17,7 +17,7 @@ STAT_FONT = pygame.font.SysFont("verdana", 25)
 def draw_gameWindow(win:pygame.display, background, fishes, sharks, fishermen, worms, stats):
     
     # draw background
-    background.draw(win)
+    #background.draw(win)
 
     # for each stat, draw the stat and its value
     for key, value in stats.items():

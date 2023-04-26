@@ -35,7 +35,7 @@ def game():
     
     # sets variables for use in determining frame rate
     clock=pygame.time.Clock()
-    FPS = 30
+    FPS = 60
     
     #dictionary keeping track of "points"
     stats['Score'] = 0
@@ -49,7 +49,7 @@ def game():
     fishes = [Fish(15, 240)]
     sharks = [Shark()]
     fishermen = [Fisherman()]
-    worms = [Worm()]
+    worms = [] #Worm()
     background = Background()
     
     run = True
@@ -66,8 +66,14 @@ def game():
         stats['Score'] += .1 # increase score by 1 every frame
         toRemove = []
         
+        distances = []
+        
         for fish in fishes:
             fish.animate()
+
+            distances = fish.raycast(sharks, win, fishermen[0])
+            print(distances)
+            time.sleep(.1)
             
             keys = pygame.key.get_pressed() #check if space key is being pressed
             if keys[pygame.K_SPACE]:
@@ -82,8 +88,10 @@ def game():
             
             if keys[pygame.K_LEFT]:
                 sharks[0].SPEED = 0
+                fishermen[0].SPEED = 0
             if keys[pygame.K_RIGHT]:
                 sharks[0].SPEED = 7.5
+                fishermen[0].SPEED = 7.5
                 
             if fish.y + fish.img.get_height() < 0 or (fish.y + fish.img.get_height()) >= WINDOW_HEIGHT: # if fish is out of bounds, end game
                 run = False
@@ -160,7 +168,7 @@ def gameAI(genomes, config):
 
     # sets variables for use in determining frame rate
     clock=pygame.time.Clock()
-    FPS = 120
+    FPS = 60
     
     # variables for use in determining fish swimming up and down
     ticksDown = 0
@@ -191,7 +199,7 @@ def gameAI(genomes, config):
         fishes.append(Fish(15, 240))
 
     # adds base objects
-    sharks = [Shark()]
+    sharks = [Shark(),Shark()]
     fishermen = [Fisherman()]
     worms = [Worm()]
     background = Background()
@@ -213,66 +221,42 @@ def gameAI(genomes, config):
             global GEN; GEN += 1 # increase generation count  
             run = False # break current generation, start new generation
             break
-            
+        
+        distances = []
         for x, fish in enumerate(fishes):
-
-            keys = pygame.key.get_pressed() #check if space key is being pressed
-            
-            if keys[pygame.K_UP]:
-                gens[x].fitness += 10 # increase fitness of fish
-            if keys[pygame.K_DOWN]:
-                gens[x].fitness -= 10
-                
             #fish.animate()
-            shark0distanceY=0
-            shark1distanceY=0
-            shark0distanceX=0
-            shark1distanceX=0
             
-            if fish.y + fish.img.get_height() <= sharks[0].y:    #If Shark is below fish
-                shark0distanceY = ((sharks[0].y) - (fish.y + fish.img.get_height()))
-
-            elif fish.y >= sharks[0].y + sharks[0].img.get_height():  #If Shark is above fish
-                shark0distanceY = ((fish.y) - (sharks[0].y + sharks[0].img.get_height()))
-            else:        
-                                # if fish is partially inside shark (from top)
-                if fish.y <= sharks[0].y <= fish.y + fish.img.get_height() and (fish.y + fish.img.get_height() < sharks[0].y + sharks[0].img.get_height()/2): 
-                    shark0distanceY = (sharks[0].y - (fish.y + fish.img.get_height()))
-                                # if fish is partially inside shark (from bottom)
-                if sharks[0].y <= fish.y <= sharks[0].y + sharks[0].img.get_height() and (fish.y > sharks[0].y + sharks[0].img.get_height()/2): 
-                    shark0distanceY = (fish.y - (sharks[0].y + sharks[0].img.get_height()))
-                    
-            # if fish.y + fish.img.get_height() <= sharks[1].y:    #If Shark is below fish
-            #     shark1distanceY = ((sharks[1].y) - (fish.y + fish.img.get_height()))
-            # elif fish.y >= sharks[1].y + sharks[1].img.get_height():  #If Shark is above fish
-            #     shark1distanceY = ((fish.y) - (sharks[1].y + sharks[1].img.get_height()))
-            # else:        
-            #                     # if fish is partially inside shark (from top)
-            #     if fish.y <= sharks[1].y <= fish.y + fish.img.get_height() and (fish.y + fish.img.get_height() < sharks[1].y + sharks[1].img.get_height()/2): 
-            #         shark1distanceY = (sharks[1].y - (fish.y + fish.img.get_height()))
-            #                     # if fish is partially inside shark (from bottom)
-            #     if sharks[1].y <= fish.y <= sharks[1].y + sharks[1].img.get_height() and (fish.y > sharks[1].y + sharks[1].img.get_height()/2): 
-            #         shark1distanceY = (fish.y - (sharks[1].y + sharks[1].img.get_height()))
+            # Sends out 7 rays at angles: 90, 60, 30, 0, -30, -60, -90.
+            # Returns a list of distances to the closest object in each direction based on ray intersection.
+            distances = fish.raycast(sharks, win, fishermen[0])
             
-            fisherman0distanceY = ((fish.y) - (fishermen[0].img.get_height()))
-
             # determine AI output through inputs
             output = nets[x].activate((
-                #fish.SPEED, # FISH SPEED / POS - NEG
-                abs(WINDOW_HEIGHT - (fish.y + fish.img.get_height())),    # DISTANCE TO WINDOW BOTTOM
-                #abs(0 - fish.y), 
-                #fish.y, # FISH HEIGHT
-                
-                # sharks[0].y + (sharks[0].img.get_height()/2), #SHARK HEIGHT center
-                # sharks[1].y + (sharks[1].img.get_height()/2), #SHARK HEIGHT center
-                # fishermen[0].y + fishermen[0].img.get_height(), #FISHERMAN HEIGHT center
-                # worms[0].y + (worms[0].img.get_height()/2), #WORM HEIGHT center
-
-                shark0distanceY, #DISTANCE TO SHARK Y BASED ON POSITION OF FISH
-                #shark1distanceY, #DISTANCE TO SHARK2 Y BASED ON POSITION OF FISH
-                fisherman0distanceY, #DISTANCE TO FISHERMAN BOTTOM Y
-                
+                distances[0],#N
+                distances[1],#NE
+                distances[2],#NE
+                distances[3],#NE
+                distances[4],#E
+                distances[5],#SE
+                distances[6],#SE
+                distances[7],#SE
+                distances[8],#S
                 #abs((fish.y + fish.img.get_height()/2) - (worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
+                
+                #fish.SPEED, # FISH SPEED / POS - NEG
+                #abs(WINDOW_HEIGHT - (fish.y + fish.img.get_height())),    # DISTANCE TO WINDOW BOTTOM
+                #abs(0 - fish.y), 
+                #fish.y + fish.img.get_height()/2, # FISH HEIGHT
+                
+                #sharks[0].y + (sharks[0].img.get_height()/2), #SHARK HEIGHT center
+                # sharks[1].y + (sharks[1].img.get_height()/2), #SHARK HEIGHT center
+                #fishermen[0].y + fishermen[0].img.get_height(), #FISHERMAN HEIGHT bottom
+                #worms[0].y + (worms[0].img.get_height()/2), #WORM HEIGHT center
+
+                #shark0distanceY, #DISTANCE TO SHARK Y BASED ON POSITION OF FISH
+                #shark1distanceY, #DISTANCE TO SHARK2 Y BASED ON POSITION OF FISH
+                #fisherman0distanceY, #DISTANCE TO FISHERMAN BOTTOM Y
+                
                 #(sharks[0].x - (fish.x + fish.img.get_width())), #DISTANCE TO SHARK X
                 #(sharks[1].x - (fish.x + fish.img.get_width())), #DISTANCE TO SHARK X
                 #shark0distanceX, #DISTANCE TO SHARK X BASED ON POSITION OF FISH
@@ -282,7 +266,7 @@ def gameAI(genomes, config):
                 ))
         
             # if output is greater than 0, swim up
-            if output[0] < 0:
+            if output[0] > output[1]:
                 #if not (fish.y < 1):
                     ticksDown = 0
                     ticksUp += 1
@@ -298,21 +282,19 @@ def gameAI(genomes, config):
                 fish.lastPos = fish.y
                 
             # if any fish haven't moved more than 3 pixels, increase lastTime
-            if abs(fish.lastPos - fish.y) < 3:
+            if abs(fish.lastPos - fish.y) < 5:
                 fish.lastTime += 100
             else:
                 fish.lastTime = 0
                 
             # if fish hasn't moved more than 3 pixels in 3 seconds, remove fish from game
-            if abs(fish.lastPos - fish.y) < 3 and fish.lastTime > 25000:
+            if abs(fish.lastPos - fish.y) < 5 and fish.lastTime > 30000:
                 nets.pop(x)
                 gens.pop(x)
                 fishes.pop(x)
                 
             # if fish is out of bounds, decrease fitness of fish, remove fish from game
             if fish.y <= 0 or (fish.y + fish.img.get_height()) >= WINDOW_HEIGHT:
-                if gens[x].fitness < 150 :
-                    gens[x].fitness = 0
                 nets.pop(x)
                 gens.pop(x)
                 fishes.pop(x)
@@ -332,9 +314,15 @@ def gameAI(genomes, config):
                     #gens[x].fitness -= .1
                     pass
                 else:                                                   #IF NONE OF FISH IS INSIDE SHARK Y
-                    gens[x].fitness +=.3
+                    gens[x].fitness +=.2
+                    pass
+                
+                if not shark.passed and shark.x + shark.img.get_width() < fish.x: # if shark has passed fish, increase fitness of fish
+                    gens[x].fitness += 25
+                    shark.passed = True
                 
                 if fish.collide(shark): # if fish collides with shark, decrease fitness of fish, remove fish from game
+                    gens[x].fitness = 0
                     nets.pop(x)
                     gens.pop(x)
                     fishes.pop(x)
@@ -352,8 +340,8 @@ def gameAI(genomes, config):
             
             for x, fish in enumerate(fishes): 
                 
-                if (fish.y  <= fisherman.img.get_height()):
-                    gens[x].fitness -= .2
+                #if (fish.y  <= fisherman.img.get_height()):
+                    #gens[x].fitness -= .2
                 
                 if fish.collide(fisherman): # if fish collides with fisherman, decrease fitness of fish, remove fish from game
                     nets.pop(x)
@@ -372,7 +360,7 @@ def gameAI(genomes, config):
             
             for x, fish in enumerate(fishes): 
                 if not worm.collected and fish.collide(worm): # if fish collides with worm, increase fitness of fish, remove worm
-                    gens[x].fitness += 50
+                    gens[x].fitness += 100
                     worm.collected = True
                     toRemove.append(worm)
             

@@ -14,8 +14,8 @@ FISH_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fish
 
 FISH_GRAD = pygame.transform.scale(pygame.image.load(os.path.join("imgs", "fishTrained.png")), (49, 38))
 
-SHARK_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark.png")), (220, 112)), #(170, 78)
-            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark2.png")), (220, 112))]  #(170, 78)
+SHARK_IMGS = [pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark.png")), (180, 82)), #(170, 78)
+            pygame.transform.scale(pygame.image.load(os.path.join("imgs", "shark2.png")), (180, 82))]  #(170, 78)
 WORM_IMG = pygame.image.load(os.path.join("imgs", "worm.png"))
 FISHERMAN_IMG = pygame.image.load(os.path.join  ("imgs", "fisherman3.png"))
 BG_IMG = pygame.image.load(os.path.join  ("imgs", "background.png"))
@@ -93,6 +93,77 @@ class Fish:
             return True
         else:
             return False
+        
+    def raycast(self, sharks, win, fisherman):
+        ray_length = 150
+        centerx = self.x + self.img.get_width()
+        centery = self.y + self.img.get_height() / 2
+        start_pos = (centerx, centery)
+
+        distances = [ray_length] * 9  # initialize with maximum possible distance
+
+        bg_color = (0, 128, 255)  # blue
+        win.fill(bg_color)
+
+        wall_rects = (pygame.Rect(0,5,640,1), pygame.Rect(0,475,640, 1))
+
+        angles = [80, 60, 40, 20, 0, -20, -40, -60, -80]
+        # Send out rays from the fish object and check for collisions
+        for i, angle in enumerate(angles):
+            # Convert the angle to radians
+            angle_rad = math.radians(angle)
+
+            # Calculate the endpoint of the ray
+            end_pos = (centerx + ray_length * math.cos(angle_rad),
+                    centery + ray_length * math.sin(angle_rad))
+            
+            # Draw the ray
+            pygame.draw.line(win, (255, 0, 0), start_pos, end_pos)
+
+            distances = [ray_length] * len(angles)  # initialize with maximum possible distance
+
+            # Calculate the distance between the ray and the first wall
+            for j, rect in enumerate(wall_rects):
+                sect_tuple = rect.clipline(start_pos, end_pos)
+                if sect_tuple:
+                    intersect_tuple = sect_tuple[0]
+                    pygame.draw.circle(win, (0, 255, 0), intersect_tuple, 5)
+                    distance = math.hypot(intersect_tuple[0] - start_pos[0], intersect_tuple[1] - start_pos[1])
+                    distances[i] = distance
+            
+            # Calculate the distance between the ray and the fisherman
+            rect=fisherman.get_rect()
+            sect_tuple = rect.clipline(start_pos, end_pos)
+            if sect_tuple:
+                intersect_tuple = sect_tuple[0]
+                pygame.draw.circle(win, (0, 255, 0), intersect_tuple, 5)
+                distances[i] = math.hypot(intersect_tuple[0] - start_pos[0], intersect_tuple[1] - start_pos[1])
+
+            # Calculate the distance between the ray and each shark
+            for j, shark in enumerate(sharks):
+                rect = shark.get_rect()
+                sect_tuple = rect.clipline(start_pos, end_pos)
+                if sect_tuple:
+                    intersect_tuple = sect_tuple[0]
+                    pygame.draw.circle(win, (0, 255, 0), intersect_tuple, 5)
+                    distance = math.hypot(intersect_tuple[0] - start_pos[0], intersect_tuple[1] - start_pos[1])
+                    distances[i] = distance
+
+            # # Determine the minimum distance for each ray
+            # if i in [0, 1, 2,]:
+            #     distances[i] = min(wall_distances[i], shark_distances[i])
+            # elif i in [3, 4, 5]:
+            #     if fisherman_distance < shark_distances[i]:
+            #         distances[i] = fisherman_distance
+            #     else:
+            #         distances[i] = shark_distances[i]
+            # elif i in [6, 7, 8]:
+            #     distances[i] = min(fisherman_distance, wall_distances[0], *shark_distances)
+
+        for i, d in enumerate(distances):
+            distances[i] = round(d,3)
+            
+        return distances
 
 # class Worm: used by computer in python game.py
 class Worm:
@@ -144,6 +215,9 @@ class Fisherman:
     # gets mask to later be used with collision detection        
     def get_mask(self):
         return pygame.mask.from_surface(self.img)
+    
+    def get_rect(self):
+        return self.img.get_rect(topleft=(self.x, self.y))
         
 class Shark:
     IMGS = SHARK_IMGS
@@ -190,6 +264,9 @@ class Shark:
     # gets mask to later be used with collision detection        
     def get_mask(self):
         return pygame.mask.from_surface(self.img)
+    
+    def get_rect(self):
+        return self.img.get_rect(topleft=(self.x, self.y))
 
 class Background:
     SPEED = 7.5
