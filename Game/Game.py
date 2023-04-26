@@ -64,17 +64,11 @@ def game():
                 quit()
         
         stats['Score'] += .1 # increase score by 1 every frame
-        toRemove = []
-        
-        distances = []
+        toRemove = [] # list of objects to remove from game
         
         for fish in fishes:
             fish.animate()
 
-            distances = fish.raycast(sharks, win, fishermen[0])
-            print(distances)
-            time.sleep(.1)
-            
             keys = pygame.key.get_pressed() #check if space key is being pressed
             if keys[pygame.K_SPACE]:
                 ticksDown = 0
@@ -85,13 +79,6 @@ def game():
                 ticksUp = 0
                 ticksDown +=1
                 fish.move(ticksDown) # if space is not being pressed, do nothing, fish swims down.
-            
-            if keys[pygame.K_LEFT]:
-                sharks[0].SPEED = 0
-                fishermen[0].SPEED = 0
-            if keys[pygame.K_RIGHT]:
-                sharks[0].SPEED = 7.5
-                fishermen[0].SPEED = 7.5
                 
             if fish.y + fish.img.get_height() < 0 or (fish.y + fish.img.get_height()) >= WINDOW_HEIGHT: # if fish is out of bounds, end game
                 run = False
@@ -224,9 +211,9 @@ def gameAI(genomes, config):
         
         distances = []
         for x, fish in enumerate(fishes):
-            #fish.animate()
+            fish.animate()
             
-            # Sends out 7 rays at angles: 90, 60, 30, 0, -30, -60, -90.
+            # Sends out 19 rays at angles: 90, 80, 70, 60, 50, 40, 30, 20, 10, 0, -10, -20, -30, -40, -50, -60, -70, -80, -90
             # Returns a list of distances to the closest object in each direction based on ray intersection.
             distances = fish.raycast(sharks, win, fishermen[0])
             
@@ -252,27 +239,6 @@ def gameAI(genomes, config):
                 distances[17],
                 distances[18],
                 abs((fish.y + fish.img.get_height()/2) - (worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
-                
-                #fish.SPEED, # FISH SPEED / POS - NEG
-                #abs(WINDOW_HEIGHT - (fish.y + fish.img.get_height())),    # DISTANCE TO WINDOW BOTTOM
-                #abs(0 - fish.y), 
-                #fish.y + fish.img.get_height()/2, # FISH HEIGHT
-                
-                #sharks[0].y + (sharks[0].img.get_height()/2), #SHARK HEIGHT center
-                # sharks[1].y + (sharks[1].img.get_height()/2), #SHARK HEIGHT center
-                #fishermen[0].y + fishermen[0].img.get_height(), #FISHERMAN HEIGHT bottom
-                #worms[0].y + (worms[0].img.get_height()/2), #WORM HEIGHT center
-
-                #shark0distanceY, #DISTANCE TO SHARK Y BASED ON POSITION OF FISH
-                #shark1distanceY, #DISTANCE TO SHARK2 Y BASED ON POSITION OF FISH
-                #fisherman0distanceY, #DISTANCE TO FISHERMAN BOTTOM Y
-                
-                #(sharks[0].x - (fish.x + fish.img.get_width())), #DISTANCE TO SHARK X
-                #(sharks[1].x - (fish.x + fish.img.get_width())), #DISTANCE TO SHARK X
-                #shark0distanceX, #DISTANCE TO SHARK X BASED ON POSITION OF FISH
-                #shark1distanceX, #DISTANCE TO SHARK2 X BASED ON POSITION OF FISH
-                #(fishermen[0].x - fish.x ), #DISTANCE TO FISHERMAN X
-                #(worms[0].x - fish.x), #DISTANCE TO WORM CENTER X
                 ))
         
             # if output is greater than 0, swim up
@@ -311,7 +277,7 @@ def gameAI(genomes, config):
             
         for shark in sharks:
             shark.move()
-            #shark.animate()
+            shark.animate()
             
             for x, fish in enumerate(fishes): 
                 
@@ -449,10 +415,6 @@ def runTrained():
 
     # Loads self-defined activation function
     config.genome_config.add_activation('leaky_relu', leaky_relu) 
-
-    # Load the population from a checkpoint file
-    # checkpoint_file = 'latest-checkpoint-4776'
-    # mypop = neat.Checkpointer.restore_checkpoint(checkpoint_file)
     
     # Creates a population based off config & A Reporter Extension.        
     mypop = neat.Population(config)
@@ -559,10 +521,6 @@ def titleScreen():
                     runTitleScreen = False
                     break
                 
-            keys = pygame.key.get_pressed() #check if space key is being pressed
-            if keys[pygame.K_SPACE]:
-                trainFromCheckpoint()
-                
         #update display
         pygame.display.update()
 
@@ -634,12 +592,12 @@ def gameOverScreen():
                     runGameOverScreen=False
                     break
                 
-                elif quit_hovered: # if mouse is clicked on view demo button
+                elif quit_hovered: # if mouse is clicked on quit button
                     runGameOverScreen = False
                     pygame.quit()
                     quit()
                     
-                elif menu_hovered: # if mouse is clicked on view demo button
+                elif menu_hovered: # if mouse is clicked on menu button
                     runGameOverScreen = False
                     titleScreen()
                     
