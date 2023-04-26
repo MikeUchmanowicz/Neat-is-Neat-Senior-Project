@@ -108,6 +108,10 @@ class Fish:
         wall_rects = (pygame.Rect(0,5,640,1), pygame.Rect(0,475,640, 1))
 
         angles = [80, 60, 40, 20, 0, -20, -40, -60, -80]
+        
+        distances = [ray_length] * len(angles)  # initialize with maximum possible distance
+
+        
         # Send out rays from the fish object and check for collisions
         for i, angle in enumerate(angles):
             # Convert the angle to radians
@@ -120,45 +124,26 @@ class Fish:
             # Draw the ray
             pygame.draw.line(win, (255, 0, 0), start_pos, end_pos)
 
-            distances = [ray_length] * len(angles)  # initialize with maximum possible distance
-
-            # Calculate the distance between the ray and the first wall
-            for j, rect in enumerate(wall_rects):
-                sect_tuple = rect.clipline(start_pos, end_pos)
-                if sect_tuple:
-                    intersect_tuple = sect_tuple[0]
-                    pygame.draw.circle(win, (0, 255, 0), intersect_tuple, 5)
-                    distance = math.hypot(intersect_tuple[0] - start_pos[0], intersect_tuple[1] - start_pos[1])
-                    distances[i] = distance
+            obstacles = []
             
-            # Calculate the distance between the ray and the fisherman
-            rect=fisherman.get_rect()
-            sect_tuple = rect.clipline(start_pos, end_pos)
-            if sect_tuple:
-                intersect_tuple = sect_tuple[0]
-                pygame.draw.circle(win, (0, 255, 0), intersect_tuple, 5)
-                distances[i] = math.hypot(intersect_tuple[0] - start_pos[0], intersect_tuple[1] - start_pos[1])
+            rect = fisherman.get_rect()
+            obstacles.append(rect)
+                    
+            for rect in wall_rects:
+                obstacles.append(rect)
+                
+            for shark in sharks:
+                rect = shark.get_rect()
+                obstacles.append(rect)
 
             # Calculate the distance between the ray and each shark
-            for j, shark in enumerate(sharks):
-                rect = shark.get_rect()
-                sect_tuple = rect.clipline(start_pos, end_pos)
+            for j, object in enumerate(obstacles):
+                sect_tuple = object.clipline(start_pos, end_pos)
                 if sect_tuple:
                     intersect_tuple = sect_tuple[0]
                     pygame.draw.circle(win, (0, 255, 0), intersect_tuple, 5)
                     distance = math.hypot(intersect_tuple[0] - start_pos[0], intersect_tuple[1] - start_pos[1])
                     distances[i] = distance
-
-            # # Determine the minimum distance for each ray
-            # if i in [0, 1, 2,]:
-            #     distances[i] = min(wall_distances[i], shark_distances[i])
-            # elif i in [3, 4, 5]:
-            #     if fisherman_distance < shark_distances[i]:
-            #         distances[i] = fisherman_distance
-            #     else:
-            #         distances[i] = shark_distances[i]
-            # elif i in [6, 7, 8]:
-            #     distances[i] = min(fisherman_distance, wall_distances[0], *shark_distances)
 
         for i, d in enumerate(distances):
             distances[i] = round(d,3)
