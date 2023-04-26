@@ -243,15 +243,13 @@ def gameAI(genomes, config):
         
             # if output is greater than 0, swim up
             if output[0] < output[1]:
-                #if not (fish.y < 1):
-                    ticksDown = 0
-                    ticksUp += 1
-                    fish.swimUp(ticksUp)
+                ticksDown = 0
+                ticksUp += 1
+                fish.swimUp(ticksUp)
             else: # if output is less than other output, gravity causes swim down.
-                #if not (fish.y + fish.img.get_height() > WINDOW_HEIGHT -1):
-                    ticksUp = 0
-                    ticksDown +=1
-                    fish.move(ticksDown)
+                ticksUp = 0
+                ticksDown +=1
+                fish.move(ticksDown)
                 
             # Update Last Position
             if time % 100 == 0:
@@ -269,7 +267,7 @@ def gameAI(genomes, config):
                 gens.pop(x)
                 fishes.pop(x)
                 
-            # if fish is out of bounds, decrease fitness of fish, remove fish from game
+            # if fish is out of bounds, remove fish from game
             if fish.y <= 0 or (fish.y + fish.img.get_height()) >= WINDOW_HEIGHT:
                 nets.pop(x)
                 gens.pop(x)
@@ -297,12 +295,12 @@ def gameAI(genomes, config):
                     gens[x].fitness += 25
                     shark.passed = True
                 
-                if fish.collide(shark): # if fish collides with shark, decrease fitness of fish, remove fish from game
+                if fish.collide(shark): # if fish collides with shark, remove fish from game
                     nets.pop(x)
                     gens.pop(x)
                     fishes.pop(x)
 
-            if shark.x + shark.img.get_width() < 0: # if object is off screen (left), remove it 
+            if shark.x + shark.img.get_width() < -100: # if object is off screen (left), remove it 
                 toRemove.append(shark) # add object to list of objects to remove
         for shark in toRemove:
             sharks.append(Shark()) # add new object to replace removed object (right)
@@ -315,7 +313,7 @@ def gameAI(genomes, config):
             
             for x, fish in enumerate(fishes): 
                 
-                if fish.collide(fisherman): # if fish collides with fisherman, decrease fitness of fish, remove fish from game
+                if fish.collide(fisherman): # if fish collides with fisherman, remove fish from game
                     nets.pop(x)
                     gens.pop(x)
                     fishes.pop(x)
@@ -398,10 +396,10 @@ def run():
 def runTrained():
     
     local_dir = os.path.dirname(__file__)
-    config_path = os.path.join(local_dir, "configTrained.txt")
+    config_path = os.path.join(local_dir, "Radar2Config.txt")
 
     # load the best genome
-    with open('trainedmodel.pkl', 'rb') as f:
+    with open('Radar2Model.pkl', 'rb') as f:
         best_genome = pickle.load(f)
         f.close()
         

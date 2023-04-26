@@ -100,17 +100,14 @@ class Fish:
         centery = self.y + self.img.get_height() / 2
         start_pos = (centerx, centery)
 
-        distances = [ray_length] * 9  # initialize with maximum possible distance
-
-        bg_color = (0, 128, 255)  # blue
-        win.fill(bg_color)
-
-        wall_rects = (pygame.Rect(0,5,640,1), pygame.Rect(0,475,640, 1))
-
-        angles = [ 90, 80, 70, 60, 50, 40, 30, 20, 10, 0, -10, -20, -30, -40, -50, -60, -70, -80, -90]
+        wall_rects = (pygame.Rect(0,5,640,1), pygame.Rect(0,0,1,480), pygame.Rect(0,475,640, 1)) #wall boundaries
+        angles = [ 105, 90, 75, 60, 50, 40, 30, 20, 10, 0, -10, -20, -30, -40, -50, -60, -75, -90, -105] #ray angles
         
         distances = [ray_length] * len(angles)  # initialize with maximum possible distance
-
+    
+        #pygame.display.update()
+        blue = (0, 0, 255)
+        win.fill(blue)
         
         # Send out rays from the fish object and check for collisions
         for i, angle in enumerate(angles):
