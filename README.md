@@ -10,7 +10,7 @@ ___
 PROJECT PRESENTATION (~10 Min)
 https://youtu.be/YHyEj7pV_KQ
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/YHyEj7pV_KQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[![PROJECT PRESENTATION (~10 Min)](http://img.youtube.com/vi/YHyEj7pV_KQ/0.jpg)](http://www.youtube.com/watch?v=YHyEj7pV_KQ)
 
 ___
 
