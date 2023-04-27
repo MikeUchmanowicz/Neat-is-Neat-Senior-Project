@@ -24,7 +24,7 @@ stats = {'Score':0}
 stats = {'High Score':0}
 GEN = 0  
 
-# main game loop. Used by player
+# main game loop. Used by player to play fish game.
 def game():
     
     win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) # Initialize window
@@ -47,9 +47,9 @@ def game():
 
     # adds base objects
     fishes = [Fish(15, 240)]
-    sharks = [Shark()]
+    sharks = [Shark(), Shark()]
     fishermen = [Fisherman()]
-    worms = [] #Worm()
+    worms = [Worm()]
     background = Background()
     
     run = True
@@ -94,7 +94,7 @@ def game():
                     break
                 
                 if not shark.passed and (shark.x + shark.img.get_width()) < fish.x:
-                    stats['Score'] += 7.5 # increase score
+                    stats['Score'] += 25 # increase score
                     shark.passed = True
                 
                 if shark.x + shark.img.get_width() < 0: # if object is off screen (left), remove it 
@@ -113,10 +113,6 @@ def game():
                     gameOverScreen() # display game over screen
                     break
                 
-                if not fisherman.passed and (fisherman.x + fisherman.img.get_width()) < fish.x:
-                    stats['Score'] += 7.5 # increase score
-                    fisherman.passed = True
-                
                 if fisherman.x + fisherman.img.get_width() < 0: # if object is off screen (left), remove it 
                     toRemove.append(fisherman) # add object to list of objects to remove
                     
@@ -129,7 +125,7 @@ def game():
                 worm.move()
                 
                 if fish.collide(worm): # if fish collides with worm, remove worm
-                    stats['Score'] += 25 # increase score by 1 every frame
+                    stats['Score'] += 150 # increase score by 1 every frame
                     toRemove.append(worm)
                     
                 if worm.x + worm.img.get_width() < 0: # if object is off screen (left), remove it 
@@ -147,7 +143,7 @@ def game():
         # draw all objects perpetually, updating the screen with current positions / locations
         draw_gameWindow(win, background, fishes, sharks, fishermen, worms, stats)
         
-# main game loop. Used by AI
+# main game loop. Used by NEAT to evaluate genomes of AI and "train" it.
 def gameAI(genomes, config):
     
     # Initialize window
@@ -219,25 +215,25 @@ def gameAI(genomes, config):
             
             # determine AI output through inputs
             output = nets[x].activate((
-                distances[0],
-                distances[1],
-                distances[2],
-                distances[3],
-                distances[4],
-                distances[5],
-                distances[6],
-                distances[7],
-                distances[8],
-                distances[9],
-                distances[10],
-                distances[11],
-                distances[12],
-                distances[13],
-                distances[14],
-                distances[15],
-                distances[16],
-                distances[17],
-                distances[18],
+                distances[0], #NWish    
+                distances[1], #N
+                distances[2], #NEish
+                distances[3], #NEish
+                distances[4], #NE
+                distances[5], #NE
+                distances[6], #NE
+                distances[7], #NEish
+                distances[8], #NEish
+                distances[9], #E
+                distances[10], #SEish
+                distances[11], #SEish
+                distances[12], #SE
+                distances[13], #SE
+                distances[14], #SE
+                distances[15], #SEish
+                distances[16], #SEish
+                distances[17], #S
+                distances[18], #SWish
                 abs((fish.y + fish.img.get_height()/2) - (worms[0].y + worms[0].img.get_height()/2)), #DISTANCE TO WORM CENTER Y
                 ))
         
@@ -357,10 +353,11 @@ def gameAI(genomes, config):
         # draw all objects perpetually, updating the screen with current positions / locations
         draw_gameWindow(win, background, fishes, sharks, fishermen, worms, stats)
 
+# activation function for NEAT, self created
 def leaky_relu(x):
     return np.maximum(0.01*x, x)
 
-# run NEAT 
+# run NEAT on eval genomes function 
 def run():
     
     local_dir = os.path.dirname(__file__)
@@ -393,6 +390,7 @@ def run():
         
     print("Model Saved")
 
+# run NEAT on trained genome function
 def runTrained():
     
     local_dir = os.path.dirname(__file__)
